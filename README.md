@@ -12,56 +12,135 @@ This repo is two things:
 
 ## Use it in a project
 
-Install a release (each GitHub Release has the exact command in its notes):
+Install a release — each [GitHub Release](https://github.com/CastoricSi/sityle/releases)
+has the exact command in its notes:
 
 ```sh
-npm i https://github.com/CastoricSi/sityle/releases/download/v0.1.0/sityle-0.1.0.tgz
-npm i react react-dom motion lucide-react   # peer dependencies, if not there yet
+npm i https://github.com/CastoricSi/sityle/releases/download/vX.Y.Z/sityle-X.Y.Z.tgz
+npm i react react-dom motion   # peer dependencies, if not there yet
 ```
 
 ```tsx
 import { SiProvider, Button, TextField } from "sityle";
 import "sityle/style.css";
+import "sityle/base.css"; // optional: only when the whole page is a sityle page
 
 <SiProvider>
 	<Button>保存</Button>
 </SiProvider>;
 ```
 
-- Load the fonts (Ma Shan Zheng, Noto Serif SC, Noto Sans SC, JetBrains Mono —
-  see `index.html`), or the fallbacks are used.
-- `style.css` includes page basics (`body` background and text, focus ring,
-  reduced motion). Colours are CSS variables `--si-*`; classes are `si-*`.
-- `useTheme()` → `{ choice, resolved, setChoice }` ("light" | "dark" | "system");
-  `<html data-theme>` is set for you. Uncontrolled, the choice is remembered;
-  an app that keeps its own setting passes `<SiProvider theme onThemeChange>`.
-- Text sizes are in `rem`, so they follow the page's root font size.
+Peer dependencies: React 19 and Motion (12–14). Icons inside the components are
+inlined; the app is free to use any icon set (the style page uses Lucide).
 
-While working on sityle and a project together, link the local copy instead
-of the release (don't commit this): `npm i ../sityle` in the project, and run
+### Stylesheets
+
+| Import                   | What it is                                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sityle/style.css`       | Tokens and every component. Touches nothing but `si-*` elements: their box-sizing, focus ring and reduced motion are scoped with `:where()` (zero specificity — your rules win).                              |
+| `sityle/base.css`        | Optional page ground: reset, rice-paper `body`, the paper-fibre overlay, focus ring and reduced motion for the whole page. Leave it out when sityle lives inside another app or design.                       |
+| `sityle/style.layer.css` | `style.css` inside `@layer sityle`, for apps that order their CSS with cascade layers.                                                                                                                        |
+| `sityle/css/<file>.css`  | One file per component module, for apps that use only a few: `tokens.css` + `core.css` + e.g. `button.css`, `field.css`, `dialog.css` (Dialog also uses `display.css` for its seal; fields use `button.css`). |
+
+Load the fonts (Ma Shan Zheng, Noto Serif SC, Noto Sans SC, JetBrains Mono —
+see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
+
+### Theme
+
+- `useTheme()` → `{ choice, resolved, setChoice }` (`"light" | "dark" | "system"`);
+  `<html data-theme>` is set for you. Uncontrolled, the choice is remembered in
+  `localStorage`; an app that keeps its own setting passes `<SiProvider theme onThemeChange>`.
+- No flash of the wrong theme: put `themeScript` in `<head>` so a remembered
+  theme applies before the first paint.
+
+  ```tsx
+  import { themeScript } from "sityle";
+  <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
+  ```
+
+- Colours are CSS variables `--si-*`, each written once as `light-dark(light, dark)`.
+  There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
+  spacing (`--si-space-*`) and stacking (`--si-z-*`).
+
+### Server rendering (Next.js, Remix…)
+
+Everything renders on the server. The build starts with `"use client"`, so the
+Next.js app router can import components directly. Dialogs, tooltips, menus and
+select lists portal to `<body>` only after hydration.
+
+### Texts (i18n)
+
+The few texts sityle writes itself (copy, show / hide, clear, cancel, loading,
+password strength) are Chinese by default. Switch them app-wide:
+
+```tsx
+import { en, SiProvider } from "sityle";
+
+<SiProvider messages={en}>…</SiProvider>; // or { ...en, cancel: "Never mind" }
+```
+
+Per-component label props (`CopyButton label`, `PasswordField labels`, …) still win.
+
+### Conventions
+
+- **Props pass through.** Every component takes `className`, `style`, `ref` and the
+  native props of its element (`data-*`, `aria-*`, handlers…). Form controls
+  (Switch, Checkbox, Radio, Slider, TextField, SearchField, RadioCard) put native
+  props and `ref` on their `<input>` and `className` / `style` on the wrapper.
+- **Controlled or not.** Form controls take `value` + `onChange` (or `checked`),
+  or `defaultValue` (`defaultChecked`) and a `name`, and then just work inside a
+  plain `<form>` — SelectField submits through a hidden input.
+- **Links.** `Button`, `NavItem` and `ListItem` with `href` render a real `<a>`;
+  `as` renders your router's link instead (Next.js `Link` takes `href` as is; for
+  `to`-style links pass a small wrapper). A `ListItem` with neither `onClick` nor
+  `href` is a plain row.
+- **Names.** Colour is `tone` (`jade | azure | gold | danger`, Note also `neutral`).
+  Secondary text of an item is `description`; `hint` is the helper text under a
+  form field. Toggles take `label` + `description`.
+- **Keyboard.** Tabs and Segmented have one Tab stop and move with arrow keys /
+  Home / End (`<Tabs id>` + `<TabPanel tabs value>` link tabs to panels). Menu:
+  ↑ ↓ Home End, typeahead, Escape, Tab. Dialog keeps Tab inside, locks page
+  scroll and returns focus when it closes.
+
+### Browser support
+
+Current evergreen browsers: the tokens use `light-dark()` (Chrome 123, Safari
+17.5, Firefox 120), and `:has()` and `color-mix()`.
+
+### Linking a local copy
+
+While working on sityle and a project together, link the local copy instead of
+the release (don't commit this): `npm i ../sityle` in the project, and run
 `npm run build:lib` here after changes. With a local link, add
-`resolve: { dedupe: ["react", "react-dom", "motion", "lucide-react"] }` to the
-project's Vite config, or two copies of React load ("Invalid hook call").
+`resolve: { dedupe: ["react", "react-dom", "motion"] }` to the project's Vite
+config, or two copies of React load ("Invalid hook call").
 
 ## Develop
 
 ```sh
 npm install
 npm run dev          # style page
+npm test             # unit, SSR, hydration and axe tests (Vitest + jsdom)
+npm run lint         # ESLint + Prettier check (npm run format to fix)
+npm run typecheck
 npm run build        # typecheck + style page + Worker (what Cloudflare runs)
-npm run build:lib    # the package → dist/lib (index.js, style.css, types/)
+npm run build:lib    # the package → dist/lib (index.js, style*.css, base.css, css/, types/)
 ```
+
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and both builds on
+every push and pull request.
 
 ## Release
 
 ```sh
-npm run release:patch   # 0.1.0 → 0.1.1   (or release:minor / release:major)
+npm run release:patch   # 0.9.0 → 0.9.1   (or release:minor / release:major)
 ```
 
-That typechecks and builds the package, bumps `package.json`, commits, tags
-`vX.Y.Z` and pushes. The tag starts `.github/workflows/release.yml`, which
-builds again, runs `npm pack` and creates the GitHub Release with
-`sityle-X.Y.Z.tgz` attached. Projects then switch to the new URL.
+That typechecks, lints, tests and builds the package, bumps `package.json`,
+commits, tags `vX.Y.Z` and pushes. The tag starts `.github/workflows/release.yml`,
+which checks again, runs `npm pack` and creates the GitHub Release with
+`sityle-X.Y.Z.tgz` attached. Projects then switch to the new URL. Note the
+changes in `CHANGELOG.md` first.
 
 The working tree must be clean before releasing.
 
@@ -69,39 +148,47 @@ The working tree must be clean before releasing.
 
 ```
 src/si/            The package.
-  tokens.css         Colours (light 宣纸 / dark 浓墨), type, radius, elevation, motion.
-  base.css           Page ground, focus ring, reduced motion.
-  components.css     Component styles (.si-*).
-  core.tsx           SiProvider, useTheme, spring presets, ink ripple, BrushStroke, cn.
-  components/        Button, IconButton, CopyButton, TextField, TextAreaField,
-                     Input / TextArea / Select (label outside), PasswordField, StrengthMeter, Switch, Checkbox, RadioGroup,
-                     Segmented, Tabs, Chip, Tag, Avatar(Stack), Seal, Card,
-                     ListItem, Tooltip, Menu, Dialog, Slider, InkDrop, InkBars,
-                     BrushSpinner, Skeleton, InkWash.
+  tokens.css         Colours (light 宣纸 / dark 浓墨 via light-dark()), type, radius, heights, spacing, z-index, motion.
+  base.css           Optional page ground (reset, body, paper fibre, global focus ring / reduced motion).
+  components.css     Imports styles/*.css (one file per component module).
+  core.tsx           SiProvider, useTheme, themeScript, spring presets, ink ripple, BrushStroke.
+  messages.ts        Built-in texts: zh (default), en, useMessages.
+  components/        Button, IconButton, CopyButton, TextField, TextAreaField, SelectField,
+                     Input / TextArea / Select (label outside), PasswordField, StrengthMeter, Switch,
+                     Checkbox, RadioGroup, Radio, Segmented, Tabs, TabPanel, Chip, Tag, Avatar(Stack),
+                     Seal, Card, ListItem, Tooltip, Menu, Dialog, ConfirmDialog, Slider, NavItem,
+                     Group, GroupRow, Steps, RadioCard, Note, IconBadge, SearchField, Fab,
+                     AutoHeight, InkDrop, InkBars, BrushSpinner, Skeleton, InkWash.
+  internal/          Not exported: popover placement, modal focus / scroll lock, controllable state,
+                     link-or-button, inline icons, SSR helpers.
   index.ts           Public exports.
 src/showcase/      The style page (not part of the package).
 src/worker/        The Worker (assets only; 404 for anything else).
+test/              Vitest tests.
 vite.config.ts     Style page + Worker build (@cloudflare/vite-plugin).
-vite.lib.config.ts Package build; react / motion / lucide-react stay external.
+vite.lib.config.ts Package build; react / motion stay external.
 ```
 
 ## Rules
 
 - **Colour:** only `--si-*` tokens. 石绿 is the one primary; 石青 / 泥金 are
-  accents; 朱砂 only for danger and seals.
+  accents; 朱砂 only for danger and seals. Text on a solid colour uses the
+  `--si-*-fill` tokens (≥ 4.5:1).
 - **Type:** brush (Ma Shan Zheng) only for the brand and rare display titles;
   serif for headings; sans for UI and body; mono for secrets and codes.
 - **Buttons:** one `solid` per area; `flat` / `bordered` / `light` for the rest.
+  Navigation is a link (`href`), an action is a button.
 - **Motion:** entering ease-out; shape changes spring (`spring.bouncy`);
   leaving ease-in, short. Everything respects "reduce motion".
-- **Icons:** Lucide, stroke 1.75; icon-only buttons always have a tooltip.
+- **Icons:** stroke icons (Lucide in the style page); icon-only buttons always have a tooltip.
 - **Dialogs** only for decisions; feedback where the action was, no toasts.
   On phones (≤600px) a Dialog is a bottom sheet; pass `phone="full"` for
   long content (settings, forms) to fill the screen.
 
 ## License
 
-MIT — see `LICENSE`. Exception: the portrait of the character 祀 (fan art) —
-`src/showcase/sigil.webp` and the browser icons `public/favicon.png`,
+MIT — see `LICENSE`. The few icons drawn inside the components are from
+[Lucide](https://lucide.dev) (ISC). Exception: the portrait of the character 祀
+(fan art) — `src/showcase/sigil.webp` and the browser icons `public/favicon.png`,
 `public/apple-touch-icon.png` — is used for this site only; it is not covered
 by the MIT license and is not part of the package.
