@@ -16,5 +16,5 @@
 		"types": ["vite/client"],
 		"paths": { "@si": ["./src/si"], "@si/*": ["./src/si/*"] }
 	},
-	"include": ["src/si", "src/showcase", "src/main.tsx"]
+	"include": ["src/si", "src/showcase", "src/main.tsx", "test", "vitest.config.ts"]
 }

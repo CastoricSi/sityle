@@ -28,10 +28,12 @@
 		"typecheck": "tsc -b",
 		"preview": "npm run build && vite preview",
 		"deploy": "npm run build && wrangler deploy",
-		"preversion": "npm run typecheck && npm run build:lib",
+		"preversion": "npm run typecheck && npm test && npm run build:lib",
 		"release:patch": "npm version patch && git push --follow-tags",
 		"release:minor": "npm version minor && git push --follow-tags",
-		"release:major": "npm version major && git push --follow-tags"
+		"release:major": "npm version major && git push --follow-tags",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"peerDependencies": {
 		"lucide-react": ">=1.0.0",
@@ -41,15 +43,20 @@
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "1.52.1",
+		"@testing-library/dom": "^10.4.2",
+		"@testing-library/react": "^16.3.3",
+		"@testing-library/user-event": "^14.6.8",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.1",
+		"jsdom": "^29.1.1",
 		"lucide-react": "^1.21.0",
 		"motion": "^14.5.0",
 		"react": "19.2.1",
 		"react-dom": "19.2.1",
 		"typescript": "5.9.3",
 		"vite": "^7.0.0",
+		"vitest": "^3.2.7",
 		"wrangler": "4.136.1"
 	}
 }
