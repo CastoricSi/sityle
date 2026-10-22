@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (0.9.0)
+## 0.9.0
 
 A review pass: bugs, accessibility, server rendering, and the API a library
 needs. Several renames — see **Migrating** below.
