@@ -847,6 +847,9 @@
 	background: var(--si-paper-raised);
 	box-shadow: var(--si-e3);
 }
+.si-dialog:focus {
+	outline: none;
+}
 .si-dialog.is-wide {
 	width: min(640px, 100%);
 }

@@ -3,6 +3,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useSyncExternalStore } from 
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
+import { LAYER_ATTR, lockScroll, tabbables } from "../internal/modal";
 import { Seal } from "./Display";
 
 /**
@@ -54,22 +55,59 @@ export function Dialog({
 	useEffect(() => {
 		if (!open) return;
 		lastFocus.current = document.activeElement as HTMLElement | null;
+		const unlock = lockScroll();
 		// Focus the first action (the safe choice); without actions, the first control.
 		const t = setTimeout(() => {
-			const el = box.current?.querySelector<HTMLElement>(".si-dialog-actions button") ?? box.current?.querySelector<HTMLElement>("button, input, [tabindex]");
-			el?.focus({ preventScroll: true });
+			const root = box.current;
+			if (!root) return;
+			const el = root.querySelector<HTMLElement>(".si-dialog-actions button:not([disabled])") ?? tabbables(root)[0] ?? root;
+			el.focus({ preventScroll: true });
 		}, 30);
-		// Only the topmost dialog answers Escape (a confirm over settings closes alone).
+		const isTop = () => {
+			const dialogs = document.querySelectorAll('[role="dialog"][aria-modal="true"]');
+			return dialogs[dialogs.length - 1] === box.current;
+		};
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key !== "Escape") return;
-			const dialogs = document.querySelectorAll('[role="dialog"]');
-			if (dialogs[dialogs.length - 1] === box.current) closeRef.current();
+			const root = box.current;
+			// Only the topmost dialog answers (a confirm over settings closes alone).
+			if (!root || !isTop()) return;
+			if (e.key === "Escape") {
+				e.preventDefault();
+				closeRef.current();
+			} else if (e.key === "Tab") {
+				// Tab cycles inside the dialog; it never reaches the page behind.
+				const els = tabbables(root);
+				if (!els.length) return void e.preventDefault();
+				const first = els[0]!;
+				const last = els[els.length - 1]!;
+				const at = document.activeElement;
+				if (e.shiftKey && (at === first || !root.contains(at))) {
+					e.preventDefault();
+					last.focus();
+				} else if (!e.shiftKey && (at === last || !root.contains(at))) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+		};
+		// Focus that lands behind the dialog (a click, a script) is pulled back in.
+		const onFocusIn = (e: FocusEvent) => {
+			const root = box.current;
+			const target = e.target as HTMLElement;
+			if (!root || !isTop() || root.contains(target) || target.closest?.(`[${LAYER_ATTR}]`)) return;
+			(tabbables(root)[0] ?? root).focus({ preventScroll: true });
 		};
 		addEventListener("keydown", onKey);
+		document.addEventListener("focusin", onFocusIn);
 		return () => {
 			clearTimeout(t);
+			unlock();
 			removeEventListener("keydown", onKey);
-			lastFocus.current?.focus?.();
+			document.removeEventListener("focusin", onFocusIn);
+			const back = lastFocus.current;
+			// Return focus unless the app already moved it somewhere else on purpose.
+			const at = document.activeElement;
+			if (back?.isConnected && (!at || at === document.body || box.current?.contains(at))) back.focus({ preventScroll: true });
 		};
 	}, [open]);
 
@@ -115,6 +153,7 @@ export function Dialog({
 						role="dialog"
 						aria-modal="true"
 						aria-labelledby={titleId}
+						tabIndex={-1}
 						className={cn("si-dialog", seal && "has-seal", wide && "is-wide", mode !== "center" && `is-${mode}`)}
 						{...motionProps}
 					>
