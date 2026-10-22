@@ -1,4 +1,4 @@
-import { Check, ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "../internal/icons";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";

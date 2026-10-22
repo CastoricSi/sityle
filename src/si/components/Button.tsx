@@ -1,4 +1,4 @@
-import { Check, Copy } from "lucide-react";
+import { Check, Copy } from "../internal/icons";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 

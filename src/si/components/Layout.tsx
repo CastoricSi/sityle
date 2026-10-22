@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { Search, X } from "../internal/icons";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 
 import { motion } from "motion/react";

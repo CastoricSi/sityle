@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check } from "../internal/icons";
 import { AnimatePresence, motion } from "motion/react";
 import { createContext, useContext, useId, useState } from "react";
 

@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Eye, EyeOff } from "lucide-react";
+import { Check, ChevronDown, Eye, EyeOff } from "../internal/icons";
 import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";

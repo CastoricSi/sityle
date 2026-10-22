@@ -1,10 +1,10 @@
 // The installable package: dist/lib/index.js (ES module) + dist/lib/style.css.
-// React, Motion and lucide-react stay external (peer dependencies).
+// React and Motion stay external (peer dependencies).
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 
-const external = ["react", "react-dom", "motion", "lucide-react"];
+const external = ["react", "react-dom", "motion"];
 
 export default defineConfig({
 	plugins: [react()],
