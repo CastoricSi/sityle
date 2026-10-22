@@ -1,0 +1,61 @@
+/* sityle core: scoped basics and the ink ripple. Needed by every other file in css/. */
+
+/*
+ * Scoped basics. sityle's own elements get these whatever the page's reset is;
+ * nothing outside them is touched (base.css is the opt-in page-wide version).
+ * :where() keeps their specificity at zero, so any rule of yours wins.
+ */
+:where([class*="si-"]),
+:where([class*="si-"])::before,
+:where([class*="si-"])::after,
+:where([class*="si-"]) *,
+:where([class*="si-"]) *::before,
+:where([class*="si-"]) *::after {
+	box-sizing: border-box;
+}
+:where([class*="si-"]):focus-visible,
+:where([class*="si-"]) :focus-visible {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+:where(.si-card-title, .si-dialog > h2, .si-steps > p) {
+	margin: 0;
+	text-wrap: balance;
+}
+@media (prefers-reduced-motion: reduce) {
+	:where([class*="si-"]),
+	:where([class*="si-"])::before,
+	:where([class*="si-"])::after,
+	:where([class*="si-"]) *,
+	:where([class*="si-"]) *::before,
+	:where([class*="si-"]) *::after {
+		animation-duration: 1ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 1ms !important;
+	}
+}
+
+/* ── Ink ripple: a drop of ink bleeding into wet paper ── */
+.si-ink-host {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	-webkit-tap-highlight-color: transparent;
+}
+.si-ink {
+	position: absolute;
+	z-index: -1;
+	border-radius: 50%;
+	pointer-events: none;
+	background: radial-gradient(circle, currentColor 0 38%, transparent 70%);
+	filter: url(#si-bleed);
+	transform: scale(0);
+}
+
+/* Edge / IE add their own reveal and clear buttons to inputs; sityle has its own. */
+.si-field input::-ms-reveal,
+.si-field input::-ms-clear,
+.si-input::-ms-reveal,
+.si-input::-ms-clear {
+	display: none;
+}

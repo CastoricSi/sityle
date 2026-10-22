@@ -1,0 +1,100 @@
+/* ── Segmented (sliding pill) ── */
+.si-seg {
+	position: relative;
+	display: inline-flex;
+	padding: 3px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-sunk);
+	isolation: isolate;
+	max-width: 100%;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.si-seg button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	border: 0;
+	border-radius: var(--si-r-full);
+	background: none;
+	color: var(--si-ink-2);
+	font: 500 0.8125rem/1 var(--si-font-sans);
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color var(--si-t-base) var(--si-ease-out);
+}
+.si-seg button[aria-checked="true"],
+.si-seg button[aria-selected="true"] {
+	color: var(--si-ink);
+}
+.si-seg button:disabled,
+.si-tabs button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+.si-seg button > :not(.si-seg-pill) {
+	position: relative;
+	z-index: 1;
+}
+.si-seg svg {
+	width: 15px;
+	height: 15px;
+}
+.si-seg-pill {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e1);
+}
+
+/* ── Tabs (brush stroke) ── */
+.si-tabs {
+	display: flex;
+	gap: 4px;
+	border-bottom: 1px solid var(--si-line);
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.si-tabs button {
+	position: relative;
+	padding: 12px 14px 13px;
+	border: 0;
+	border-radius: var(--si-r-sm) var(--si-r-sm) 0 0;
+	background: none;
+	color: var(--si-ink-3);
+	font: 500 0.875rem/1 var(--si-font-sans);
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color var(--si-t-base);
+}
+.si-tabs button[aria-selected="true"] {
+	color: var(--si-ink);
+}
+/* A translucent highlighter swipe behind the current tab's text. */
+.si-tabs-brush {
+	position: absolute;
+	z-index: 0;
+	left: 8px;
+	right: 8px;
+	bottom: 11px;
+	height: 12px;
+	/* translucency lives in the colour: Motion owns this element's opacity during the slide */
+	color: color-mix(in srgb, var(--si-jade) 28%, transparent);
+	pointer-events: none;
+}
+.si-tabs-label {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.si-tab-panel {
+	padding-top: 14px;
+	color: var(--si-ink-2);
+	font-size: 0.875rem;
+}

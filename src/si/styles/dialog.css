@@ -1,0 +1,115 @@
+/* ── Dialog ── */
+.si-scrim {
+	position: fixed;
+	inset: 0;
+	z-index: var(--si-z-dialog);
+	display: grid;
+	place-items: center;
+	padding: 16px;
+}
+/* The backdrop is two layers so neither fades a blur with opacity (which
+   GPU compositing draws with dark bands over sticky / layered content):
+   the blur animates its radius, the tint its opacity. */
+.si-scrim-blur,
+.si-scrim-tint {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+.si-scrim-tint {
+	background: var(--si-scrim);
+}
+.si-dialog {
+	position: relative;
+	overflow: hidden auto;
+	max-height: calc(100dvh - 32px);
+	width: min(420px, 100%);
+	padding: var(--si-space-dialog);
+	border-radius: var(--si-r-xl);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e3);
+}
+.si-dialog:focus {
+	outline: none;
+}
+.si-dialog.is-wide {
+	width: min(640px, 100%);
+}
+.si-dialog-seal {
+	position: absolute;
+	right: 20px;
+	top: 18px;
+	width: 54px;
+	height: 54px;
+	font-size: 1.875rem;
+	opacity: 0.85;
+}
+.si-dialog h2 {
+	font: 700 1.1875rem/1.35 var(--si-font-heading);
+}
+.si-dialog.has-seal h2 {
+	padding-right: 60px;
+}
+.si-dialog-body {
+	margin-top: 8px;
+	color: var(--si-ink-2);
+	font-size: 0.875rem;
+}
+.si-dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 22px;
+}
+
+/* phones: a sheet from the bottom, or full screen */
+.si-scrim.is-sheet,
+.si-scrim.is-full {
+	place-items: end stretch;
+	padding: 0;
+}
+.si-dialog.is-sheet,
+.si-dialog.is-full {
+	width: 100%;
+	padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+}
+.si-dialog.is-sheet {
+	max-height: 92dvh;
+	border-radius: var(--si-r-xl) var(--si-r-xl) 0 0;
+}
+/* grab handle */
+.si-dialog.is-sheet::before {
+	content: "";
+	position: absolute;
+	top: 8px;
+	left: 50%;
+	width: 36px;
+	height: 4px;
+	margin-left: -18px;
+	border-radius: 4px;
+	background: var(--si-line);
+}
+.si-dialog.is-full {
+	/* exactly the visible area (the scrim is fixed to it); never scrolls itself */
+	height: 100%;
+	max-height: none;
+	overflow: hidden;
+	border-radius: 0;
+	padding-top: max(20px, env(safe-area-inset-top, 0px));
+	display: flex;
+	flex-direction: column;
+}
+.si-dialog.is-full .si-dialog-body {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+.si-dialog.is-full .si-dialog-body > * {
+	flex: 1;
+	min-height: 0;
+}
+.si-dialog.is-full .si-dialog-actions {
+	flex: none;
+}

@@ -1,0 +1,64 @@
+/* ── Menu ── */
+.si-menu-anchor {
+	position: relative;
+	display: inline-block;
+}
+/* portaled to <body>, placed (fixed) by the component; above dialogs */
+.si-menu {
+	position: fixed;
+	z-index: var(--si-z-popover);
+	overflow-y: auto;
+	min-width: 200px;
+	padding: 6px;
+	border: 1px solid var(--si-line);
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e3);
+}
+.si-menu-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 10px;
+	border: 0;
+	border-radius: var(--si-r-sm);
+	background: none;
+	color: var(--si-ink);
+	font: 400 0.875rem/1.2 var(--si-font-sans);
+	text-align: left;
+	cursor: pointer;
+	transition: background-color var(--si-t-quick);
+}
+.si-menu-item:hover,
+.si-menu-item:focus-visible {
+	background: var(--si-paper-sunk);
+	outline: none;
+}
+.si-menu-item svg {
+	width: 16px;
+	height: 16px;
+	color: var(--si-ink-3);
+}
+.si-menu-item kbd {
+	margin-left: auto;
+	font: 500 0.6875rem/1 var(--si-font-mono);
+	color: var(--si-ink-3);
+}
+.si-menu-item:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+.si-menu-item.is-danger,
+.si-menu-item.is-danger svg {
+	color: var(--si-cinnabar-text);
+}
+.si-menu-item.is-danger:hover,
+.si-menu-item.is-danger:focus-visible {
+	background: var(--si-cinnabar-soft);
+}
+.si-menu hr {
+	margin: 6px 4px;
+	border: 0;
+	border-top: 1px solid var(--si-line);
+}

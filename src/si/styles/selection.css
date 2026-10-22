@@ -1,0 +1,159 @@
+/* ── Switch ── */
+.si-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-switch input,
+.si-check input,
+.si-radio input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+.si-switch-track {
+	position: relative;
+	display: flex;
+	flex: none;
+	width: 50px;
+	height: 30px;
+	padding: 3px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-sunk);
+	box-shadow: inset 0 0 0 1px var(--si-line);
+	transition: background-color var(--si-t-base) var(--si-ease-out);
+}
+.si-switch input:checked + .si-switch-track {
+	justify-content: flex-end;
+	background: var(--si-jade);
+}
+.si-switch input:focus-visible + .si-switch-track {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+.si-switch-knob {
+	height: 24px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e2);
+	display: grid;
+	place-items: center;
+	color: var(--si-jade);
+}
+.si-switch-knob svg {
+	width: 14px;
+	height: 14px;
+}
+.si-toggle-text b {
+	display: block;
+	font-weight: 500;
+}
+.si-toggle-text span {
+	display: block;
+	font-size: 0.8125rem;
+	color: var(--si-ink-3);
+}
+
+.si-switch.is-disabled,
+.si-check.is-disabled,
+.si-radio.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* ── Checkbox ── */
+.si-check {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-check-box {
+	width: 22px;
+	height: 22px;
+	flex: none;
+	display: grid;
+	place-items: center;
+	border-radius: var(--si-r-sm);
+	box-shadow: inset 0 0 0 1.75px var(--si-ink-3);
+	transition:
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
+}
+.si-check:active .si-check-box {
+	transform: scale(0.88);
+}
+.si-check-box svg {
+	width: 15px;
+	height: 15px;
+	color: var(--si-on-jade);
+}
+.si-check-box path {
+	stroke-dasharray: 22;
+	stroke-dashoffset: 22;
+	transition: stroke-dashoffset var(--si-t-slow) var(--si-ease-out) 60ms;
+}
+.si-check input:checked + .si-check-box {
+	background: var(--si-jade);
+	box-shadow: inset 0 0 0 1.75px var(--si-jade);
+	animation: si-pop var(--si-t-slow) var(--si-ease-spring);
+}
+.si-check input:checked + .si-check-box path {
+	stroke-dashoffset: 0;
+}
+.si-check input:focus-visible + .si-check-box {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+@keyframes si-pop {
+	40% {
+		transform: scale(1.14);
+	}
+}
+
+/* ── Radio ── */
+.si-radio {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-radio-dot {
+	width: 22px;
+	height: 22px;
+	flex: none;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 1.75px var(--si-ink-3);
+	transition: box-shadow var(--si-t-base);
+}
+.si-radio-dot::after {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--si-jade);
+	transform: scale(0);
+	transition: transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-radio input:checked + .si-radio-dot {
+	box-shadow: inset 0 0 0 1.75px var(--si-jade);
+}
+.si-radio input:checked + .si-radio-dot::after {
+	transform: scale(1);
+}
+.si-radio input:focus-visible + .si-radio-dot {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+.si-radio-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 20px;
+}

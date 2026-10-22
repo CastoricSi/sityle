@@ -1,0 +1,16 @@
+/* ── Tooltip ── */
+.si-tip-anchor {
+	display: inline-flex;
+}
+.si-tip {
+	position: fixed;
+	z-index: var(--si-z-tooltip);
+	padding: 6px 10px;
+	border-radius: var(--si-r-sm);
+	background: var(--si-ink);
+	color: var(--si-paper);
+	font-size: 0.75rem;
+	white-space: nowrap;
+	pointer-events: none;
+	box-shadow: var(--si-e2);
+}

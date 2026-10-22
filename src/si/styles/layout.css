@@ -1,0 +1,315 @@
+/* ── NavItem ── */
+.si-nav {
+	position: relative;
+	width: 100%;
+	height: 38px;
+	padding: 0 12px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border: 0;
+	border-radius: var(--si-r-sm);
+	background: none;
+	color: var(--si-ink-2);
+	font: 400 0.9375rem/1.2 var(--si-font-sans);
+	text-align: left;
+	cursor: pointer;
+	transition:
+		background-color var(--si-t-base) var(--si-ease-out),
+		color var(--si-t-base);
+}
+a.si-nav,
+a.si-listitem {
+	text-decoration: none;
+}
+.si-nav[aria-disabled="true"],
+.si-listitem[aria-disabled="true"],
+.si-nav:disabled,
+.si-listitem:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.si-nav:hover {
+	background: var(--si-paper-sunk);
+	color: var(--si-ink);
+}
+.si-nav[aria-current]:not([aria-current="false"]) {
+	background: var(--si-jade-soft);
+	color: var(--si-jade-text);
+	font-weight: 500;
+}
+.si-nav > svg {
+	flex: none;
+	width: 17px;
+	height: 17px;
+}
+.si-nav-label {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.si-nav-count {
+	font-size: 0.75rem;
+	color: var(--si-ink-3);
+	font-variant-numeric: tabular-nums;
+}
+.si-nav.t-jade {
+	color: var(--si-jade-text);
+}
+.si-nav.t-azure {
+	color: var(--si-azure-text);
+}
+.si-nav.t-gold {
+	color: var(--si-gold-text);
+}
+.si-nav.t-danger {
+	color: var(--si-cinnabar-text);
+}
+
+/* ── Group / GroupRow ── */
+.si-group {
+	display: grid;
+}
+.si-group > * + * {
+	border-top: 1px solid var(--si-line);
+}
+.si-group-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+	padding: 12px 0;
+}
+.si-group > .si-group-row:first-child {
+	padding-top: 2px;
+}
+.si-group > .si-group-row:last-child {
+	padding-bottom: 0;
+}
+.si-group-text {
+	flex: 1;
+	min-width: 190px;
+	display: grid;
+	gap: 2px;
+	overflow-wrap: anywhere;
+}
+.si-group-hint {
+	color: var(--si-ink-2);
+	font-size: 0.875rem;
+}
+
+/* ── Steps ── */
+.si-steps {
+	display: grid;
+	gap: 8px;
+}
+.si-steps p {
+	color: var(--si-ink-3);
+	font-size: 0.8125rem;
+}
+.si-steps-bar {
+	display: flex;
+	gap: 6px;
+}
+.si-steps-bar i {
+	flex: 1;
+	height: 4px;
+	border-radius: 4px;
+	background: var(--si-paper-sunk);
+	transition: background-color var(--si-t-slow) var(--si-ease-out);
+}
+.si-steps-bar i.is-done {
+	background: var(--si-jade);
+}
+
+/* ── RadioCard ── */
+.si-radiocard {
+	display: flex;
+	gap: 12px;
+	padding: 14px;
+	border: 1.5px solid var(--si-line);
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-raised);
+	cursor: pointer;
+	transition:
+		border-color var(--si-t-base) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out);
+}
+.si-radiocard.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.si-radiocard input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+.si-radiocard:hover,
+.si-radiocard:has(input:checked) {
+	border-color: var(--si-jade);
+}
+.si-radiocard:has(input:checked) {
+	background: var(--si-jade-soft);
+}
+.si-radiocard:has(input:focus-visible) {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+.si-radiocard > svg {
+	flex: none;
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	color: var(--si-ink-3);
+}
+.si-radiocard:has(input:checked) > svg {
+	color: var(--si-jade-text);
+}
+.si-radiocard b {
+	display: block;
+	font-weight: 500;
+}
+.si-radiocard-text {
+	color: var(--si-ink-2);
+	font-size: 0.875rem;
+}
+
+/* ── Note ── */
+.si-note {
+	display: flex;
+	gap: 8px;
+	padding: 10px 12px;
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-sunk);
+	color: var(--si-ink-2);
+	font-size: 0.875rem;
+	overflow-wrap: anywhere;
+}
+.si-note.t-gold {
+	background: var(--si-gold-soft);
+	color: var(--si-gold-text);
+}
+.si-note.t-jade {
+	background: var(--si-jade-soft);
+	color: var(--si-jade-text);
+}
+.si-note.t-azure {
+	background: var(--si-azure-soft);
+	color: var(--si-azure-text);
+}
+.si-note.t-danger {
+	background: var(--si-cinnabar-soft);
+	color: var(--si-cinnabar-text);
+}
+.si-note > svg {
+	flex: none;
+	width: 16px;
+	height: 16px;
+	margin-top: 2px;
+}
+.si-note > div {
+	flex: 1;
+	min-width: 0;
+}
+
+/* ── IconBadge ── */
+.si-badge {
+	flex: none;
+	border-radius: 50%;
+	display: inline-grid;
+	place-items: center;
+	background: var(--si-jade-soft);
+	color: var(--si-jade-text);
+}
+.si-badge svg {
+	width: 45%;
+	height: 45%;
+}
+
+/* ── SearchField ── */
+.si-search {
+	position: relative;
+}
+.si-search > svg {
+	position: absolute;
+	left: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 16px;
+	color: var(--si-ink-3);
+	pointer-events: none;
+}
+.si-search .si-input {
+	padding-left: 36px;
+	padding-right: 40px;
+}
+.si-search .si-input::-webkit-search-cancel-button {
+	display: none;
+}
+.si-search .si-iconbtn {
+	position: absolute;
+	right: 1px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 36px;
+	height: 36px;
+}
+
+/* ── Floating action button ── */
+.si-fab {
+	position: fixed;
+	z-index: var(--si-z-fab);
+	right: max(24px, env(safe-area-inset-right, 0px));
+	bottom: max(24px, env(safe-area-inset-bottom, 0px));
+	height: var(--si-h-field);
+	min-width: var(--si-h-field);
+	padding: 0 22px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	border: 0;
+	border-radius: var(--si-r-lg);
+	background: var(--si-jade);
+	color: var(--si-on-jade);
+	font: 500 1rem/1 var(--si-font-sans);
+	box-shadow:
+		0 10px 28px -8px rgba(var(--si-shadow-rgb), 0.45),
+		0 4px 10px -4px rgba(var(--si-shadow-rgb), 0.3);
+	cursor: pointer;
+	transition:
+		background-color var(--si-t-base),
+		box-shadow var(--si-t-base);
+}
+.si-fab:hover {
+	background: var(--si-jade-hover);
+}
+.si-fab svg {
+	width: 22px;
+	height: 22px;
+}
+.si-fab.is-round {
+	padding: 0;
+	width: var(--si-h-field);
+}
+
+/* Group, plain: a section title and its rows, no card */
+.si-group-plain + .si-group-plain {
+	padding-top: 20px;
+	border-top: 1px solid var(--si-line);
+}
+.si-group-plain > .si-card-title {
+	margin-bottom: 10px;
+	color: var(--si-ink-2);
+	font-size: 0.8125rem;
+	letter-spacing: 0.04em;
+}
+
+@media (hover: none) {
+	.si-nav:not([aria-current]):hover {
+		background: transparent;
+	}
+}

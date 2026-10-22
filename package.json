@@ -25,6 +25,7 @@
 		"./style.css": "./dist/lib/style.css",
 		"./style.layer.css": "./dist/lib/style.layer.css",
 		"./base.css": "./dist/lib/base.css",
+		"./css/*": "./dist/lib/css/*",
 		"./package.json": "./package.json"
 	},
 	"scripts": {
