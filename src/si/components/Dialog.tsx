@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useId, useRef, useSyncExternalStore } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
@@ -44,6 +44,12 @@ export function Dialog({
 	const box = useRef<HTMLDivElement>(null);
 	const lastFocus = useRef<HTMLElement | null>(null);
 	const downOnScrim = useRef(false);
+	// Callers pass inline arrows; keep the latest without re-running the open/close effect
+	// (re-running it would hand focus back to the trigger on every parent render).
+	const closeRef = useRef(onClose);
+	useLayoutEffect(() => {
+		closeRef.current = onClose;
+	});
 
 	useEffect(() => {
 		if (!open) return;
@@ -57,7 +63,7 @@ export function Dialog({
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key !== "Escape") return;
 			const dialogs = document.querySelectorAll('[role="dialog"]');
-			if (dialogs[dialogs.length - 1] === box.current) onClose();
+			if (dialogs[dialogs.length - 1] === box.current) closeRef.current();
 		};
 		addEventListener("keydown", onKey);
 		return () => {
@@ -65,7 +71,7 @@ export function Dialog({
 			removeEventListener("keydown", onKey);
 			lastFocus.current?.focus?.();
 		};
-	}, [open, onClose]);
+	}, [open]);
 
 	return createPortal(
 		<AnimatePresence>
