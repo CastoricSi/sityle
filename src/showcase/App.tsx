@@ -52,8 +52,12 @@ import {
 	Card,
 	Checkbox,
 	Chip,
+	ConfirmDialog,
 	CopyButton,
 	Dialog,
+	Group,
+	GroupRow,
+	IconBadge,
 	IconButton,
 	InkBars,
 	InkDrop,
@@ -61,13 +65,18 @@ import {
 	Input,
 	ListItem,
 	Menu,
+	NavItem,
+	Note,
 	PasswordField,
 	Radio,
+	RadioCard,
 	RadioGroup,
+	SearchField,
 	Seal,
 	Segmented,
 	Skeleton,
 	spring,
+	Steps,
 	Switch,
 	Tabs,
 	Tag,
@@ -362,6 +371,12 @@ function Components() {
 	const [tab, setTab] = useState<"book" | "general" | "account">("book");
 	const [chips, setChips] = useState<Set<string>>(new Set(["全部"]));
 	const [dialog, setDialog] = useState(false);
+	const [confirm, setConfirm] = useState(false);
+	const [search, setSearch] = useState("");
+	const [nav, setNav] = useState("bank");
+	const [size, setSize] = useState("n");
+	const [step, setStep] = useState(2);
+	const [mode, setMode] = useState<"pw" | "open">("pw");
 	const mailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail);
 
 	const save = () => {
@@ -569,8 +584,59 @@ function Components() {
 						</div>
 					</div>
 				</Card>
+				<Card title="导航 · 分组 · 搜索" note="侧边栏的导航行、设置页的分组卡片，以及带清除按钮的搜索框。">
+					<div className="sc-stack">
+						<SearchField value={search} onChange={setSearch} label="搜索" />
+						<div style={{ display: "grid", gap: 2 }}>
+							<NavItem icon={<Inbox />} label="全部" count={46} current={nav === "all"} onClick={() => setNav("all")} />
+							<NavItem icon={<Folder />} label="银行理财" count={7} current={nav === "bank"} onClick={() => setNav("bank")} />
+							<NavItem icon={<Folder />} label="社交" count={6} current={nav === "social"} onClick={() => setNav("social")} />
+							<NavItem icon={<CloudCheck />} label="已同步 · 刚刚" tone="jade" />
+						</div>
+						<Group title="外观">
+							<GroupRow title="字号" hint="大字号会放大所有文字">
+								<Segmented label="字号" value={size} onChange={setSize} options={[{ value: "n", label: "标准" }, { value: "l", label: "大" }]} />
+							</GroupRow>
+							<GroupRow title="自动锁定" hint="一段时间不操作后锁上">
+								<Button variant="bordered" size="sm">更改</Button>
+							</GroupRow>
+						</Group>
+					</div>
+				</Card>
+
+				<Card title="步骤 · 选项卡片 · 提示" note="向导用步骤条；二选一用选项卡片；提醒用浅色底的提示。">
+					<div className="sc-stack">
+						<Steps current={step} total={3} label={`第 ${step} 步，共 3 步`} />
+						<RadioCard name="protect" checked={mode === "pw"} onChange={() => setMode("pw")} icon={<Lock />} title="设置总密码（推荐）" description="内容加密保存，打开时需要总密码。" />
+						<RadioCard name="protect" checked={mode === "open"} onChange={() => setMode("open")} icon={<BookOpen />} title="不设密码" description="打开即用，适合不敏感的内容。" />
+						<Note tone="warn">请把总密码写在纸上，放在安全的地方。</Note>
+						<Note tone="accent" icon={<Users />}>
+							小明 和你分享了「家里」
+						</Note>
+						<div className="sc-row">
+							<IconBadge>
+								<Lock />
+							</IconBadge>
+							<Button size="sm" variant="flat" onClick={() => setStep((n) => (n % 3) + 1)}>
+								下一步
+							</Button>
+							<Button size="sm" variant="flat" color="danger" onClick={() => setConfirm(true)}>
+								确认对话框
+							</Button>
+						</div>
+					</div>
+				</Card>
 			</div>
 
+			<ConfirmDialog
+				open={confirm}
+				seal="删"
+				title="删除「家里 Wi-Fi」？"
+				body="删除后无法恢复。"
+				confirmLabel="删除"
+				onCancel={() => setConfirm(false)}
+				onConfirm={() => setConfirm(false)}
+			/>
 			<Dialog
 				open={dialog}
 				onClose={() => setDialog(false)}

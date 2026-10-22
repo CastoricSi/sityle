@@ -10,6 +10,7 @@ export { BrushSpinner, InkBars, InkDrop, Skeleton } from "./components/Feedback"
 export { PasswordField, passwordStrength, SelectField, StrengthMeter, TextAreaField, TextField, type PasswordFieldProps, type SelectFieldProps, type TextAreaFieldProps, type TextFieldProps } from "./components/Field";
 export { Input, Select, TextArea } from "./components/Input";
 export { Dialog } from "./components/Dialog";
+export { ConfirmDialog, Group, GroupRow, IconBadge, NavItem, Note, RadioCard, SearchField, Steps } from "./components/Layout";
 export { InkWash } from "./components/InkWash";
 export { Slider } from "./components/Slider";
 export { Menu, type MenuEntry } from "./components/Menu";
