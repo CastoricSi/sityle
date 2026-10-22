@@ -55,6 +55,7 @@ import {
 	ConfirmDialog,
 	CopyButton,
 	Dialog,
+	Fab,
 	Group,
 	GroupRow,
 	IconBadge,
@@ -72,6 +73,7 @@ import {
 	RadioCard,
 	RadioGroup,
 	SearchField,
+	SelectField,
 	Seal,
 	Segmented,
 	Skeleton,
@@ -377,6 +379,7 @@ function Components() {
 	const [size, setSize] = useState("n");
 	const [step, setStep] = useState(2);
 	const [mode, setMode] = useState<"pw" | "open">("pw");
+	const [category, setCategory] = useState("bank");
 	const mailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail);
 
 	const save = () => {
@@ -443,6 +446,17 @@ function Components() {
 							error={mailOk ? undefined : "邮箱格式不对，少了「@」后面的部分"}
 						/>
 						<TextAreaField label="备注" value={notes} onChange={(e) => setNotes(e.target.value)} />
+						<SelectField
+							label="分类"
+							value={category}
+							onChange={setCategory}
+							options={[
+								{ value: "", label: "不分类" },
+								{ value: "bank", label: "银行理财" },
+								{ value: "social", label: "社交" },
+								{ value: "shop", label: "购物" },
+							]}
+						/>
 						<div style={{ display: "grid", gap: 6 }}>
 							<label htmlFor="plain-input" className="sc-muted">
 								普通输入框（标签在上方）
@@ -613,6 +627,12 @@ function Components() {
 						<Note tone="accent" icon={<Users />}>
 							小明 和你分享了「家里」
 						</Note>
+						<div style={{ position: "relative", height: 88, borderRadius: 12, background: "var(--si-paper-sunk)" }}>
+							<span className="sc-muted" style={{ position: "absolute", left: 14, top: 12 }}>
+								浮动按钮（Fab）固定在屏幕右下角
+							</span>
+							<Fab icon={<Plus />} label="新建" onClick={() => {}} style={{ position: "absolute", right: 16, bottom: 16 }} />
+						</div>
 						<div className="sc-row">
 							<IconBadge>
 								<Lock />

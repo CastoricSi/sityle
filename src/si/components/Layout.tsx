@@ -1,7 +1,9 @@
 import { Search, X } from "lucide-react";
 import { useId, useRef } from "react";
 
-import { cn } from "../core";
+import { motion } from "motion/react";
+
+import { cn, inkHandler, spring } from "../core";
 import { Button, IconButton } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
@@ -188,5 +190,33 @@ export function ConfirmDialog({
 		>
 			{body}
 		</Dialog>
+	);
+}
+
+/**
+ * Floating action button: the one main action of a screen, large, fixed to the
+ * bottom-right. With a label it is a pill ("＋ 新建"); `round` keeps the icon only.
+ * Move it with `style` (e.g. above a bottom bar).
+ */
+export function Fab({ icon, label, round, onClick, style }: { icon: React.ReactNode; label: string; round?: boolean; onClick: () => void; style?: React.CSSProperties }) {
+	return (
+		<motion.button
+			type="button"
+			className={cn("si-fab si-ink-host", round && "is-round")}
+			aria-label={label}
+			title={round ? label : undefined}
+			onClick={onClick}
+			onPointerDown={inkHandler()}
+			style={style}
+			initial={{ scale: 0.6, opacity: 0 }}
+			animate={{ scale: 1, opacity: 1 }}
+			whileHover={{ y: -2 }}
+			whileTap={{ scale: 0.94 }}
+			transition={spring.bouncy}
+			layout="position"
+		>
+			{icon}
+			{!round && <span>{label}</span>}
+		</motion.button>
 	);
 }

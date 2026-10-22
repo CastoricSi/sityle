@@ -7,10 +7,10 @@ export { BrushStroke, cn, ease, inkHandler, SiProvider, spawnInk, spring, useThe
 export { Button, CopyButton, IconButton, type ButtonProps, type Color, type IconButtonProps } from "./components/Button";
 export { Avatar, AvatarStack, Card, Chip, ListItem, Seal, Tag } from "./components/Display";
 export { BrushSpinner, InkBars, InkDrop, Skeleton } from "./components/Feedback";
-export { PasswordField, passwordStrength, SelectField, StrengthMeter, TextAreaField, TextField, type PasswordFieldProps, type SelectFieldProps, type TextAreaFieldProps, type TextFieldProps } from "./components/Field";
+export { PasswordField, passwordStrength, SelectField, StrengthMeter, TextAreaField, TextField, type PasswordFieldProps, type SelectFieldProps, type SelectOption, type TextAreaFieldProps, type TextFieldProps } from "./components/Field";
 export { Input, Select, TextArea } from "./components/Input";
 export { Dialog } from "./components/Dialog";
-export { ConfirmDialog, Group, GroupRow, IconBadge, NavItem, Note, RadioCard, SearchField, Steps } from "./components/Layout";
+export { ConfirmDialog, Fab, Group, GroupRow, IconBadge, NavItem, Note, RadioCard, SearchField, Steps } from "./components/Layout";
 export { InkWash } from "./components/InkWash";
 export { Slider } from "./components/Slider";
 export { Menu, type MenuEntry } from "./components/Menu";

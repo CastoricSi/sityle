@@ -46,6 +46,8 @@
 	--si-font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
 	--si-font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 	--si-font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+	/* titles of cards and dialogs; set to var(--si-font-sans) for an all-sans app */
+	--si-font-heading: var(--si-font-serif);
 
 	/* shape */
 	--si-r-sm: 8px;

@@ -1,6 +1,6 @@
-import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { Check, ChevronDown, Eye, EyeOff } from "lucide-react";
 import { AnimatePresence, motion, useAnimate } from "motion/react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { cn, spring } from "../core";
 import { CopyButton, IconButton } from "./Button";
@@ -128,19 +128,140 @@ export function PasswordField({ value, strength, strengthLabels, copy = true, de
 	);
 }
 
-export type SelectFieldProps = Common & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children"> & { children: React.ReactNode };
+export type SelectOption<T extends string = string> = { value: T; label: React.ReactNode; icon?: React.ReactNode };
 
-/** A dropdown in the same box as TextField; the label always sits up top (a select always shows a value). */
-export function SelectField({ label, hint, error, className, id, children, ...props }: SelectFieldProps) {
+export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> & {
+	value: T;
+	onChange: (value: T) => void;
+	options: SelectOption<T>[];
+	id?: string;
+	disabled?: boolean;
+	style?: React.CSSProperties;
+};
+
+/**
+ * A dropdown in the TextField box; the label sits up top. Opens sityle's own
+ * list (not the browser's): arrows / Home / End move, Enter or Space picks,
+ * Escape closes, typing a letter jumps to the next option starting with it.
+ */
+export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, disabled, style }: SelectFieldProps<T>) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
+	const listId = `${fieldId}-list`;
+	const [open, setOpen] = useState(false);
+	const [active, setActive] = useState(0);
+	const [up, setUp] = useState(false);
+	const wrap = useRef<HTMLDivElement>(null);
+	const list = useRef<HTMLUListElement>(null);
+	const current = options.find((o) => o.value === value);
+
+	const show = () => {
+		const r = wrap.current?.getBoundingClientRect();
+		setUp(!!r && innerHeight - r.bottom < 260 && r.top > innerHeight - r.bottom);
+		setActive(Math.max(0, options.findIndex((o) => o.value === value)));
+		setOpen(true);
+	};
+	const pick = (i: number) => {
+		const o = options[i];
+		if (o) onChange(o.value);
+		setOpen(false);
+		wrap.current?.querySelector<HTMLButtonElement>(".si-select-trigger")?.focus();
+	};
+
+	useEffect(() => {
+		if (!open) return;
+		const close = (e: MouseEvent) => !wrap.current?.contains(e.target as Node) && setOpen(false);
+		document.addEventListener("mousedown", close);
+		return () => document.removeEventListener("mousedown", close);
+	}, [open]);
+	useEffect(() => {
+		if (open) list.current?.querySelector<HTMLElement>(`[data-index="${active}"]`)?.scrollIntoView({ block: "nearest" });
+	}, [open, active]);
+
+	const onKey = (e: React.KeyboardEvent) => {
+		if (!open) {
+			if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
+				e.preventDefault();
+				show();
+			}
+			return;
+		}
+		const last = options.length - 1;
+		if (e.key === "ArrowDown") setActive((i) => Math.min(last, i + 1));
+		else if (e.key === "ArrowUp") setActive((i) => Math.max(0, i - 1));
+		else if (e.key === "Home") setActive(0);
+		else if (e.key === "End") setActive(last);
+		else if (e.key === "Enter" || e.key === " ") pick(active);
+		else if (e.key === "Escape" || e.key === "Tab") {
+			setOpen(false);
+			return;
+		} else if (e.key.length === 1) {
+			const k = e.key.toLowerCase();
+			const text = (o: SelectOption<T>) => (typeof o.label === "string" ? o.label : String(o.value)).toLowerCase();
+			const next = options.findIndex((o, i) => i > active && text(o).startsWith(k));
+			const first = options.findIndex((o) => text(o).startsWith(k));
+			if (next >= 0 || first >= 0) setActive(next >= 0 ? next : first);
+			return;
+		} else return;
+		e.preventDefault();
+	};
+
 	return (
 		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", className)}>
-			<select id={fieldId} aria-invalid={!!error || undefined} {...props}>
-				{children}
-			</select>
-			<label htmlFor={fieldId}>{label}</label>
-			<ChevronDown className="si-field-chevron" aria-hidden="true" />
+			<div ref={wrap} style={style}>
+				<button
+					id={fieldId}
+					type="button"
+					className="si-select-trigger"
+					role="combobox"
+					aria-haspopup="listbox"
+					aria-expanded={open}
+					aria-controls={listId}
+					aria-activedescendant={open ? `${listId}-${active}` : undefined}
+					aria-invalid={!!error || undefined}
+					disabled={disabled}
+					onClick={() => (open ? setOpen(false) : show())}
+					onKeyDown={onKey}
+				>
+					{current?.label ?? "\u00a0"}
+				</button>
+				<label htmlFor={fieldId}>{label}</label>
+				<ChevronDown className="si-field-chevron" aria-hidden="true" />
+				<AnimatePresence>
+					{open && (
+						<motion.ul
+							ref={list}
+							id={listId}
+							role="listbox"
+							aria-label={label}
+							className={cn("si-listbox", up && "is-up")}
+							initial={{ opacity: 0, scale: 0.96, y: up ? 6 : -6 }}
+							animate={{ opacity: 1, scale: 1, y: 0 }}
+							exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.12 } }}
+							transition={spring.bouncy}
+						>
+							{options.map((o, i) => (
+								<li
+									key={o.value}
+									id={`${listId}-${i}`}
+									data-index={i}
+									role="option"
+									aria-selected={o.value === value}
+									data-active={i === active}
+									className="si-option"
+									onMouseEnter={() => setActive(i)}
+									onMouseDown={(e) => e.preventDefault()}
+									onClick={() => pick(i)}
+								>
+									{o.icon}
+									<span>{o.label}</span>
+									{o.value === value && <Check className="si-option-check" />}
+								</li>
+							))}
+						</motion.ul>
+					)}
+				</AnimatePresence>
+			</div>
 		</FieldShell>
 	);
 }

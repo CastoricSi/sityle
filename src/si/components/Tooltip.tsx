@@ -4,6 +4,15 @@ import { createPortal } from "react-dom";
 
 import { spring } from "../core";
 
+// Focus that follows a key press (Tab) shows the tooltip; focus moved by
+// code (e.g. returned after a drawer closes) or by touch does not.
+let lastKey = 0;
+if (typeof window !== "undefined") {
+	addEventListener("keydown", () => (lastKey = Date.now()), true);
+	addEventListener("pointerdown", () => (lastKey = 0), true);
+}
+const keyboardRecently = () => Date.now() - lastKey < 1000;
+
 /**
  * Small ink label above its child on hover / keyboard focus (not on touch).
  * `open` forces it on (e.g. "已复制" after a copy).
@@ -21,7 +30,8 @@ export function Tooltip({ content, open, children }: { content: React.ReactNode;
 			const r = anchor.current!.getBoundingClientRect();
 			const w = tip.current?.offsetWidth ?? 0;
 			const h = tip.current?.offsetHeight ?? 0;
-			setPos({ left: Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)), top: r.top - h - 8 });
+			const above = r.top - h - 8;
+			setPos({ left: Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)), top: above >= 8 ? above : r.bottom + 8 });
 		};
 		place();
 		const raf = requestAnimationFrame(place);
@@ -38,7 +48,7 @@ export function Tooltip({ content, open, children }: { content: React.ReactNode;
 			style={{ display: "inline-flex" }}
 			onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
 			onPointerLeave={() => setHover(false)}
-			onFocus={(e) => e.target.matches(":focus-visible") && setHover(true)}
+			onFocus={(e) => keyboardRecently() && e.target.matches(":focus-visible") && setHover(true)}
 			onBlur={() => setHover(false)}
 		>
 			{children}
