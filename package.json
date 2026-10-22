@@ -1,6 +1,6 @@
 {
 	"name": "sityle",
-	"version": "0.9.1",
+	"version": "0.9.2",
 	"description": "丹青 — an ink-wash design language: tokens, styles and React components.",
 	"license": "MIT",
 	"repository": {
