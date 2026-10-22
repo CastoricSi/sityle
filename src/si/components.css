@@ -869,6 +869,55 @@
 	margin-top: 22px;
 }
 
+/* phones: a sheet from the bottom, or full screen */
+.si-scrim.is-sheet,
+.si-scrim.is-full {
+	place-items: end stretch;
+	padding: 0;
+}
+.si-dialog.is-sheet,
+.si-dialog.is-full {
+	width: 100%;
+	padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+}
+.si-dialog.is-sheet {
+	max-height: 92dvh;
+	border-radius: var(--si-r-xl) var(--si-r-xl) 0 0;
+}
+/* grab handle */
+.si-dialog.is-sheet::before {
+	content: "";
+	position: absolute;
+	top: 8px;
+	left: 50%;
+	width: 36px;
+	height: 4px;
+	margin-left: -18px;
+	border-radius: 4px;
+	background: var(--si-line);
+}
+.si-dialog.is-full {
+	height: 100dvh;
+	max-height: none;
+	border-radius: 0;
+	padding-top: max(20px, env(safe-area-inset-top, 0px));
+	display: flex;
+	flex-direction: column;
+}
+.si-dialog.is-full .si-dialog-body {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+.si-dialog.is-full .si-dialog-body > * {
+	flex: 1;
+	min-height: 0;
+}
+.si-dialog.is-full .si-dialog-actions {
+	flex: none;
+}
+
 /* ── Loaders ── */
 .si-inkdrop {
 	position: relative;

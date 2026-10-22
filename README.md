@@ -96,6 +96,8 @@ vite.lib.config.ts Package build; react / motion / lucide-react stay external.
   leaving ease-in, short. Everything respects "reduce motion".
 - **Icons:** Lucide, stroke 1.75; icon-only buttons always have a tooltip.
 - **Dialogs** only for decisions; feedback where the action was, no toasts.
+  On phones (≤600px) a Dialog is a bottom sheet; pass `phone="full"` for
+  long content (settings, forms) to fill the screen.
 
 ## License
 

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
@@ -10,6 +10,8 @@ import { Seal } from "./Display";
  * sheet of paper, and an optional seal (朱印) is stamped on it.
  * Escape / clicking outside closes; focus goes to the first button and back
  * to where it was afterwards.
+ * On phones (<=600px) it becomes a sheet sliding up from the bottom, or with
+ * `phone="full"` (long content: settings, forms) it fills the screen.
  */
 export function Dialog({
 	open,
@@ -19,6 +21,7 @@ export function Dialog({
 	actions,
 	seal,
 	wide,
+	phone = "sheet",
 }: {
 	open: boolean;
 	onClose: () => void;
@@ -28,8 +31,16 @@ export function Dialog({
 	/** One character stamped in the corner (e.g. 删 for a delete). */
 	seal?: string;
 	wide?: boolean;
+	/** How it shows on phones: a bottom sheet (default) or full screen. */
+	phone?: "sheet" | "full";
 }) {
 	const titleId = useId();
+	const small = useSmallScreen();
+	const mode = small ? phone : "center";
+	const motionProps =
+		mode === "center"
+			? { initial: { opacity: 0, scale: 0.92, y: 14 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 8, transition: { duration: 0.14 } }, transition: spring.bouncy }
+			: { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%", transition: { duration: 0.22, ease: [0.55, 0, 0.75, 0.2] as const } }, transition: { type: "spring" as const, stiffness: 420, damping: 40 } };
 	const box = useRef<HTMLDivElement>(null);
 	const lastFocus = useRef<HTMLElement | null>(null);
 
@@ -55,7 +66,7 @@ export function Dialog({
 		<AnimatePresence>
 			{open && (
 				<motion.div
-					className="si-scrim"
+					className={cn("si-scrim", mode !== "center" && `is-${mode}`)}
 					onMouseDown={(e) => e.target === e.currentTarget && onClose()}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
@@ -67,11 +78,8 @@ export function Dialog({
 						role="dialog"
 						aria-modal="true"
 						aria-labelledby={titleId}
-						className={cn("si-dialog", seal && "has-seal", wide && "is-wide")}
-						initial={{ opacity: 0, scale: 0.92, y: 14 }}
-						animate={{ opacity: 1, scale: 1, y: 0 }}
-						exit={{ opacity: 0, scale: 0.96, y: 8, transition: { duration: 0.14 } }}
-						transition={spring.bouncy}
+						className={cn("si-dialog", seal && "has-seal", wide && "is-wide", mode !== "center" && `is-${mode}`)}
+						{...motionProps}
 					>
 						{seal && (
 							<motion.span
@@ -94,5 +102,16 @@ export function Dialog({
 			)}
 		</AnimatePresence>,
 		document.body,
+	);
+}
+
+function useSmallScreen() {
+	return useSyncExternalStore(
+		(cb) => {
+			const m = matchMedia("(max-width: 600px)");
+			m.addEventListener("change", cb);
+			return () => m.removeEventListener("change", cb);
+		},
+		() => matchMedia("(max-width: 600px)").matches,
 	);
 }
