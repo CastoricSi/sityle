@@ -39,7 +39,9 @@ import "sityle/style.css";
 
 While working on sityle and a project together, link the local copy instead
 of the release (don't commit this): `npm i ../sityle` in the project, and run
-`npm run build:lib` here after changes.
+`npm run build:lib` here after changes. With a local link, add
+`resolve: { dedupe: ["react", "react-dom", "motion", "lucide-react"] }` to the
+project's Vite config, or two copies of React load ("Invalid hook call").
 
 ## Develop
 

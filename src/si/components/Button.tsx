@@ -90,7 +90,9 @@ export function IconButton({ label, active, className, children, onPointerDown, 
 }
 
 /** Copies `value`; the icon turns into a check and the tooltip says 已复制. */
-export function CopyButton({ value, label = "复制", copiedLabel = "已复制" }: { value: string; label?: string; copiedLabel?: string }) {
+export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn }: { value: string; label?: string; copiedLabel?: string }) {
+	const label = labelIn ?? "复制";
+	const copiedLabel = copiedIn ?? "已复制";
 	const [done, setDone] = useState(false);
 	useEffect(() => {
 		if (!done) return;

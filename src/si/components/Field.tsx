@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
 import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useEffect, useId, useState } from "react";
 
@@ -95,30 +95,53 @@ export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono"> &
 	value: string;
 	/** Show the strength bar under the box. */
 	strength?: boolean;
+	/** Strength bar labels, weakest first (5). */
+	strengthLabels?: string[];
 	copy?: boolean;
+	/** Start with the password shown (e.g. a freshly generated one). */
+	defaultVisible?: boolean;
 	/** Extra buttons after show / copy (e.g. generate). */
 	extra?: React.ReactNode;
+	/** Button texts (default Chinese). */
+	labels?: { show?: string; hide?: string; copy?: string; copied?: string };
 };
 
 /** Password box: show / hide, copy, optional strength bar. */
-export function PasswordField({ value, strength, copy = true, extra, ...props }: PasswordFieldProps) {
-	const [visible, setVisible] = useState(false);
+export function PasswordField({ value, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, ...props }: PasswordFieldProps) {
+	const [visible, setVisible] = useState(defaultVisible);
 	const end = [
-		<IconButton key="eye" label={visible ? "隐藏" : "显示"} onClick={() => setVisible((v) => !v)} active={visible}>
+		<IconButton key="eye" label={visible ? (labels?.hide ?? "隐藏") : (labels?.show ?? "显示")} onClick={() => setVisible((v) => !v)} active={visible}>
 			<AnimatePresence mode="popLayout" initial={false}>
 				<motion.span key={visible ? "off" : "on"} className="si-swap" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={spring.bouncy}>
 					{visible ? <EyeOff /> : <Eye />}
 				</motion.span>
 			</AnimatePresence>
 		</IconButton>,
-		copy && <CopyButton key="copy" value={value} />,
+		copy && <CopyButton key="copy" value={value} label={labels?.copy} copiedLabel={labels?.copied} />,
 		extra,
 	].filter(Boolean);
 	return (
-		<div>
+		<div className={className}>
 			<TextField {...props} value={value} type={visible ? "text" : "password"} mono autoComplete="off" spellCheck={false} end={end} />
-			{strength && <StrengthMeter value={value} />}
+			{strength && <StrengthMeter value={value} labels={strengthLabels} />}
 		</div>
+	);
+}
+
+export type SelectFieldProps = Common & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "children"> & { children: React.ReactNode };
+
+/** A dropdown in the same box as TextField; the label always sits up top (a select always shows a value). */
+export function SelectField({ label, hint, error, className, id, children, ...props }: SelectFieldProps) {
+	const autoId = useId();
+	const fieldId = id ?? autoId;
+	return (
+		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", className)}>
+			<select id={fieldId} aria-invalid={!!error || undefined} {...props}>
+				{children}
+			</select>
+			<label htmlFor={fieldId}>{label}</label>
+			<ChevronDown className="si-field-chevron" aria-hidden="true" />
+		</FieldShell>
 	);
 }
 

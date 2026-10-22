@@ -37,7 +37,12 @@ export function Dialog({
 		if (!open) return;
 		lastFocus.current = document.activeElement as HTMLElement | null;
 		const t = setTimeout(() => box.current?.querySelector<HTMLElement>(".si-dialog-actions button, button, input")?.focus(), 30);
-		const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+		// Only the topmost dialog answers Escape (a confirm over settings closes alone).
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key !== "Escape") return;
+			const dialogs = document.querySelectorAll('[role="dialog"]');
+			if (dialogs[dialogs.length - 1] === box.current) onClose();
+		};
 		addEventListener("keydown", onKey);
 		return () => {
 			clearTimeout(t);

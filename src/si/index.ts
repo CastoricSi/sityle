@@ -7,7 +7,7 @@ export { BrushStroke, cn, ease, inkHandler, SiProvider, spawnInk, spring, useThe
 export { Button, CopyButton, IconButton, type ButtonProps, type Color, type IconButtonProps } from "./components/Button";
 export { Avatar, AvatarStack, Card, Chip, ListItem, Seal, Tag } from "./components/Display";
 export { BrushSpinner, InkBars, InkDrop, Skeleton } from "./components/Feedback";
-export { PasswordField, passwordStrength, StrengthMeter, TextAreaField, TextField } from "./components/Field";
+export { PasswordField, passwordStrength, SelectField, StrengthMeter, TextAreaField, TextField, type PasswordFieldProps, type SelectFieldProps, type TextAreaFieldProps, type TextFieldProps } from "./components/Field";
 export { Input, Select, TextArea } from "./components/Input";
 export { Dialog } from "./components/Dialog";
 export { InkWash } from "./components/InkWash";
