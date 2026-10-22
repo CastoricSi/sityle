@@ -10,6 +10,39 @@
 	box-sizing: border-box;
 }
 
+/* the page's own scrollbar (and every other) is the same slim stroke as sityle's
+   Chrome / Safari draw it with ::-webkit-scrollbar (no arrow buttons once it is
+   styled); Firefox with scrollbar-width / -color (Chrome ignores the pseudo-elements
+   when those are set, so they are for Firefox only). */
+:where(*)::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	background: transparent;
+}
+:where(*)::-webkit-scrollbar-thumb {
+	border: 3px solid transparent;
+	border-radius: 999px;
+	background: var(--si-scroll-thumb) padding-box;
+}
+:where(*)::-webkit-scrollbar-thumb:hover {
+	border-width: 2px;
+	background-color: var(--si-scroll-thumb-hover);
+}
+:where(*)::-webkit-scrollbar-track,
+:where(*)::-webkit-scrollbar-corner {
+	background: transparent;
+}
+/* the resize grip of a textarea: two short ink strokes instead of the boxed default */
+:where(*)::-webkit-resizer {
+	background: linear-gradient(135deg, transparent 55%, var(--si-scroll-thumb-hover) 55% 62%, transparent 62% 75%, var(--si-scroll-thumb-hover) 75% 82%, transparent 82%) no-repeat;
+}
+@supports not selector(::-webkit-scrollbar) {
+	:where(*) {
+		scrollbar-width: thin;
+		scrollbar-color: var(--si-scroll-thumb) transparent;
+	}
+}
+
 :where(html, body) {
 	margin: 0;
 }

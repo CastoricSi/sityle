@@ -45,6 +45,39 @@
 	}
 }
 
+/* ── Scrollbars: one slim ink stroke, no arrows, no track ──
+   Chrome / Safari draw it with ::-webkit-scrollbar (no arrow buttons once it is
+   styled); Firefox with scrollbar-width / -color (Chrome ignores the pseudo-elements
+   when those are set, so they are for Firefox only). */
+:where([class*="si-"], [class*="si-"] *)::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	background: transparent;
+}
+:where([class*="si-"], [class*="si-"] *)::-webkit-scrollbar-thumb {
+	border: 3px solid transparent;
+	border-radius: 999px;
+	background: var(--si-scroll-thumb) padding-box;
+}
+:where([class*="si-"], [class*="si-"] *)::-webkit-scrollbar-thumb:hover {
+	border-width: 2px;
+	background-color: var(--si-scroll-thumb-hover);
+}
+:where([class*="si-"], [class*="si-"] *)::-webkit-scrollbar-track,
+:where([class*="si-"], [class*="si-"] *)::-webkit-scrollbar-corner {
+	background: transparent;
+}
+/* the resize grip of a textarea: two short ink strokes instead of the boxed default */
+:where([class*="si-"], [class*="si-"] *)::-webkit-resizer {
+	background: linear-gradient(135deg, transparent 55%, var(--si-scroll-thumb-hover) 55% 62%, transparent 62% 75%, var(--si-scroll-thumb-hover) 75% 82%, transparent 82%) no-repeat;
+}
+@supports not selector(::-webkit-scrollbar) {
+	:where([class*="si-"], [class*="si-"] *) {
+		scrollbar-width: thin;
+		scrollbar-color: var(--si-scroll-thumb) transparent;
+	}
+}
+
 /* ── Ink ripple: a drop of ink bleeding into wet paper ── */
 /* Touch: no grey tap flash and no double-tap-zoom wait on anything pressable. */
 :where(

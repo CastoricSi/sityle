@@ -68,7 +68,8 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
   (`overflow` not visible) right at a field's edge clips it, so leave that much
   padding there. While a dialog is open the page's scrollbar is hidden and the page
   padded by exactly its width; `--si-scrollbar` on `<html>` holds that width for an
-  app's own `position: fixed` bars. `--si-overscan` is how far a dialog's backdrop reaches past the
+  app's own `position: fixed` bars. Scrollbars inside components (and, with
+  `base.css`, the page's) are a slim stroke: `--si-scroll-thumb`. `--si-overscan` is how far a dialog's backdrop reaches past the
   viewport: Safari on iPhone shows the page under its status bar and toolbar but
   clips `position: fixed` layers to the viewport, so the backdrop (and a sheet's
   paper) are absolute layers in the page instead, which Safari does paint there. There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),

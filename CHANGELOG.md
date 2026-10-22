@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **Slim scrollbars:** inside sityle components (text areas, select lists, menus,
+  dialogs) a scrollbar is one thin rounded stroke with no arrows and no track, a
+  little darker on hover (`--si-scroll-thumb`, `--si-scroll-thumb-hover`); a text
+  area's resize grip is two short strokes. `base.css` gives the page's own
+  scrollbars the same look.
+
 ## 0.9.3
 
 - **Motion is on by default.** The system's "reduce motion" (Windows' animation

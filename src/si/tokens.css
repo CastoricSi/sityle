@@ -22,6 +22,8 @@
 	--si-ink: light-dark(#1d2320, #e6e9e1); /* 浓墨 text */
 	--si-ink-2: light-dark(#4a534d, #aeb5ad); /* 淡墨 secondary text */
 	--si-ink-3: light-dark(#606962, #8a938b); /* hints, labels, icons at rest (≥ 4.5:1 on every paper) */
+	--si-scroll-thumb: light-dark(rgba(29, 35, 32, 0.22), rgba(230, 233, 225, 0.2)); /* the slim scrollbar */
+	--si-scroll-thumb-hover: light-dark(rgba(29, 35, 32, 0.38), rgba(230, 233, 225, 0.36));
 	--si-line: light-dark(rgba(29, 35, 32, 0.13), rgba(230, 233, 225, 0.12));
 
 	--si-jade: light-dark(#2c7a58, #6dc59c); /* 石绿 primary (hair) */
