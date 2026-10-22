@@ -33,6 +33,7 @@ export function Button({
 	children,
 	type = "button",
 	onPointerDown,
+	onClick,
 	disabled,
 	...props
 }: ButtonProps) {
@@ -41,7 +42,13 @@ export function Button({
 			type={type}
 			disabled={disabled}
 			aria-busy={loading || undefined}
-			onPointerDown={inkHandler(onPointerDown)}
+			// While loading it keeps focus but ignores presses (no double submit).
+			aria-disabled={loading || undefined}
+			onPointerDown={loading ? onPointerDown : inkHandler(onPointerDown)}
+			onClick={(e) => {
+				if (loading) return e.preventDefault();
+				onClick?.(e);
+			}}
 			className={cn(
 				"si-btn si-ink-host",
 				`v-${variant}`,

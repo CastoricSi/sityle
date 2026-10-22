@@ -86,7 +86,7 @@
 		color var(--si-t-base),
 		opacity var(--si-t-base);
 }
-.si-btn:active:not(:disabled) {
+.si-btn:active:not(:disabled, [aria-disabled="true"]) {
 	transform: scale(0.96);
 }
 .si-btn svg {
@@ -191,6 +191,9 @@
 	transition:
 		transform var(--si-t-slow) var(--si-ease-spring),
 		opacity var(--si-t-base);
+}
+.si-btn.is-loading {
+	cursor: progress;
 }
 .si-btn.is-loading .si-btn-label {
 	opacity: 0;
