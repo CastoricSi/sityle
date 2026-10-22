@@ -49,5 +49,6 @@ test("matchWidth makes the panel as wide as the trigger's box", async () => {
 	await user.click(trigger);
 	await act(() => vi.advanceTimersByTimeAsync(60));
 	expect(screen.getByRole("menu").style.width).toBe("240px");
+	expect(screen.getByRole("menu").style.getPropertyValue("--si-room")).toMatch(/px$/);
 	vi.useRealTimers();
 });

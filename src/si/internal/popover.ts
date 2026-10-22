@@ -38,7 +38,8 @@ export function useAnchoredPosition(
 					right: align === "end" ? Math.max(8, vw - r.right) : undefined,
 					width: matchWidth ? r.width : undefined,
 					maxWidth: `calc(100vw - 16px)`,
-					maxHeight: Math.max(120, room),
+					// the room left on screen; CSS caps max-height with it, so a class can still lower it
+					["--si-room" as string]: `${Math.max(120, room)}px`,
 				},
 			});
 		};

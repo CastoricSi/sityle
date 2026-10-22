@@ -8,6 +8,7 @@
 	position: fixed;
 	z-index: var(--si-z-popover);
 	overflow-y: auto;
+	max-height: var(--si-room, 70dvh);
 	min-width: 200px;
 	padding: 6px;
 	border: 1px solid var(--si-line);
