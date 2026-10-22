@@ -31,7 +31,7 @@ export {
 	type SearchFieldProps,
 	type StepsProps,
 } from "./components/Layout";
-export { InkWash } from "./components/InkWash";
+export { InkWash, type InkBlot } from "./components/InkWash";
 export { Slider, type SliderProps } from "./components/Slider";
 export { Menu, type MenuEntry, type MenuProps } from "./components/Menu";
 export { Checkbox, Radio, RadioGroup, Switch, type CheckboxProps, type RadioGroupProps, type RadioProps, type SwitchProps } from "./components/Selection";

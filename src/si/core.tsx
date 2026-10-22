@@ -1,5 +1,5 @@
 import { MotionConfig, type Transition } from "motion/react";
-import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useSyncExternalStore } from "react";
 
 import { useMediaQuery } from "./internal/client";
 import { MessagesContext, zh, type Messages } from "./messages";
@@ -149,7 +149,8 @@ export function SiProvider({
 	const systemDark = useMediaQuery("(prefers-color-scheme: dark)");
 	const resolved = choice === "system" ? (systemDark ? "dark" : "light") : choice;
 
-	useEffect(() => {
+	// a layout effect: children's effects (InkWash reads tokens) already see the new theme
+	useLayoutEffect(() => {
 		const root = document.documentElement;
 		if (choice === "system") root.removeAttribute("data-theme");
 		else root.setAttribute("data-theme", choice);
