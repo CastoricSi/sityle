@@ -2,7 +2,7 @@ import { Check, ChevronRight } from "../internal/icons";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
-import { PressableElement, type Pressable } from "../internal/pressable";
+import { PressableElement, type AsButton, type AsLink } from "../internal/pressable";
 import type { Tone } from "./Button";
 
 export type CardProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; description?: React.ReactNode };
@@ -96,10 +96,11 @@ type ListItemOwn = {
 };
 
 /** With `onClick` a <button>, with `href` a link (`as` for a router link), with neither a plain row. */
-export type ListItemProps = Pressable<ListItemOwn>;
+export type ListItemProps = AsButton<ListItemOwn>;
+export type ListItemLinkProps = AsLink<ListItemOwn>;
 
 /** Row in a list: avatar, title, description; an arrow appears on hover / when current. */
-export function ListItem(allProps: ListItemProps) {
+export function ListItem(allProps: ListItemProps | ListItemLinkProps) {
 	const { title, description, leading, current, className, ...rest } = allProps;
 	const inner = (
 		<>

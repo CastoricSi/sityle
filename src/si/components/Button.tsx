@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import { cn, inkHandler, spring } from "../core";
-import { PressableElement, type Pressable } from "../internal/pressable";
+import { PressableElement, type AsButton, type AsLink } from "../internal/pressable";
 import { useMessages } from "../messages";
 import { InkDrop } from "./Feedback";
 import { Tooltip } from "./Tooltip";
@@ -25,10 +25,12 @@ type ButtonOwn = {
 	disabled?: boolean;
 };
 
-/** A <button>; with `href` it is a link that looks the same (`as` renders a router link). */
-export type ButtonProps = Pressable<ButtonOwn>;
+/** Props of a Button that is a <button> — the type to extend or Omit<> in a wrapper. */
+export type ButtonProps = AsButton<ButtonOwn>;
+/** Props of a Button with `href`: a link that looks the same (`as` renders a router link). */
+export type ButtonLinkProps = AsLink<ButtonOwn>;
 
-export function Button(allProps: ButtonProps) {
+export function Button(allProps: ButtonProps | ButtonLinkProps) {
 	const { variant = "solid", tone = "jade", size = "md", icon, iconOnly, pill, loading, className, children, onPointerDown, onClick, ...props } = allProps;
 	const handleClick = onClick as ((e: React.MouseEvent<HTMLElement>) => void) | undefined;
 	const handleDown = onPointerDown as React.PointerEventHandler<HTMLElement> | undefined;

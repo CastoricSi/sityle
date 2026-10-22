@@ -10,8 +10,6 @@ export type AsButton<Own> = Own & Omit<React.ComponentPropsWithRef<"button">, ke
  */
 export type AsLink<Own> = Own & Omit<React.ComponentPropsWithRef<"a">, keyof Own | "color"> & { href: string; as?: React.ElementType; disabled?: boolean };
 
-export type Pressable<Own> = AsButton<Own> | AsLink<Own>;
-
 // Either form's handlers: typed for a button or an anchor, called with whichever rendered.
 type AnyClick = React.MouseEventHandler<never>;
 type Loose = { href?: string; as?: React.ElementType; disabled?: boolean; type?: string; onClick?: AnyClick; [k: string]: unknown };

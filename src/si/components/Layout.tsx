@@ -5,14 +5,14 @@ import { motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
 import { useControllable } from "../internal/controllable";
-import { PressableElement, type Pressable } from "../internal/pressable";
+import { PressableElement, type AsButton, type AsLink } from "../internal/pressable";
 import { useMessages } from "../messages";
 import { Button, IconButton, type Tone } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
 
 /** A row in a side navigation: icon, label, optional count; `current` marks the open one. */
-export type NavItemProps = Pressable<{
+type NavItemOwn = {
 	icon?: React.ReactNode;
 	label: React.ReactNode;
 	count?: number;
@@ -20,10 +20,12 @@ export type NavItemProps = Pressable<{
 	current?: boolean;
 	/** Colour the row (e.g. a sync status). */
 	tone?: Tone;
-}>;
+};
+export type NavItemProps = AsButton<NavItemOwn>;
+export type NavItemLinkProps = AsLink<NavItemOwn>;
 
 /** A <button>, or a real link with `href` (middle-click, copy link; `as` renders a router link). */
-export function NavItem(allProps: NavItemProps) {
+export function NavItem(allProps: NavItemProps | NavItemLinkProps) {
 	const { icon, label, count, current, tone, className, ...props } = allProps;
 	const currentValue = props.href !== undefined ? "page" : "true";
 	return (

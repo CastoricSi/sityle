@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test, vi } from "vitest";
 
-import { Button, ListItem, NavItem } from "../src/si";
+import { Button, ListItem, NavItem, type ButtonProps } from "../src/si";
 
 test("href turns Button, NavItem and ListItem into real links", () => {
 	render(
@@ -45,4 +45,15 @@ test("a disabled link drops its href and ignores clicks", async () => {
 	expect(a.getAttribute("aria-disabled")).toBe("true");
 	await userEvent.click(a);
 	expect(onClick).not.toHaveBeenCalled();
+});
+
+test("ButtonProps is the button form, so wrappers can Omit<> and spread it", async () => {
+	// the shape of an app's wrapper: its own onClick, the rest passed through
+	function Wrapper({ onPick, ...props }: Omit<ButtonProps, "onClick"> & { onPick: () => void }) {
+		return <Button variant="bordered" {...props} onClick={onPick} />;
+	}
+	const onPick = vi.fn();
+	render(<Wrapper onPick={onPick}>选</Wrapper>);
+	await userEvent.click(screen.getByRole("button", { name: "选" }));
+	expect(onPick).toHaveBeenCalled();
 });
