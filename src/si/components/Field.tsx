@@ -102,12 +102,14 @@ export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono"> &
 	defaultVisible?: boolean;
 	/** Extra buttons after show / copy (e.g. generate). */
 	extra?: React.ReactNode;
+	/** Default "current-password" so password managers fill it; "new-password" for sign-up / generated ones. */
+	autoComplete?: string;
 	/** Button texts (default Chinese). */
 	labels?: { show?: string; hide?: string; copy?: string; copied?: string };
 };
 
 /** Password box: show / hide, copy, optional strength bar. */
-export function PasswordField({ value, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, ...props }: PasswordFieldProps) {
+export function PasswordField({ value, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, autoComplete = "current-password", ...props }: PasswordFieldProps) {
 	const [visible, setVisible] = useState(defaultVisible);
 	const end = [
 		<IconButton key="eye" label={visible ? (labels?.hide ?? "隐藏") : (labels?.show ?? "显示")} onClick={() => setVisible((v) => !v)} active={visible}>
@@ -122,7 +124,7 @@ export function PasswordField({ value, strength, strengthLabels, copy = true, de
 	].filter(Boolean);
 	return (
 		<div className={className}>
-			<TextField {...props} value={value} type={visible ? "text" : "password"} mono autoComplete="off" spellCheck={false} end={end} />
+			<TextField spellCheck={false} {...props} autoComplete={autoComplete} value={value} type={visible ? "text" : "password"} mono end={end} />
 			{strength && <StrengthMeter value={value} labels={strengthLabels} />}
 		</div>
 	);
