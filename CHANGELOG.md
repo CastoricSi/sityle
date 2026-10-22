@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.3
 
 - **Motion is on by default.** The system's "reduce motion" (Windows' animation
   effects switched off, macOS' reduce motion) used to turn off the ink, springs and
