@@ -144,10 +144,10 @@ export function Dialog({
 		};
 		measure();
 		addEventListener("resize", measure);
-		visualViewport?.addEventListener("resize", measure);
+		window.visualViewport?.addEventListener("resize", measure);
 		return () => {
 			removeEventListener("resize", measure);
-			visualViewport?.removeEventListener("resize", measure);
+			window.visualViewport?.removeEventListener("resize", measure);
 		};
 	}, [open]);
 
