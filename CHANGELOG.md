@@ -7,6 +7,11 @@
   little darker on hover (`--si-scroll-thumb`, `--si-scroll-thumb-hover`); a text
   area's resize grip is two short strokes. `base.css` gives the page's own
   scrollbars the same look.
+- **Not selectable:** controls you press or drag (Button, IconButton, Fab, Chip, NavItem,
+  pressable ListItem, options, menu items, Segmented, Tabs, Switch, Checkbox, Radio,
+  RadioCard, the select trigger, Slider, Steps) and marks (Seal, Avatar, badges), as in
+  most UI kits: a double-click or a drag across them no longer selects their text.
+  Content stays selectable (tags, card text, notes, field labels, tooltips, dialogs).
 
 ## 0.9.3
 

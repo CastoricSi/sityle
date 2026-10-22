@@ -101,6 +101,38 @@
 	touch-action: manipulation;
 }
 
+/* Not selectable (as in most UI kits): controls you press or drag, and decorative
+   marks. A double-click, a long press or a drag across them selects nothing; the
+   content around them (tags, card text, notes, field labels, tooltips, dialogs)
+   stays selectable. A ListItem with neither onClick nor href is content too. */
+:where(
+	.si-btn,
+	.si-iconbtn,
+	.si-fab,
+	.si-chip,
+	.si-nav,
+	.si-listitem:not(.is-static),
+	.si-option,
+	.si-menu-item,
+	.si-seg,
+	.si-tabs,
+	.si-switch,
+	.si-check,
+	.si-radio,
+	.si-radiocard,
+	.si-select-trigger,
+	.si-slider,
+	.si-steps,
+	.si-seal,
+	.si-avatar,
+	.si-avatar-stack,
+	.si-badge,
+	.si-ink
+) {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
 /*
  * Rows and other large pressables press like a button: they give a little and
  * darken while held (no ink, which reads as a smear across a whole row). The

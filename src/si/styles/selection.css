@@ -4,7 +4,6 @@
 	align-items: center;
 	gap: 12px;
 	cursor: pointer;
-	user-select: none;
 }
 .si-switch input,
 .si-check input,
@@ -69,7 +68,6 @@
 	align-items: center;
 	gap: 10px;
 	cursor: pointer;
-	user-select: none;
 }
 .si-check-box {
 	width: 22px;
@@ -121,7 +119,6 @@
 	align-items: center;
 	gap: 10px;
 	cursor: pointer;
-	user-select: none;
 }
 .si-radio-dot {
 	width: 22px;
