@@ -897,8 +897,10 @@
 	background: var(--si-line);
 }
 .si-dialog.is-full {
-	height: 100dvh;
+	/* exactly the visible area (the scrim is fixed to it); never scrolls itself */
+	height: 100%;
 	max-height: none;
+	overflow: hidden;
 	border-radius: 0;
 	padding-top: max(20px, env(safe-area-inset-top, 0px));
 	display: flex;
@@ -1621,4 +1623,16 @@ select.si-input {
 .si-fab.is-round {
 	padding: 0;
 	width: 56px;
+}
+
+/* Group, plain: a section title and its rows, no card */
+.si-group-plain + .si-group-plain {
+	padding-top: 20px;
+	border-top: 1px solid var(--si-line);
+}
+.si-group-plain > .si-card-title {
+	margin-bottom: 10px;
+	color: var(--si-ink-2);
+	font-size: 0.8125rem;
+	letter-spacing: 0.04em;
 }

@@ -34,8 +34,19 @@ export function NavItem({
 	);
 }
 
-/** A titled card of settings whose rows are divided by a line. Children: GroupRow (or anything). */
-export function Group({ title, children }: { title?: React.ReactNode; children: React.ReactNode }) {
+/**
+ * A titled group of settings whose rows are divided by a line. Children:
+ * GroupRow (or anything). In a card by default; `plain` drops the card (a
+ * section title and rows, groups separated by a line), e.g. inside a dialog.
+ */
+export function Group({ title, plain, children }: { title?: React.ReactNode; plain?: boolean; children: React.ReactNode }) {
+	if (plain)
+		return (
+			<section className="si-group-plain">
+				{title && <h3 className="si-card-title">{title}</h3>}
+				<div className="si-group">{children}</div>
+			</section>
+		);
 	return (
 		<Card title={title}>
 			<div className="si-group">{children}</div>
