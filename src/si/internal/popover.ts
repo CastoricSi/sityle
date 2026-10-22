@@ -19,7 +19,7 @@ export function useAnchoredPosition(
 ): Placement | null {
 	const [placement, setPlacement] = useState<Placement | null>(null);
 	useLayoutEffect(() => {
-		if (!open) return setPlacement(null);
+		if (!open) return;
 		const place = () => {
 			const el = anchor.current;
 			if (!el) return;
@@ -50,7 +50,7 @@ export function useAnchoredPosition(
 			removeEventListener("resize", place);
 		};
 	}, [anchor, open, align, matchWidth, gap, need]);
-	return placement;
+	return open ? placement : null;
 }
 
 /** Closes on a press outside every given element (anchor + its portaled popover). */

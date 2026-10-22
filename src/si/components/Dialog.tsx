@@ -60,6 +60,7 @@ export function Dialog({
 
 	useEffect(() => {
 		if (!open) return;
+		const panel = box.current;
 		lastFocus.current = document.activeElement as HTMLElement | null;
 		const unlock = lockScroll();
 		// Focus the first action (the safe choice); without actions, the first control.
@@ -113,7 +114,7 @@ export function Dialog({
 			const back = lastFocus.current;
 			// Return focus unless the app already moved it somewhere else on purpose.
 			const at = document.activeElement;
-			if (back?.isConnected && (!at || at === document.body || box.current?.contains(at))) back.focus({ preventScroll: true });
+			if (back?.isConnected && (!at || at === document.body || panel?.contains(at))) back.focus({ preventScroll: true });
 		};
 	}, [open]);
 

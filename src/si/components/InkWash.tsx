@@ -111,7 +111,7 @@ let scratch: CanvasRenderingContext2D | null = null;
 function tokenRGB(near: Element, token: string): [number, number, number] {
 	const probe = document.createElement("i");
 	probe.style.cssText = `display:none;color:var(${token})`;
-	near.parentElement?.appendChild(probe) ?? document.body.appendChild(probe);
+	(near.parentElement ?? document.body).appendChild(probe);
 	const color = getComputedStyle(probe).color;
 	probe.remove();
 	scratch ??= document.createElement("canvas").getContext("2d", { willReadFrequently: true });

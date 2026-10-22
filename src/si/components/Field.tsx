@@ -281,7 +281,9 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 					disabled={disabled}
 					onClick={(e) => {
 						onClick?.(e);
-						if (!e.defaultPrevented) open ? setOpen(false) : show();
+						if (e.defaultPrevented) return;
+						if (open) setOpen(false);
+						else show();
 					}}
 					onKeyDown={(e) => {
 						onKeyDown?.(e);

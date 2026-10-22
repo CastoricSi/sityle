@@ -233,6 +233,8 @@ function Colors() {
 		const probe = document.createElement("i");
 		probe.style.display = "none";
 		document.body.appendChild(probe);
+		// reading the resolved colours needs the DOM after the theme switched
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setValues(
 			Object.fromEntries(
 				PIGMENTS.map(([, , v]) => {
