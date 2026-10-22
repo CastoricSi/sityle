@@ -1,8 +1,12 @@
 import { Check, ChevronDown, Eye, EyeOff } from "lucide-react";
 import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
+import { useIsClient } from "../internal/client";
+import { LAYER_ATTR } from "../internal/modal";
+import { useAnchoredPosition, useDismiss } from "../internal/popover";
 import { CopyButton, IconButton } from "./Button";
 
 type Common = {
@@ -136,6 +140,8 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> & 
 	value: T;
 	onChange: (value: T) => void;
 	options: SelectOption<T>[];
+	/** Submitted with the form (a hidden input carries the value). */
+	name?: string;
 	id?: string;
 	disabled?: boolean;
 	style?: React.CSSProperties;
@@ -145,21 +151,23 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> & 
  * A dropdown in the TextField box; the label sits up top. Opens sityle's own
  * list (not the browser's): arrows / Home / End move, Enter or Space picks,
  * Escape closes, typing a letter jumps to the next option starting with it.
+ * The list floats above the page, so a dialog or card never clips it.
  */
-export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, disabled, style }: SelectFieldProps<T>) {
+export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, name, disabled, style }: SelectFieldProps<T>) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	const listId = `${fieldId}-list`;
 	const [open, setOpen] = useState(false);
 	const [active, setActive] = useState(0);
-	const [up, setUp] = useState(false);
 	const wrap = useRef<HTMLDivElement>(null);
+	const trigger = useRef<HTMLButtonElement>(null);
 	const list = useRef<HTMLUListElement>(null);
 	const current = options.find((o) => o.value === value);
+	const placement = useAnchoredPosition(wrap, open, { matchWidth: true });
+	const client = useIsClient();
+	const up = placement?.up ?? false;
 
 	const show = () => {
-		const r = wrap.current?.getBoundingClientRect();
-		setUp(!!r && innerHeight - r.bottom < 260 && r.top > innerHeight - r.bottom);
 		setActive(Math.max(0, options.findIndex((o) => o.value === value)));
 		setOpen(true);
 	};
@@ -167,15 +175,10 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 		const o = options[i];
 		if (o) onChange(o.value);
 		setOpen(false);
-		wrap.current?.querySelector<HTMLButtonElement>(".si-select-trigger")?.focus();
+		trigger.current?.focus();
 	};
 
-	useEffect(() => {
-		if (!open) return;
-		const close = (e: MouseEvent) => !wrap.current?.contains(e.target as Node) && setOpen(false);
-		document.addEventListener("mousedown", close);
-		return () => document.removeEventListener("mousedown", close);
-	}, [open]);
+	useDismiss(open, [wrap, list], () => setOpen(false));
 	useEffect(() => {
 		if (open) list.current?.querySelector<HTMLElement>(`[data-index="${active}"]`)?.scrollIntoView({ block: "nearest" });
 	}, [open, active]);
@@ -194,7 +197,11 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 		else if (e.key === "Home") setActive(0);
 		else if (e.key === "End") setActive(last);
 		else if (e.key === "Enter" || e.key === " ") pick(active);
-		else if (e.key === "Escape" || e.key === "Tab") {
+		else if (e.key === "Escape") {
+			// close the list, not the dialog around it
+			e.stopPropagation();
+			setOpen(false);
+		} else if (e.key === "Tab") {
 			setOpen(false);
 			return;
 		} else if (e.key.length === 1) {
@@ -212,6 +219,7 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", className)}>
 			<div ref={wrap} style={style}>
 				<button
+					ref={trigger}
 					id={fieldId}
 					type="button"
 					className="si-select-trigger"
@@ -221,6 +229,7 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 					aria-controls={listId}
 					aria-activedescendant={open ? `${listId}-${active}` : undefined}
 					aria-invalid={!!error || undefined}
+					aria-describedby={hint || error ? `${fieldId}-hint` : undefined}
 					disabled={disabled}
 					onClick={() => (open ? setOpen(false) : show())}
 					onKeyDown={onKey}
@@ -229,41 +238,48 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 				</button>
 				<label htmlFor={fieldId}>{label}</label>
 				<ChevronDown className="si-field-chevron" aria-hidden="true" />
-				<AnimatePresence>
-					{open && (
-						<motion.ul
-							ref={list}
-							id={listId}
-							role="listbox"
-							aria-label={label}
-							className={cn("si-listbox", up && "is-up")}
-							initial={{ opacity: 0, scale: 0.96, y: up ? 6 : -6 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.12 } }}
-							transition={spring.bouncy}
-						>
-							{options.map((o, i) => (
-								<li
-									key={o.value}
-									id={`${listId}-${i}`}
-									data-index={i}
-									role="option"
-									aria-selected={o.value === value}
-									data-active={i === active}
-									className="si-option"
-									onMouseEnter={() => setActive(i)}
-									onMouseDown={(e) => e.preventDefault()}
-									onClick={() => pick(i)}
-								>
-									{o.icon}
-									<span>{o.label}</span>
-									{o.value === value && <Check className="si-option-check" />}
-								</li>
-							))}
-						</motion.ul>
-					)}
-				</AnimatePresence>
+				{name !== undefined && <input type="hidden" name={name} value={value} disabled={disabled} />}
 			</div>
+			{client &&
+				createPortal(
+					<AnimatePresence>
+						{open && placement && (
+							<motion.ul
+								ref={list}
+								id={listId}
+								role="listbox"
+								aria-label={label}
+								{...{ [LAYER_ATTR]: "" }}
+								className={cn("si-listbox", up && "is-up")}
+								style={placement.style}
+								initial={{ opacity: 0, scale: 0.96, y: up ? 6 : -6 }}
+								animate={{ opacity: 1, scale: 1, y: 0 }}
+								exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.12 } }}
+								transition={spring.bouncy}
+							>
+								{options.map((o, i) => (
+									<li
+										key={o.value}
+										id={`${listId}-${i}`}
+										data-index={i}
+										role="option"
+										aria-selected={o.value === value}
+										data-active={i === active}
+										className="si-option"
+										onMouseEnter={() => setActive(i)}
+										onMouseDown={(e) => e.preventDefault()}
+										onClick={() => pick(i)}
+									>
+										{o.icon}
+										<span>{o.label}</span>
+										{o.value === value && <Check className="si-option-check" />}
+									</li>
+								))}
+							</motion.ul>
+						)}
+					</AnimatePresence>,
+					document.body,
+				)}
 		</FieldShell>
 	);
 }

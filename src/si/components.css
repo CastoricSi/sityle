@@ -762,18 +762,17 @@
 	position: relative;
 	display: inline-block;
 }
+/* portaled to <body>, placed (fixed) by the component; above dialogs */
 .si-menu {
-	position: absolute;
-	z-index: 400;
-	top: calc(100% + 6px);
-	left: 0;
+	position: fixed;
+	z-index: 850;
+	overflow-y: auto;
 	min-width: 200px;
 	padding: 6px;
 	border: 1px solid var(--si-line);
 	border-radius: 14px;
 	background: var(--si-paper-raised);
 	box-shadow: var(--si-e3);
-	transform-origin: 20px 0;
 }
 .si-menu-item {
 	width: 100%;
@@ -1552,12 +1551,10 @@ select.si-input {
 .si-select-trigger[aria-expanded="true"] ~ .si-field-chevron {
 	transform: rotate(180deg);
 }
+/* portaled to <body>, placed (fixed) by the component; above dialogs */
 .si-listbox {
-	position: absolute;
-	z-index: 400;
-	left: 0;
-	right: 0;
-	top: calc(100% + 6px);
+	position: fixed;
+	z-index: 850;
 	max-height: min(320px, 50dvh);
 	overflow-y: auto;
 	padding: 6px;
@@ -1570,8 +1567,6 @@ select.si-input {
 	transform-origin: 50% 0;
 }
 .si-listbox.is-up {
-	top: auto;
-	bottom: calc(100% + 6px);
 	transform-origin: 50% 100%;
 }
 .si-option {

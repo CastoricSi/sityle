@@ -72,7 +72,7 @@ export function Dialog({
 		const onKey = (e: KeyboardEvent) => {
 			const root = box.current;
 			// Only the topmost dialog answers (a confirm over settings closes alone).
-			if (!root || !isTop()) return;
+			if (!root || !isTop() || e.defaultPrevented) return;
 			if (e.key === "Escape") {
 				e.preventDefault();
 				closeRef.current();
