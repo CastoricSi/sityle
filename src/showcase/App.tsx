@@ -30,6 +30,8 @@ import {
 	Settings,
 	Share2,
 	ShieldCheck,
+	SlidersHorizontal,
+	Smartphone,
 	Sparkles,
 	Sun,
 	Table2,
@@ -44,6 +46,7 @@ import { motion, type Transition } from "motion/react";
 import { useEffect, useState } from "react";
 
 import {
+	AutoHeight,
 	Avatar,
 	AvatarStack,
 	BrushSpinner,
@@ -76,19 +79,27 @@ import {
 	SelectField,
 	Seal,
 	Segmented,
+	Select,
+	Slider,
+	StrengthMeter,
 	Skeleton,
 	spring,
 	Steps,
 	Switch,
 	Tabs,
 	Tag,
+	TextArea,
 	TextAreaField,
 	TextField,
+	Tooltip,
 	useTheme,
 	type Color,
 	type ThemeChoice,
 } from "@si";
 import sigil from "./sigil.webp";
+
+declare const __SI_VERSION__: string;
+const VERSION = `v${__SI_VERSION__}`;
 
 const NAV = [
 	["color", "色彩"],
@@ -116,7 +127,8 @@ export function App() {
 			</main>
 			<footer className="sc-footer">
 				<div className="sc-wrap">
-					<Seal>青</Seal>丹青设计语言 · sityle
+					<Seal>青</Seal>水祀丹青 · sityle {VERSION} ·{" "}
+					<a href="https://github.com/CastoricSi/sityle">GitHub</a>
 				</div>
 			</footer>
 		</>
@@ -129,7 +141,8 @@ function AppBar() {
 		<header className="sc-bar">
 			<div className="sc-wrap">
 				<div className="sc-brand">
-					<Seal>丹</Seal>丹青
+					<Seal>祀</Seal>水祀丹青
+					<span className="sc-version">{VERSION}</span>
 				</div>
 				<nav className="sc-nav" aria-label="章节">
 					{NAV.map(([id, label]) => (
@@ -170,7 +183,7 @@ function Hero() {
 				</div>
 				<div>
 					<h1 id="hero-title">
-						丹青<small>DANQING · 设计语言</small>
+						水祀丹青<small>SITYLE · 设计语言 · {VERSION}</small>
 					</h1>
 					<p className="sc-lede">石绿为发，石青为手，泥金为饰，浓墨为衣——取「祀」的颜色，铺在一张宣纸上。</p>
 					<p className="sc-sub">安静的水墨底子，加上现代 Material 式的交互：按下时墨滴在纸上晕开，开关带一点弹性，对话框像一张纸被轻轻放下。适用于密码管理器，也适用于以后的每个项目。</p>
@@ -395,6 +408,7 @@ function Components() {
 			<Head id="components" title="组件" en="Components">
 				每个组件都可以直接点。按钮、菜单、列表项按下时会晕开一滴墨。
 			</Head>
+			<Directory />
 			<div className="sc-grid">
 				<Card title="按钮" note="实心只用于每个区域最重要的一个动作。">
 					<div className="sc-stack">
@@ -646,6 +660,7 @@ function Components() {
 						</div>
 					</div>
 				</Card>
+				<More />
 			</div>
 
 			<ConfirmDialog
@@ -676,6 +691,132 @@ function Components() {
 				删除后无法恢复。同步的设备上也会一起删除。
 			</Dialog>
 		</section>
+	);
+}
+
+/* ── 组件目录：sityle 导出的每一个组件 ── */
+const DIRECTORY: Array<[string, string[]]> = [
+	["按钮", ["Button", "IconButton", "CopyButton", "Fab"]],
+	["输入", ["TextField", "PasswordField", "TextAreaField", "SelectField", "SearchField", "Input", "TextArea", "Select", "StrengthMeter"]],
+	["选择", ["Switch", "Checkbox", "RadioGroup", "Radio", "RadioCard", "Slider", "Segmented", "Tabs", "Chip"]],
+	["展示", ["Card", "Tag", "Avatar", "AvatarStack", "Seal", "IconBadge", "ListItem", "Note", "Tooltip"]],
+	["布局", ["NavItem", "Group", "GroupRow", "Steps", "AutoHeight"]],
+	["浮层", ["Menu", "Dialog", "ConfirmDialog"]],
+	["反馈", ["InkDrop", "InkBars", "BrushSpinner", "Skeleton"]],
+	["水墨", ["SiProvider", "InkWash", "BrushStroke", "spring", "ease", "useTheme"]],
+];
+
+function Directory() {
+	const count = DIRECTORY.reduce((n, [, names]) => n + names.length, 0);
+	return (
+		<Card title={`组件目录 · ${count}`} note={`sityle ${VERSION} 导出的全部组件与工具，下方逐一演示。`} className="sc-directory">
+			<dl>
+				{DIRECTORY.map(([group, names]) => (
+					<div key={group}>
+						<dt>{group}</dt>
+						<dd>
+							{names.map((n) => (
+								<code key={n}>{n}</code>
+							))}
+						</dd>
+					</div>
+				))}
+			</dl>
+		</Card>
+	);
+}
+
+/* ── 其余组件：滑块、强度、提示、基础输入、自适应高度、印章、手机上的对话框 ── */
+function More() {
+	const [length, setLength] = useState(16);
+	const [pw, setPw] = useState("spring2026");
+	const [more, setMore] = useState(false);
+	// the kind stays while the dialog plays its closing animation
+	const [phone, setPhone] = useState<"sheet" | "full">("sheet");
+	const [phoneOpen, setPhoneOpen] = useState(false);
+	const [plain, setPlain] = useState("bank");
+	return (
+		<>
+			<Card title="滑块 · 强度 · 提示" note="滑块右上角显示当前值；强度条随输入变化；提示在悬停或键盘聚焦时出现。">
+				<div className="sc-stack">
+					<Slider label="密码长度" value={length} min={8} max={32} onChange={setLength} format={(v) => `${v} 位`} />
+					<div style={{ display: "grid", gap: 8 }}>
+						<Input mono value={pw} onChange={(e) => setPw(e.target.value)} aria-label="试一个密码" />
+						<StrengthMeter value={pw} />
+					</div>
+					<div className="sc-row">
+						<Tooltip content="复制到剪贴板">
+							<Button variant="bordered" icon={<Copy />}>
+								悬停看提示
+							</Button>
+						</Tooltip>
+					</div>
+				</div>
+			</Card>
+
+			<Card title="基础输入 · 自适应高度" note="Input / TextArea / Select 是不带浮动标签的原始控件；AutoHeight 让内容变化时高度平滑过渡。">
+				<div className="sc-stack">
+					<Select value={plain} onChange={(e) => setPlain(e.target.value)} aria-label="分类">
+						<option value="bank">银行理财</option>
+						<option value="social">社交</option>
+						<option value="shop">购物</option>
+					</Select>
+					<TextArea rows={2} placeholder="原生多行输入框" aria-label="备注" />
+					<div className="sc-row">
+						<Button variant="flat" size="sm" icon={<SlidersHorizontal />} onClick={() => setMore((o) => !o)}>
+							{more ? "收起" : "展开更多"}
+						</Button>
+					</div>
+					<AutoHeight>
+						<div className="sc-stack" style={{ gap: 8 }}>
+							<Note>高度跟着内容走。</Note>
+							{more && <Note tone="accent">展开后多出的一段，容器平滑长高。</Note>}
+							{more && <Note tone="danger">再收起时平滑变矮。</Note>}
+						</div>
+					</AutoHeight>
+				</div>
+			</Card>
+
+			<Card title="分组（无卡片）· 印章" note="Group plain 用在本身已是一张纸的地方（如设置对话框）；印章有实心和描边两种。">
+				<div className="sc-stack">
+					<Group plain title="安全">
+						<GroupRow title="自动锁定" hint="一段时间不操作后锁上">
+							<Button variant="bordered" size="sm">
+								10 分钟
+							</Button>
+						</GroupRow>
+					</Group>
+					<div className="sc-row" style={{ gap: 14 }}>
+						<Seal>祀</Seal>
+						<Seal size={40}>丹</Seal>
+						<Seal size={40} outline>
+							青
+						</Seal>
+						<Seal size={52}>删</Seal>
+					</div>
+				</div>
+			</Card>
+
+			<Card title="手机上的对话框" note="窄屏（≤600px）时对话框从底部升起；phone=&quot;full&quot; 用于长内容（设置、表单），铺满屏幕。宽屏上两者都居中。">
+				<div className="sc-row">
+					<Button variant="bordered" icon={<Smartphone />} onClick={() => { setPhone("sheet"); setPhoneOpen(true); }}>
+						底部弹出
+					</Button>
+					<Button variant="bordered" icon={<Smartphone />} onClick={() => { setPhone("full"); setPhoneOpen(true); }}>
+						全屏
+					</Button>
+				</div>
+				<Dialog
+					open={phoneOpen}
+					onClose={() => setPhoneOpen(false)}
+					phone={phone}
+					title={phone === "full" ? "设置" : "移到分类"}
+					actions={<Button onClick={() => setPhoneOpen(false)}>关闭</Button>}
+				>
+					{phone === "full" ? "长内容铺满手机屏幕，底部一条线隔开操作按钮。" : "短内容从屏幕底部升起，点空白处或按 Esc 关闭。"}
+				</Dialog>
+			</Card>
+		</>
 	);
 }
 

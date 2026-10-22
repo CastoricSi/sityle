@@ -434,3 +434,45 @@
 	}
 }
 
+
+/* version next to the brand */
+.sc-version {
+	font: 500 12px/1 var(--si-font-mono);
+	letter-spacing: 0;
+	color: var(--si-ink-3);
+}
+.sc-footer a {
+	color: inherit;
+}
+
+/* component directory */
+.sc-directory {
+	margin-bottom: 16px;
+}
+.sc-directory dl {
+	display: grid;
+	gap: 10px;
+	margin: 14px 0 0;
+}
+.sc-directory dl > div {
+	display: grid;
+	grid-template-columns: 4em 1fr;
+	gap: 12px;
+	align-items: baseline;
+}
+.sc-directory dt {
+	color: var(--si-ink-2);
+	font-size: 13px;
+}
+.sc-directory dd {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 0;
+}
+.sc-directory code {
+	padding: 2px 8px;
+	border-radius: var(--si-r-sm);
+	background: var(--si-paper-sunk);
+	font: 500 12.5px/1.6 var(--si-font-mono);
+}
