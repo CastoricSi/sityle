@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Menus and select lists open smoothly: a short ease-out (no spring overshoot), rising
+  from the trigger when they open above it; menu items fade in place. `popover()` preset.
+- TextAreaField: the box is the field and the text scrolls below the label, so lines no
+  longer slide under the label; a press anywhere in the box puts the caret in the text.
+- Style page: 中 / EN switches all of its sample text.
+
 ## 0.9.2
 
 From trying it on an iPhone again.

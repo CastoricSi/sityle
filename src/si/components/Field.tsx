@@ -78,7 +78,7 @@ export function TextAreaField({ label, hint, error, end, className, id, ...props
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	return (
-		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className}>
+		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className} multiline>
 			<textarea id={fieldId} placeholder=" " aria-invalid={!!error || undefined} aria-describedby={hint || error ? `${fieldId}-hint` : undefined} {...props} />
 			<label htmlFor={fieldId}>{label}</label>
 			{end && <FieldEnd>{end}</FieldEnd>}
@@ -86,7 +86,22 @@ export function TextAreaField({ label, hint, error, end, className, id, ...props
 	);
 }
 
-function FieldShell({ error, hint, hintId, className, children }: { error?: React.ReactNode; hint?: React.ReactNode; hintId: string; className?: string; children: React.ReactNode }) {
+function FieldShell({
+	error,
+	hint,
+	hintId,
+	className,
+	multiline,
+	children,
+}: {
+	error?: React.ReactNode;
+	hint?: React.ReactNode;
+	hintId: string;
+	className?: string;
+	/** The box is the field and the textarea scrolls below the label (lines never slide under it). */
+	multiline?: boolean;
+	children: React.ReactNode;
+}) {
 	const [box, animate] = useAnimate<HTMLDivElement>();
 	const invalid = !!error;
 	// One shake when it becomes invalid (not on every keystroke while invalid).
@@ -95,7 +110,20 @@ function FieldShell({ error, hint, hintId, className, children }: { error?: Reac
 	}, [invalid, animate, box]);
 	return (
 		<div className={cn("si-field", invalid && "is-invalid", className)}>
-			<div ref={box} className="si-field-box">
+			<div
+				ref={box}
+				className={cn("si-field-box", multiline && "is-multiline")}
+				// the box's own padding (around the label) still puts the caret in the text
+				onMouseDown={
+					multiline
+						? (e) => {
+								if (e.target !== e.currentTarget) return;
+								e.preventDefault();
+								e.currentTarget.querySelector("textarea")?.focus();
+							}
+						: undefined
+				}
+			>
 				{children}
 			</div>
 			<AnimatePresence initial={false} mode="wait">

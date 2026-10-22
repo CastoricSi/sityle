@@ -96,6 +96,58 @@
 	color: var(--si-cinnabar-text) !important;
 }
 
+/*
+ * Multi-line: the box is the field (colour, border, focus ring) and the textarea
+ * inside it is transparent and starts below the label, so when it scrolls its
+ * lines never slide under the label. Text, label and first line sit where they
+ * did when the textarea itself was the field.
+ */
+.si-field-box.is-multiline {
+	padding: 24px 0 6px;
+	border: 1.5px solid transparent;
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-sunk);
+	cursor: text;
+	transition:
+		border-color var(--si-t-base) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base) var(--si-ease-out);
+}
+.si-field-box.is-multiline:hover {
+	background: color-mix(in srgb, var(--si-paper-sunk) 70%, var(--si-line));
+}
+.si-field-box.is-multiline:focus-within {
+	border-color: var(--si-jade);
+	background: var(--si-paper-raised);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-jade-soft);
+}
+.si-field .is-multiline textarea,
+.si-field .is-multiline textarea:is(:hover, :focus) {
+	display: block;
+	min-height: 63px;
+	padding: 2px calc(14px + var(--si-end, 0px)) 0 14px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+/* the label and the end buttons are placed from inside the box's border now */
+.si-field .is-multiline label {
+	top: -1.5px;
+	left: 13.5px;
+}
+.si-field .is-multiline .si-field-end {
+	top: 6.5px;
+	right: 4.5px;
+}
+.si-field.is-invalid .si-field-box.is-multiline {
+	border-color: var(--si-cinnabar);
+	background: var(--si-cinnabar-soft);
+}
+.si-field.is-invalid .si-field-box.is-multiline:focus-within {
+	box-shadow: 0 0 0 var(--si-ring) var(--si-cinnabar-soft);
+}
+
 /* ── Strength meter ── */
 .si-strength {
 	display: grid;

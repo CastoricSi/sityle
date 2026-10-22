@@ -84,3 +84,16 @@ test("passwordStrength sees through repeats, runs and well-known passwords", () 
 	expect(passwordStrength("Tr0ub4dor&3")).toBeGreaterThanOrEqual(3);
 	expect(passwordStrength("correct horse battery staple")).toBe(4);
 });
+
+import { fireEvent } from "@testing-library/react";
+
+import { TextAreaField } from "../src/si";
+
+test("TextAreaField scrolls below its label; a press on the box's padding focuses the text", () => {
+	render(<TextAreaField label="注释" defaultValue="春江" />);
+	const ta = screen.getByLabelText("注释");
+	const box = ta.parentElement!;
+	expect(box.classList.contains("is-multiline")).toBe(true);
+	fireEvent.mouseDown(box);
+	expect(document.activeElement).toBe(ta);
+});
