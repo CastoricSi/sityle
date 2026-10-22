@@ -138,7 +138,20 @@ export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono" | 
 };
 
 /** Password box: show / hide, copy, optional strength bar. */
-export function PasswordField({ value: valueIn, defaultValue = "", onChange, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, autoComplete = "current-password", ...props }: PasswordFieldProps) {
+export function PasswordField({
+	value: valueIn,
+	defaultValue = "",
+	onChange,
+	strength,
+	strengthLabels,
+	copy = true,
+	defaultVisible = false,
+	extra,
+	labels,
+	className,
+	autoComplete = "current-password",
+	...props
+}: PasswordFieldProps) {
 	const t = useMessages();
 	const [visible, setVisible] = useState(defaultVisible);
 	// Track the text even when uncontrolled: the copy button and strength bar need it.
@@ -146,7 +159,14 @@ export function PasswordField({ value: valueIn, defaultValue = "", onChange, str
 	const end = [
 		<IconButton key="eye" label={visible ? (labels?.hide ?? t.hide) : (labels?.show ?? t.show)} onClick={() => setVisible((v) => !v)} active={visible}>
 			<AnimatePresence mode="popLayout" initial={false}>
-				<motion.span key={visible ? "off" : "on"} className="si-swap" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={spring.bouncy}>
+				<motion.span
+					key={visible ? "off" : "on"}
+					className="si-swap"
+					initial={{ scale: 0.6, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					exit={{ scale: 0.6, opacity: 0 }}
+					transition={spring.bouncy}
+				>
 					{visible ? <EyeOff /> : <Eye />}
 				</motion.span>
 			</AnimatePresence>
@@ -194,7 +214,24 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> &
  * The list floats above the page, so a dialog or card never clips it.
  */
 /** Other button props (onBlur, aria-*, ref…) go to the trigger; `style` to the box. */
-export function SelectField<T extends string = string>({ label, hint, error, className, id, value: valueIn, defaultValue, onChange: onChangeIn, options, name, disabled, style, ref, onKeyDown, onClick, ...props }: SelectFieldProps<T>) {
+export function SelectField<T extends string = string>({
+	label,
+	hint,
+	error,
+	className,
+	id,
+	value: valueIn,
+	defaultValue,
+	onChange: onChangeIn,
+	options,
+	name,
+	disabled,
+	style,
+	ref,
+	onKeyDown,
+	onClick,
+	...props
+}: SelectFieldProps<T>) {
 	const [value, onChange] = useControllable(valueIn, defaultValue ?? options[0]?.value, onChangeIn);
 	const autoId = useId();
 	const fieldId = id ?? autoId;
@@ -215,7 +252,12 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 	const up = placement?.up ?? false;
 
 	const show = () => {
-		setActive(Math.max(0, options.findIndex((o) => o.value === value)));
+		setActive(
+			Math.max(
+				0,
+				options.findIndex((o) => o.value === value),
+			),
+		);
 		setOpen(true);
 	};
 	const pick = (i: number) => {

@@ -41,7 +41,9 @@
 	margin-top: -7px;
 	border-radius: 50%;
 	background: var(--si-paper-raised);
-	box-shadow: var(--si-e2), inset 0 0 0 5px var(--si-jade);
+	box-shadow:
+		var(--si-e2),
+		inset 0 0 0 5px var(--si-jade);
 	transition: transform var(--si-t-slow) var(--si-ease-spring);
 }
 .si-slider input::-moz-range-thumb {
@@ -50,7 +52,9 @@
 	border: 0;
 	border-radius: 50%;
 	background: var(--si-paper-raised);
-	box-shadow: var(--si-e2), inset 0 0 0 5px var(--si-jade);
+	box-shadow:
+		var(--si-e2),
+		inset 0 0 0 5px var(--si-jade);
 	transition: transform var(--si-t-slow) var(--si-ease-spring);
 }
 .si-slider input:active::-webkit-slider-thumb {

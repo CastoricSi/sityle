@@ -47,7 +47,12 @@ export function Dialog({
 	const motionProps =
 		mode === "center"
 			? { initial: { opacity: 0, scale: 0.92, y: 14 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 8, transition: { duration: 0.14 } }, transition: spring.bouncy }
-			: { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%", transition: { duration: 0.22, ease: [0.55, 0, 0.75, 0.2] as const } }, transition: { type: "spring" as const, stiffness: 420, damping: 40 } };
+			: {
+					initial: { y: "100%" },
+					animate: { y: 0 },
+					exit: { y: "100%", transition: { duration: 0.22, ease: [0.55, 0, 0.75, 0.2] as const } },
+					transition: { type: "spring" as const, stiffness: 420, damping: 40 },
+				};
 	const box = useRef<HTMLDivElement>(null);
 	const lastFocus = useRef<HTMLElement | null>(null);
 	const downOnScrim = useRef(false);

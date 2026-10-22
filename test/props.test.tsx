@@ -19,7 +19,9 @@ test("components pass through className, data-* and ref", () => {
 			<TextField ref={field} label="t" className="tf" />
 			<Card data-testid="card" className="c" />
 			<Tag data-testid="tag">t</Tag>
-			<Chip selected={false} onClick={() => {}} data-testid="chip">c</Chip>
+			<Chip selected={false} onClick={() => {}} data-testid="chip">
+				c
+			</Chip>
 			<NavItem label="n" data-testid="nav" />
 			<Note data-testid="note">n</Note>
 			<Tabs value="a" onChange={() => {}} options={[{ value: "a", label: "A" }]} label="tabs" data-testid="tabs" />

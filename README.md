@@ -24,7 +24,7 @@ import { SiProvider, Button, TextField } from "sityle";
 import "sityle/style.css";
 
 <SiProvider>
-  <Button>保存</Button>
+	<Button>保存</Button>
 </SiProvider>;
 ```
 

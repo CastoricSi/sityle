@@ -30,7 +30,17 @@ function Picker({ inDialog }: { inDialog?: boolean }) {
 	const [v, setV] = useState("a");
 	const [open, setOpen] = useState(true);
 	const field = <SelectField label="选" name="pick" value={v} onChange={setV} options={OPTIONS} />;
-	return <form data-testid="form">{inDialog ? <Dialog open={open} onClose={() => setOpen(false)} title="t">{field}</Dialog> : field}</form>;
+	return (
+		<form data-testid="form">
+			{inDialog ? (
+				<Dialog open={open} onClose={() => setOpen(false)} title="t">
+					{field}
+				</Dialog>
+			) : (
+				field
+			)}
+		</form>
+	);
 }
 
 test("SelectField submits its value with the form", async () => {

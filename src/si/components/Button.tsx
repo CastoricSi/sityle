@@ -43,16 +43,7 @@ export function Button(allProps: ButtonProps) {
 				if (loading) return e.preventDefault();
 				handleClick?.(e);
 			}}
-			className={cn(
-				"si-btn si-ink-host",
-				`v-${variant}`,
-				tone !== "jade" && `t-${tone}`,
-				size !== "md" && `s-${size}`,
-				iconOnly && "is-icon",
-				pill && "is-pill",
-				loading && "is-loading",
-				className,
-			)}
+			className={cn("si-btn si-ink-host", `v-${variant}`, tone !== "jade" && `t-${tone}`, size !== "md" && `s-${size}`, iconOnly && "is-icon", pill && "is-pill", loading && "is-loading", className)}
 		>
 			<span className="si-btn-label">
 				{icon}
@@ -75,14 +66,7 @@ export interface IconButtonProps extends React.ComponentPropsWithRef<"button"> {
 export function IconButton({ label, active, className, children, onPointerDown, ...props }: IconButtonProps) {
 	return (
 		<Tooltip content={label} describe={false}>
-			<button
-				type="button"
-				aria-label={label}
-				aria-pressed={active}
-				onPointerDown={inkHandler(onPointerDown)}
-				className={cn("si-iconbtn si-ink-host", active && "is-active", className)}
-				{...props}
-			>
+			<button type="button" aria-label={label} aria-pressed={active} onPointerDown={inkHandler(onPointerDown)} className={cn("si-iconbtn si-ink-host", active && "is-active", className)} {...props}>
 				{children}
 			</button>
 		</Tooltip>

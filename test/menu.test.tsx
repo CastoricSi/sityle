@@ -7,12 +7,7 @@ import { Menu, SiProvider } from "../src/si";
 function renderMenu(onSelect = vi.fn()) {
 	render(
 		<SiProvider>
-			<Menu
-				trigger={(p) => (
-					<button {...p}>更多</button>
-				)}
-				items={[{ label: "编辑", onSelect }, "divider", { label: "删除", danger: true, onSelect }]}
-			/>
+			<Menu trigger={(p) => <button {...p}>更多</button>} items={[{ label: "编辑", onSelect }, "divider", { label: "删除", danger: true, onSelect }]} />
 		</SiProvider>,
 	);
 	return onSelect;

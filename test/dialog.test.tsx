@@ -42,7 +42,17 @@ test("Tab stays inside the dialog and the page behind does not scroll", async ()
 	const { rerender } = render(
 		<SiProvider>
 			<button>behind</button>
-			<Dialog open onClose={() => {}} title="t" actions={<><Button>A</Button><Button>B</Button></>} />
+			<Dialog
+				open
+				onClose={() => {}}
+				title="t"
+				actions={
+					<>
+						<Button>A</Button>
+						<Button>B</Button>
+					</>
+				}
+			/>
 		</SiProvider>,
 	);
 	await act(() => vi.advanceTimersByTimeAsync(50));

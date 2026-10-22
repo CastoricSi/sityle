@@ -128,8 +128,7 @@ export function App() {
 			</main>
 			<footer className="sc-footer">
 				<div className="sc-wrap">
-					<Seal>青</Seal>水祀丹青 · sityle {VERSION} ·{" "}
-					<a href="https://github.com/CastoricSi/sityle">GitHub</a>
+					<Seal>青</Seal>水祀丹青 · sityle {VERSION} · <a href="https://github.com/CastoricSi/sityle">GitHub</a>
 				</div>
 			</footer>
 		</>
@@ -467,13 +466,7 @@ function Components() {
 					<div className="sc-stack">
 						<TextField label="诗名" value={title} onChange={(e) => setTitle(e.target.value)} end={<CopyButton value={title} />} />
 						<PasswordField label="口令" value={pw} onChange={(e) => setPw(e.target.value)} strength />
-						<TextField
-							label="页码"
-							value={page}
-							onChange={(e) => setPage(e.target.value)}
-							hint="《全唐诗》中的页码"
-							error={pageOk ? undefined : "页码只能填数字，如 127"}
-						/>
+						<TextField label="页码" value={page} onChange={(e) => setPage(e.target.value)} hint="《全唐诗》中的页码" error={pageOk ? undefined : "页码只能填数字，如 127"} />
 						<TextAreaField label="注释" value={notes} onChange={(e) => setNotes(e.target.value)} />
 						<SelectField
 							label="体裁"
@@ -634,10 +627,20 @@ function Components() {
 						</div>
 						<Group title="外观">
 							<GroupRow title="字号" description="大字号会放大所有文字">
-								<Segmented label="字号" value={size} onChange={setSize} options={[{ value: "n", label: "标准" }, { value: "l", label: "大" }]} />
+								<Segmented
+									label="字号"
+									value={size}
+									onChange={setSize}
+									options={[
+										{ value: "n", label: "标准" },
+										{ value: "l", label: "大" },
+									]}
+								/>
 							</GroupRow>
 							<GroupRow title="朗读" description="读完一首后自动读下一首">
-								<Button variant="bordered" size="sm">更改</Button>
+								<Button variant="bordered" size="sm">
+									更改
+								</Button>
 							</GroupRow>
 						</Group>
 					</div>
@@ -674,15 +677,7 @@ function Components() {
 				<More />
 			</div>
 
-			<ConfirmDialog
-				open={confirm}
-				seal="删"
-				title="删除「江雪」？"
-				body="删除后无法恢复。"
-				confirmLabel="删除"
-				onCancel={() => setConfirm(false)}
-				onConfirm={() => setConfirm(false)}
-			/>
+			<ConfirmDialog open={confirm} seal="删" title="删除「江雪」？" body="删除后无法恢复。" confirmLabel="删除" onCancel={() => setConfirm(false)} onConfirm={() => setConfirm(false)} />
 			<Dialog
 				open={dialog}
 				onClose={() => setDialog(false)}
@@ -808,12 +803,26 @@ function More() {
 				</div>
 			</Card>
 
-			<Card title="手机上的对话框" description="窄屏（≤600px）时对话框从底部升起；phone=&quot;full&quot; 用于长内容（设置、表单），铺满屏幕。宽屏上两者都居中。">
+			<Card title="手机上的对话框" description='窄屏（≤600px）时对话框从底部升起；phone="full" 用于长内容（设置、表单），铺满屏幕。宽屏上两者都居中。'>
 				<div className="sc-row">
-					<Button variant="bordered" icon={<Smartphone />} onClick={() => { setPhone("sheet"); setPhoneOpen(true); }}>
+					<Button
+						variant="bordered"
+						icon={<Smartphone />}
+						onClick={() => {
+							setPhone("sheet");
+							setPhoneOpen(true);
+						}}
+					>
 						底部弹出
 					</Button>
-					<Button variant="bordered" icon={<Smartphone />} onClick={() => { setPhone("full"); setPhoneOpen(true); }}>
+					<Button
+						variant="bordered"
+						icon={<Smartphone />}
+						onClick={() => {
+							setPhone("full");
+							setPhoneOpen(true);
+						}}
+					>
 						全屏
 					</Button>
 				</div>
@@ -838,7 +847,15 @@ const POEMS: Poem[] = [
 	{ title: "春晓", author: "孟浩然", dynasty: "唐", form: "五言绝句", tone: "azure", text: "春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。", source: "zh.wikisource.org/wiki/春曉" },
 	{ title: "江雪", author: "柳宗元", dynasty: "唐", form: "五言绝句", tone: "gold", text: "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。", source: "zh.wikisource.org/wiki/江雪" },
 	{ title: "水调歌头", author: "苏轼", dynasty: "宋", form: "词", tone: "danger", text: "明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。", source: "zh.wikisource.org/wiki/水調歌頭_(蘇軾)" },
-	{ title: "天净沙·秋思", author: "马致远", dynasty: "元", form: "小令", tone: "jade", text: "枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。", source: "zh.wikisource.org/wiki/天淨沙·秋思" },
+	{
+		title: "天净沙·秋思",
+		author: "马致远",
+		dynasty: "元",
+		form: "小令",
+		tone: "jade",
+		text: "枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。",
+		source: "zh.wikisource.org/wiki/天淨沙·秋思",
+	},
 ];
 
 function Sample() {

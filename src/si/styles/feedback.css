@@ -62,12 +62,7 @@
 .si-skeleton {
 	height: 12px;
 	border-radius: var(--si-r-full);
-	background: linear-gradient(
-		90deg,
-		var(--si-paper-sunk) 0 40%,
-		color-mix(in srgb, var(--si-paper-sunk) 40%, var(--si-paper-raised)) 50%,
-		var(--si-paper-sunk) 60% 100%
-	);
+	background: linear-gradient(90deg, var(--si-paper-sunk) 0 40%, color-mix(in srgb, var(--si-paper-sunk) 40%, var(--si-paper-raised)) 50%, var(--si-paper-sunk) 60% 100%);
 	background-size: 300% 100%;
 	animation: si-shimmer 1.8s ease-in-out infinite;
 }

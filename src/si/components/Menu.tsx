@@ -8,7 +8,15 @@ import { LAYER_ATTR } from "../internal/modal";
 import { useAnchoredPosition, useDismiss } from "../internal/popover";
 
 export type MenuEntry =
-	| { label: React.ReactNode; icon?: React.ReactNode; kbd?: string; danger?: boolean; disabled?: boolean; onSelect: () => void; /** For typeahead when the label is not plain text. */ textValue?: string }
+	| {
+			label: React.ReactNode;
+			icon?: React.ReactNode;
+			kbd?: string;
+			danger?: boolean;
+			disabled?: boolean;
+			onSelect: () => void;
+			/** For typeahead when the label is not plain text. */ textValue?: string;
+	  }
 	| "divider";
 
 export type MenuProps = {

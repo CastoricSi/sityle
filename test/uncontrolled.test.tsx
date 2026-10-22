@@ -16,10 +16,25 @@ test("form controls work uncontrolled and submit with a plain <form>", async () 
 					<Radio value="m" label="中" />
 				</RadioGroup>
 				<Slider name="vol" label="音量" defaultValue={30} />
-				<SelectField name="city" label="城市" defaultValue="bj" options={[{ value: "bj", label: "北京" }, { value: "sh", label: "上海" }]} />
+				<SelectField
+					name="city"
+					label="城市"
+					defaultValue="bj"
+					options={[
+						{ value: "bj", label: "北京" },
+						{ value: "sh", label: "上海" },
+					]}
+				/>
 				<PasswordField name="pw" label="密码" defaultValue="abc" />
 			</form>
-			<Tabs label="t" defaultValue="b" options={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
+			<Tabs
+				label="t"
+				defaultValue="b"
+				options={[
+					{ value: "a", label: "A" },
+					{ value: "b", label: "B" },
+				]}
+			/>
 		</SiProvider>,
 	);
 	const data = () => Object.fromEntries(new FormData(screen.getByTestId("f") as HTMLFormElement));
