@@ -10,10 +10,10 @@ test("form controls work uncontrolled and submit with a plain <form>", async () 
 		<SiProvider>
 			<form data-testid="f">
 				<Switch name="notify" label="通知" defaultChecked onChange={onSwitch} />
-				<Checkbox name="agree">同意</Checkbox>
+				<Checkbox name="agree" label="同意" />
 				<RadioGroup name="size" label="大小" defaultValue="m">
-					<Radio value="s">小</Radio>
-					<Radio value="m">中</Radio>
+					<Radio value="s" label="小" />
+					<Radio value="m" label="中" />
 				</RadioGroup>
 				<Slider name="vol" label="音量" defaultValue={30} />
 				<SelectField name="city" label="城市" defaultValue="bj" options={[{ value: "bj", label: "北京" }, { value: "sh", label: "上海" }]} />

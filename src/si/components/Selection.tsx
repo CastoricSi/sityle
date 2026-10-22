@@ -50,18 +50,15 @@ export function Switch({ checked: checkedIn, defaultChecked = false, onChange, l
 					</AnimatePresence>
 				</motion.span>
 			</span>
-			<span className="si-switch-text">
-				<b>{label}</b>
-				{description && <span>{description}</span>}
-			</span>
+			<ToggleText label={label} description={description} strong />
 		</label>
 	);
 }
 
-export type CheckboxProps = InputProps & Toggle & { children: React.ReactNode };
+export type CheckboxProps = InputProps & Toggle & { label: React.ReactNode; description?: React.ReactNode };
 
 /** Checkbox whose tick is drawn like a brush stroke. */
-export function Checkbox({ checked: checkedIn, defaultChecked = false, onChange, children, disabled, className, style, ...props }: CheckboxProps) {
+export function Checkbox({ checked: checkedIn, defaultChecked = false, onChange, label, description, disabled, className, style, ...props }: CheckboxProps) {
 	const [checked, setChecked] = useControllable(checkedIn, defaultChecked, onChange);
 	return (
 		<label className={cn("si-check", disabled && "is-disabled", className)} style={style}>
@@ -71,8 +68,19 @@ export function Checkbox({ checked: checkedIn, defaultChecked = false, onChange,
 					<path d="M3.2 8.4 6.6 11.6 12.8 4.6" />
 				</svg>
 			</span>
-			{children}
+			<ToggleText label={label} description={description} />
 		</label>
+	);
+}
+
+/** Label (+ optional explanation) beside a toggle. */
+function ToggleText({ label, description, strong }: { label: React.ReactNode; description?: React.ReactNode; strong?: boolean }) {
+	if (!description && !strong) return <span className="si-toggle-text">{label}</span>;
+	return (
+		<span className="si-toggle-text">
+			<b>{label}</b>
+			{description && <span>{description}</span>}
+		</span>
 	);
 }
 
@@ -90,7 +98,7 @@ export type RadioGroupProps = Omit<React.ComponentPropsWithRef<"div">, "onChange
 	children: React.ReactNode;
 };
 
-/** One choice out of a few. Children are <Radio value="…">. Controlled (`value`) or not (`defaultValue`). */
+/** One choice out of a few. Children are <Radio value="…" label="…">. Controlled (`value`) or not (`defaultValue`). */
 export function RadioGroup({ value: valueIn, defaultValue = "", onChange: onChangeIn, label, name: nameIn, disabled, children, className, ...props }: RadioGroupProps) {
 	const autoName = useId();
 	const name = nameIn ?? autoName;
@@ -104,9 +112,9 @@ export function RadioGroup({ value: valueIn, defaultValue = "", onChange: onChan
 	);
 }
 
-export type RadioProps = Omit<InputProps, "value" | "name"> & { value: string; children: React.ReactNode };
+export type RadioProps = Omit<InputProps, "value" | "name"> & { value: string; label: React.ReactNode; description?: React.ReactNode };
 
-export function Radio({ value, children, disabled: own, className, style, ...props }: RadioProps) {
+export function Radio({ value, label, description, disabled: own, className, style, ...props }: RadioProps) {
 	const ctx = useContext(RadioContext);
 	if (!ctx) throw new Error("<Radio> needs <RadioGroup>");
 	const disabled = own ?? ctx.disabled;
@@ -114,7 +122,7 @@ export function Radio({ value, children, disabled: own, className, style, ...pro
 		<label className={cn("si-radio", disabled && "is-disabled", className)} style={style}>
 			<input type="radio" name={ctx.name} value={value} checked={ctx.value === value} disabled={disabled} onChange={() => ctx.onChange(value)} {...props} />
 			<span className="si-radio-dot" />
-			{children}
+			<ToggleText label={label} description={description} />
 		</label>
 	);
 }

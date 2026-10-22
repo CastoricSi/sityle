@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { cn, inkHandler, spring } from "../core";
 import { useControllable } from "../internal/controllable";
 import { PressableElement, type Pressable } from "../internal/pressable";
-import { Button, IconButton } from "./Button";
+import { Button, IconButton, type Tone } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
 
@@ -18,7 +18,7 @@ export type NavItemProps = Pressable<{
 	/** The open one (aria-current="page" for links). */
 	current?: boolean;
 	/** Colour the row (e.g. a sync status). */
-	tone?: "jade" | "gold" | "danger";
+	tone?: Tone;
 }>;
 
 /** A <button>, or a real link with `href` (middle-click, copy link; `as` renders a router link). */
@@ -57,15 +57,15 @@ export function Group({ title, plain, children, className, ...props }: GroupProp
 }
 
 /** Title + explanation on the left, the control on the right (wraps when narrow). */
-export type GroupRowProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; hint?: React.ReactNode };
+export type GroupRowProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; description?: React.ReactNode };
 
-export function GroupRow({ title, hint, children, className, ...props }: GroupRowProps) {
+export function GroupRow({ title, description, children, className, ...props }: GroupRowProps) {
 	return (
 		<div className={cn("si-group-row", className)} {...props}>
-			{(title || hint) && (
+			{(title || description) && (
 				<div className="si-group-text">
 					{title && <div>{title}</div>}
-					{hint && <div className="si-group-hint">{hint}</div>}
+					{description && <div className="si-group-hint">{description}</div>}
 				</div>
 			)}
 			{children}
@@ -114,8 +114,8 @@ export function RadioCard({ name, checked, onChange, icon, title, description, c
 	);
 }
 
-/** A short note on a tinted ground: neutral, warn (泥金), accent (石绿) or danger (朱砂). */
-export type NoteProps = React.ComponentPropsWithRef<"div"> & { tone?: "neutral" | "warn" | "accent" | "danger"; icon?: React.ReactNode };
+/** A short note on a tinted ground: neutral, jade (石绿), azure (石青), gold (泥金, a warning) or danger (朱砂). */
+export type NoteProps = React.ComponentPropsWithRef<"div"> & { tone?: "neutral" | Tone; icon?: React.ReactNode };
 
 export function Note({ tone = "neutral", icon, children, className, ...props }: NoteProps) {
 	return (
@@ -188,7 +188,7 @@ export function SearchField({ value: valueIn, defaultValue = "", onChange: onCha
 
 /** "Are you sure?": the safe choice first, a 朱砂 confirm; `seal` stamps one character (删 for deletes). */
 export function ConfirmDialog({
-	open = true,
+	open,
 	title,
 	body,
 	confirmLabel,
@@ -197,7 +197,7 @@ export function ConfirmDialog({
 	onCancel,
 	seal,
 }: {
-	open?: boolean;
+	open: boolean;
 	title: React.ReactNode;
 	body?: React.ReactNode;
 	confirmLabel: string;
@@ -217,7 +217,7 @@ export function ConfirmDialog({
 					<Button variant="ghost" onClick={onCancel}>
 						{cancelLabel}
 					</Button>
-					<Button color="danger" onClick={onConfirm}>
+					<Button tone="danger" onClick={onConfirm}>
 						{confirmLabel}
 					</Button>
 				</>

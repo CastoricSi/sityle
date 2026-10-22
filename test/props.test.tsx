@@ -14,9 +14,7 @@ test("components pass through className, data-* and ref", () => {
 				b
 			</Button>
 			<Switch ref={sw} checked={false} onChange={() => {}} label="s" name="notify" className="sw" data-testid="sw" />
-			<Checkbox checked={false} onChange={() => {}} name="agree" data-testid="cb" required>
-				c
-			</Checkbox>
+			<Checkbox checked={false} onChange={() => {}} name="agree" data-testid="cb" required label="c" />
 			<Slider label="v" value={1} onChange={() => {}} name="vol" data-testid="sl" />
 			<TextField ref={field} label="t" className="tf" />
 			<Card data-testid="card" className="c" />

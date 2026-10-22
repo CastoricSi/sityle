@@ -3,16 +3,16 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
 import { PressableElement, type Pressable } from "../internal/pressable";
-import type { Color } from "./Button";
+import type { Tone } from "./Button";
 
-export type CardProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; note?: React.ReactNode };
+export type CardProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; description?: React.ReactNode };
 
 /** A sheet of paper laid on the page. */
-export function Card({ title, note, className, children, ...props }: CardProps) {
+export function Card({ title, description, className, children, ...props }: CardProps) {
 	return (
 		<div className={cn("si-card", className)} {...props}>
 			{title && <h3 className="si-card-title">{title}</h3>}
-			{note && <p className="si-card-note">{note}</p>}
+			{description && <p className="si-card-note">{description}</p>}
 			{children}
 		</div>
 	);
@@ -36,12 +36,12 @@ export function Chip({ selected, onClick, children, className, onPointerDown, ..
 	);
 }
 
-export type TagProps = Omit<React.ComponentPropsWithRef<"span">, "color"> & { color?: Color; icon?: React.ReactNode };
+export type TagProps = Omit<React.ComponentPropsWithRef<"span">, "color"> & { tone?: Tone; icon?: React.ReactNode };
 
 /** Small status label. */
-export function Tag({ color = "jade", icon, children, className, ...props }: TagProps) {
+export function Tag({ tone = "jade", icon, children, className, ...props }: TagProps) {
 	return (
-		<span className={cn("si-tag", `c-${color}`, className)} {...props}>
+		<span className={cn("si-tag", `t-${tone}`, className)} {...props}>
 			{icon}
 			{children}
 		</span>
@@ -50,18 +50,18 @@ export function Tag({ color = "jade", icon, children, className, ...props }: Tag
 
 export type AvatarProps = Omit<React.ComponentPropsWithRef<"span">, "color" | "children"> & {
 	name: string;
-	color?: Color;
+	tone?: Tone;
 	size?: number;
 	/** Hide it from screen readers when the name is written right next to it. */
 	decorative?: boolean;
 };
 
 /** First character on a pigment tile ("招" for 招商银行). Read out as the full name. */
-export function Avatar({ name, color = "jade", size = 40, decorative, className, style, ...props }: AvatarProps) {
+export function Avatar({ name, tone = "jade", size = 40, decorative, className, style, ...props }: AvatarProps) {
 	const first = [...name.trim()][0]?.toLocaleUpperCase() ?? "·";
 	const a11y = decorative ? { "aria-hidden": true } : { role: "img", "aria-label": name };
 	return (
-		<span className={cn("si-avatar", `c-${color}`, className)} style={{ width: size, height: size, fontSize: size * 0.43, ...style }} {...a11y} {...props}>
+		<span className={cn("si-avatar", `t-${tone}`, className)} style={{ width: size, height: size, fontSize: size * 0.43, ...style }} {...a11y} {...props}>
 			{first}
 		</span>
 	);
@@ -90,7 +90,7 @@ export function Seal({ children, size = 30, outline, label, className, style, ..
 
 type ListItemOwn = {
 	title: React.ReactNode;
-	subtitle?: React.ReactNode;
+	description?: React.ReactNode;
 	leading?: React.ReactNode;
 	current?: boolean;
 };
@@ -98,15 +98,15 @@ type ListItemOwn = {
 /** With `onClick` a <button>, with `href` a link (`as` for a router link), with neither a plain row. */
 export type ListItemProps = Pressable<ListItemOwn>;
 
-/** Row in a list: avatar, title, subtitle; an arrow appears on hover / when current. */
+/** Row in a list: avatar, title, description; an arrow appears on hover / when current. */
 export function ListItem(allProps: ListItemProps) {
-	const { title, subtitle, leading, current, className, ...rest } = allProps;
+	const { title, description, leading, current, className, ...rest } = allProps;
 	const inner = (
 		<>
 			{leading}
 			<span className="si-listitem-text">
 				<b>{title}</b>
-				{subtitle && <span>{subtitle}</span>}
+				{description && <span>{description}</span>}
 			</span>
 		</>
 	);

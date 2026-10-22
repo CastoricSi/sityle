@@ -94,7 +94,7 @@ import {
 	TextField,
 	Tooltip,
 	useTheme,
-	type Color,
+	type Tone,
 	type ThemeChoice,
 } from "@si";
 import sigil from "./sigil.webp";
@@ -415,7 +415,7 @@ function Components() {
 			</Head>
 			<Directory />
 			<div className="sc-grid">
-				<Card title="按钮" note="实心只用于每个区域最重要的一个动作。">
+				<Card title="按钮" description="实心只用于每个区域最重要的一个动作。">
 					<div className="sc-stack">
 						<div className="sc-row">
 							<Button>实心</Button>
@@ -425,14 +425,14 @@ function Components() {
 							<Button variant="light">文字</Button>
 						</div>
 						<div className="sc-row">
-							<Button color="azure">石青</Button>
-							<Button variant="flat" color="gold">
+							<Button tone="azure">石青</Button>
+							<Button variant="flat" tone="gold">
 								泥金
 							</Button>
-							<Button variant="flat" color="danger" icon={<Trash2 />}>
+							<Button variant="flat" tone="danger" icon={<Trash2 />}>
 								删除
 							</Button>
-							<Button color="danger">确认删除</Button>
+							<Button tone="danger">确认删除</Button>
 						</div>
 						<div className="sc-row">
 							<Button size="sm">小</Button>
@@ -453,7 +453,7 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="输入框" note="标签在框内，输入时上浮；复制、显示等操作放在框的右端。">
+				<Card title="输入框" description="标签在框内，输入时上浮；复制、显示等操作放在框的右端。">
 					<div className="sc-stack">
 						<TextField label="诗名" value={title} onChange={(e) => setTitle(e.target.value)} end={<CopyButton value={title} />} />
 						<PasswordField label="口令" value={pw} onChange={(e) => setPw(e.target.value)} strength />
@@ -485,27 +485,23 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="开关 · 勾选 · 单选" note="按住开关时滑块会变宽，松开后弹到位。">
+				<Card title="开关 · 勾选 · 单选" description="按住开关时滑块会变宽，松开后弹到位。">
 					<div className="sc-stack">
 						<Switch checked={sync} onChange={setSync} label="显示拼音" description="在每个字上方标注读音" />
 						<Switch checked={fields} onChange={setFields} label="显示注释" description="读到生僻字时展开" />
 						<div className="sc-row" style={{ gap: 20 }}>
-							<Checkbox checked={symbols} onChange={setSymbols}>
-								标点
-							</Checkbox>
-							<Checkbox checked={similar} onChange={setSimilar}>
-								繁体
-							</Checkbox>
+							<Checkbox checked={symbols} onChange={setSymbols} label="标点" />
+							<Checkbox checked={similar} onChange={setSimilar} label="繁体" />
 						</div>
 						<RadioGroup label="朗读速度" value={pace} onChange={setPace}>
-							<Radio value="slow">慢</Radio>
-							<Radio value="mid">适中</Radio>
-							<Radio value="fast">快</Radio>
+							<Radio value="slow" label="慢" />
+							<Radio value="mid" label="适中" />
+							<Radio value="fast" label="快" />
 						</RadioGroup>
 					</div>
 				</Card>
 
-				<Card title="选项卡" note="胶囊式用于切换视图；笔触式用于页面内分区。指示条在两项之间滑过去。">
+				<Card title="选项卡" description="胶囊式用于切换视图；笔触式用于页面内分区。指示条在两项之间滑过去。">
 					<div className="sc-stack">
 						<div>
 							<Segmented
@@ -538,7 +534,7 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="标签 · 头像 · 提示" note="筛选用可点的标签；状态用小色块。鼠标停在图标按钮上会出现提示。">
+				<Card title="标签 · 头像 · 提示" description="筛选用可点的标签；状态用小色块。鼠标停在图标按钮上会出现提示。">
 					<div className="sc-stack">
 						<div className="sc-row">
 							{["全部", "唐诗", "宋词", "元曲", "乐府"].map((c) => (
@@ -560,16 +556,16 @@ function Components() {
 						</div>
 						<div className="sc-row">
 							<Tag icon={<Check />}>已背诵</Tag>
-							<Tag color="azure">盛唐</Tag>
-							<Tag color="gold">待复习</Tag>
-							<Tag color="danger">有异文</Tag>
+							<Tag tone="azure">盛唐</Tag>
+							<Tag tone="gold">待复习</Tag>
+							<Tag tone="danger">有异文</Tag>
 						</div>
 						<div className="sc-row" style={{ gap: 18 }}>
 							<AvatarStack>
 								<Avatar name="李白" />
-								<Avatar name="杜甫" color="azure" />
-								<Avatar name="王维" color="gold" />
-								<Avatar name="苏轼" color="danger" />
+								<Avatar name="杜甫" tone="azure" />
+								<Avatar name="王维" tone="gold" />
+								<Avatar name="苏轼" tone="danger" />
 							</AvatarStack>
 							<IconButton label="收藏">
 								<Bookmark />
@@ -584,7 +580,7 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="菜单 · 对话框 · 加载" note="菜单从按钮处展开；对话框只用于需要决定的事，盖上一枚朱印。">
+				<Card title="菜单 · 对话框 · 加载" description="菜单从按钮处展开；对话框只用于需要决定的事，盖上一枚朱印。">
 					<div className="sc-stack">
 						<div className="sc-row">
 							<Menu
@@ -602,7 +598,7 @@ function Components() {
 									{ label: "删除", icon: <Trash2 />, danger: true, onSelect: () => setDialog(true) },
 								]}
 							/>
-							<Button variant="flat" color="danger" onClick={() => setDialog(true)}>
+							<Button variant="flat" tone="danger" onClick={() => setDialog(true)}>
 								打开对话框
 							</Button>
 						</div>
@@ -617,7 +613,7 @@ function Components() {
 						</div>
 					</div>
 				</Card>
-				<Card title="导航 · 分组 · 搜索" note="侧边栏的导航行、设置页的分组卡片，以及带清除按钮的搜索框。">
+				<Card title="导航 · 分组 · 搜索" description="侧边栏的导航行、设置页的分组卡片，以及带清除按钮的搜索框。">
 					<div className="sc-stack">
 						<SearchField value={search} onChange={setSearch} label="搜索" />
 						<div style={{ display: "grid", gap: 2 }}>
@@ -627,23 +623,23 @@ function Components() {
 							<NavItem icon={<Bookmark />} label="已收藏 · 12 首" tone="jade" />
 						</div>
 						<Group title="外观">
-							<GroupRow title="字号" hint="大字号会放大所有文字">
+							<GroupRow title="字号" description="大字号会放大所有文字">
 								<Segmented label="字号" value={size} onChange={setSize} options={[{ value: "n", label: "标准" }, { value: "l", label: "大" }]} />
 							</GroupRow>
-							<GroupRow title="朗读" hint="读完一首后自动读下一首">
+							<GroupRow title="朗读" description="读完一首后自动读下一首">
 								<Button variant="bordered" size="sm">更改</Button>
 							</GroupRow>
 						</Group>
 					</div>
 				</Card>
 
-				<Card title="步骤 · 选项卡片 · 提示" note="向导用步骤条；二选一用选项卡片；提醒用浅色底的提示。">
+				<Card title="步骤 · 选项卡片 · 提示" description="向导用步骤条；二选一用选项卡片；提醒用浅色底的提示。">
 					<div className="sc-stack">
 						<Steps current={step} total={3} label={`第 ${step} 步，共 3 步`} />
 						<RadioCard name="layout" checked={layout === "v"} onChange={() => setLayout("v")} icon={<BookOpen />} title="竖排（推荐）" description="从右到左，像翻一本线装书。" />
 						<RadioCard name="layout" checked={layout === "h"} onChange={() => setLayout("h")} icon={<List />} title="横排" description="从左到右，适合在手机上读。" />
-						<Note tone="warn">此篇有异文，各版本字句略有不同。</Note>
-						<Note tone="accent" icon={<Users />}>
+						<Note tone="gold">此篇有异文，各版本字句略有不同。</Note>
+						<Note tone="jade" icon={<Users />}>
 							小明 和你分享了诗单「江南」
 						</Note>
 						<div style={{ position: "relative", height: 88, borderRadius: 12, background: "var(--si-paper-sunk)" }}>
@@ -659,7 +655,7 @@ function Components() {
 							<Button size="sm" variant="flat" onClick={() => setStep((n) => (n % 3) + 1)}>
 								下一步
 							</Button>
-							<Button size="sm" variant="flat" color="danger" onClick={() => setConfirm(true)}>
+							<Button size="sm" variant="flat" tone="danger" onClick={() => setConfirm(true)}>
 								确认对话框
 							</Button>
 						</div>
@@ -687,7 +683,7 @@ function Components() {
 						<Button variant="ghost" onClick={() => setDialog(false)}>
 							取消
 						</Button>
-						<Button color="danger" onClick={() => setDialog(false)}>
+						<Button tone="danger" onClick={() => setDialog(false)}>
 							删除
 						</Button>
 					</>
@@ -714,7 +710,7 @@ const DIRECTORY: Array<[string, string[]]> = [
 function Directory() {
 	const count = DIRECTORY.reduce((n, [, names]) => n + names.length, 0);
 	return (
-		<Card title={`组件目录 · ${count}`} note={`sityle ${VERSION} 导出的全部组件与工具，下方逐一演示。`} className="sc-directory">
+		<Card title={`组件目录 · ${count}`} description={`sityle ${VERSION} 导出的全部组件与工具，下方逐一演示。`} className="sc-directory">
 			<dl>
 				{DIRECTORY.map(([group, names]) => (
 					<div key={group}>
@@ -742,7 +738,7 @@ function More() {
 	const [plain, setPlain] = useState("tang");
 	return (
 		<>
-			<Card title="滑块 · 强度 · 提示" note="滑块右上角显示当前值；强度条随输入变化；提示在悬停或键盘聚焦时出现。">
+			<Card title="滑块 · 强度 · 提示" description="滑块右上角显示当前值；强度条随输入变化；提示在悬停或键盘聚焦时出现。">
 				<div className="sc-stack">
 					<Slider label="每页行数" value={lines} min={4} max={24} onChange={setLines} format={(v) => `${v} 行`} />
 					<div style={{ display: "grid", gap: 8 }}>
@@ -759,7 +755,7 @@ function More() {
 				</div>
 			</Card>
 
-			<Card title="基础输入 · 自适应高度" note="Input / TextArea / Select 是不带浮动标签的原始控件；AutoHeight 让内容变化时高度平滑过渡。">
+			<Card title="基础输入 · 自适应高度" description="Input / TextArea / Select 是不带浮动标签的原始控件；AutoHeight 让内容变化时高度平滑过渡。">
 				<div className="sc-stack">
 					<Select value={plain} onChange={(e) => setPlain(e.target.value)} aria-label="朝代">
 						<option value="tang">唐</option>
@@ -775,17 +771,17 @@ function More() {
 					<AutoHeight>
 						<div className="sc-stack" style={{ gap: 8 }}>
 							<Note>高度跟着内容走。</Note>
-							{more && <Note tone="accent">展开后多出的一段，容器平滑长高。</Note>}
+							{more && <Note tone="jade">展开后多出的一段，容器平滑长高。</Note>}
 							{more && <Note tone="danger">再收起时平滑变矮。</Note>}
 						</div>
 					</AutoHeight>
 				</div>
 			</Card>
 
-			<Card title="分组（无卡片）· 印章" note="Group plain 用在本身已是一张纸的地方（如设置对话框）；印章有实心和描边两种。">
+			<Card title="分组（无卡片）· 印章" description="Group plain 用在本身已是一张纸的地方（如设置对话框）；印章有实心和描边两种。">
 				<div className="sc-stack">
 					<Group plain title="阅读">
-						<GroupRow title="朗读速度" hint="每分钟读多少字">
+						<GroupRow title="朗读速度" description="每分钟读多少字">
 							<Button variant="bordered" size="sm">
 								200 字
 							</Button>
@@ -802,7 +798,7 @@ function More() {
 				</div>
 			</Card>
 
-			<Card title="手机上的对话框" note="窄屏（≤600px）时对话框从底部升起；phone=&quot;full&quot; 用于长内容（设置、表单），铺满屏幕。宽屏上两者都居中。">
+			<Card title="手机上的对话框" description="窄屏（≤600px）时对话框从底部升起；phone=&quot;full&quot; 用于长内容（设置、表单），铺满屏幕。宽屏上两者都居中。">
 				<div className="sc-row">
 					<Button variant="bordered" icon={<Smartphone />} onClick={() => { setPhone("sheet"); setPhoneOpen(true); }}>
 						底部弹出
@@ -826,13 +822,13 @@ function More() {
 }
 
 /* ── 实例 ── */
-type Poem = { title: string; author: string; dynasty: string; form: string; color: Color; text: string; source: string };
+type Poem = { title: string; author: string; dynasty: string; form: string; tone: Tone; text: string; source: string };
 const POEMS: Poem[] = [
-	{ title: "静夜思", author: "李白", dynasty: "唐", form: "五言绝句", color: "jade", text: "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。", source: "zh.wikisource.org/wiki/靜夜思" },
-	{ title: "春晓", author: "孟浩然", dynasty: "唐", form: "五言绝句", color: "azure", text: "春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。", source: "zh.wikisource.org/wiki/春曉" },
-	{ title: "江雪", author: "柳宗元", dynasty: "唐", form: "五言绝句", color: "gold", text: "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。", source: "zh.wikisource.org/wiki/江雪" },
-	{ title: "水调歌头", author: "苏轼", dynasty: "宋", form: "词", color: "danger", text: "明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。", source: "zh.wikisource.org/wiki/水調歌頭_(蘇軾)" },
-	{ title: "天净沙·秋思", author: "马致远", dynasty: "元", form: "小令", color: "jade", text: "枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。", source: "zh.wikisource.org/wiki/天淨沙·秋思" },
+	{ title: "静夜思", author: "李白", dynasty: "唐", form: "五言绝句", tone: "jade", text: "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。", source: "zh.wikisource.org/wiki/靜夜思" },
+	{ title: "春晓", author: "孟浩然", dynasty: "唐", form: "五言绝句", tone: "azure", text: "春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。", source: "zh.wikisource.org/wiki/春曉" },
+	{ title: "江雪", author: "柳宗元", dynasty: "唐", form: "五言绝句", tone: "gold", text: "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。", source: "zh.wikisource.org/wiki/江雪" },
+	{ title: "水调歌头", author: "苏轼", dynasty: "宋", form: "词", tone: "danger", text: "明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。", source: "zh.wikisource.org/wiki/水調歌頭_(蘇軾)" },
+	{ title: "天净沙·秋思", author: "马致远", dynasty: "元", form: "小令", tone: "jade", text: "枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。", source: "zh.wikisource.org/wiki/天淨沙·秋思" },
 ];
 
 function Sample() {
@@ -846,7 +842,7 @@ function Sample() {
 				<Card style={{ padding: 10 }}>
 					<div style={{ display: "grid", gap: 4 }}>
 						{POEMS.map((p, k) => (
-							<ListItem key={p.title} title={p.title} subtitle={`${p.dynasty} · ${p.author}`} current={k === i} onClick={() => setI(k)} leading={<Avatar name={p.author} color={p.color} />} />
+							<ListItem key={p.title} title={p.title} description={`${p.dynasty} · ${p.author}`} current={k === i} onClick={() => setI(k)} leading={<Avatar name={p.author} tone={p.tone} />} />
 						))}
 					</div>
 				</Card>
@@ -865,14 +861,14 @@ function SampleDetail({ poem }: { poem: Poem }) {
 	return (
 		<motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}>
 			<div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
-				<Avatar name={poem.author} color={poem.color} size={52} />
+				<Avatar name={poem.author} tone={poem.tone} size={52} />
 				<div style={{ minWidth: 0, flex: 1 }}>
 					<div style={{ font: "700 22px/1.3 var(--si-font-serif)" }}>{poem.title}</div>
 					<div className="sc-row" style={{ marginTop: 4, gap: 8 }}>
 						<span className="sc-muted">
 							{poem.dynasty} · {poem.author}
 						</span>
-						<Tag color={poem.color}>{poem.form}</Tag>
+						<Tag tone={poem.tone}>{poem.form}</Tag>
 					</div>
 				</div>
 				<IconButton label={loved ? "取消收藏" : "收藏"} active={loved} onClick={() => setLoved((v) => !v)}>
@@ -895,7 +891,7 @@ function SampleDetail({ poem }: { poem: Poem }) {
 				/>
 			</div>
 			<div className="sc-row" style={{ marginTop: 18, justifyContent: "flex-end" }}>
-				<Button variant="light" color="danger" icon={<Trash2 />}>
+				<Button variant="light" tone="danger" icon={<Trash2 />}>
 					删除
 				</Button>
 				<Button>保存</Button>
@@ -944,7 +940,7 @@ function Icons() {
 				线性图标，圆头圆角，线宽 1.75，像一笔细毛笔勾出来的。静止时用次要墨色，悬停或选中时变石绿。目前用 Lucide，以后可以换成自绘的一套，只要遵守同样的规则。
 			</Head>
 			<div className="sc-grid" style={{ marginBottom: 16 }}>
-				<Card title="尺寸" note="16 用于行内和标签，20 用于按钮和列表，24 用于导航。">
+				<Card title="尺寸" description="16 用于行内和标签，20 用于按钮和列表，24 用于导航。">
 					<div className="sc-sizes">
 						{[16, 20, 24, 32].map((s) => (
 							<figure key={s}>

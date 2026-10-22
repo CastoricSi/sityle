@@ -94,21 +94,21 @@
 	height: 17px;
 	flex: none;
 }
-.si-btn.is-azure {
+.si-btn.t-azure {
 	--c: var(--si-azure);
 	--c-hover: var(--si-azure);
 	--c-soft: var(--si-azure-soft);
 	--c-text: var(--si-azure-text);
 	--on: var(--si-on-color);
 }
-.si-btn.is-gold {
+.si-btn.t-gold {
 	--c: var(--si-gold);
 	--c-hover: var(--si-gold);
 	--c-soft: var(--si-gold-soft);
 	--c-text: var(--si-gold-text);
 	--on: var(--si-on-color);
 }
-.si-btn.is-danger {
+.si-btn.t-danger {
 	--c: var(--si-cinnabar);
 	--c-hover: var(--si-cinnabar);
 	--c-soft: var(--si-cinnabar-soft);
@@ -437,11 +437,12 @@
 	width: 14px;
 	height: 14px;
 }
-.si-switch-text b {
+.si-toggle-text b {
 	display: block;
 	font-weight: 500;
 }
-.si-switch-text span {
+.si-toggle-text span {
+	display: block;
 	font-size: 0.8125rem;
 	color: var(--si-ink-3);
 }
@@ -699,19 +700,23 @@
 	width: 13px;
 	height: 13px;
 }
-.c-jade {
+.si-tag.t-jade,
+.si-avatar.t-jade {
 	background: var(--si-jade-soft);
 	color: var(--si-jade-text);
 }
-.c-azure {
+.si-tag.t-azure,
+.si-avatar.t-azure {
 	background: var(--si-azure-soft);
 	color: var(--si-azure-text);
 }
-.c-gold {
+.si-tag.t-gold,
+.si-avatar.t-gold {
 	background: var(--si-gold-soft);
 	color: var(--si-gold-text);
 }
-.c-danger {
+.si-tag.t-danger,
+.si-avatar.t-danger {
 	background: var(--si-cinnabar-soft);
 	color: var(--si-cinnabar-text);
 }
@@ -728,16 +733,16 @@
 }
 /* Avatars are solid: the (translucent in dark) pigment tint sits on paper,
    so overlapping avatars in a stack don't show through each other. */
-.si-avatar.c-jade {
+.si-avatar.t-jade {
 	background: linear-gradient(var(--si-jade-soft), var(--si-jade-soft)) var(--si-paper-raised);
 }
-.si-avatar.c-azure {
+.si-avatar.t-azure {
 	background: linear-gradient(var(--si-azure-soft), var(--si-azure-soft)) var(--si-paper-raised);
 }
-.si-avatar.c-gold {
+.si-avatar.t-gold {
 	background: linear-gradient(var(--si-gold-soft), var(--si-gold-soft)) var(--si-paper-raised);
 }
-.si-avatar.c-danger {
+.si-avatar.t-danger {
 	background: linear-gradient(var(--si-cinnabar-soft), var(--si-cinnabar-soft)) var(--si-paper-raised);
 }
 .si-avatar-stack {
@@ -1337,6 +1342,9 @@ a.si-listitem {
 .si-nav.t-jade {
 	color: var(--si-jade-text);
 }
+.si-nav.t-azure {
+	color: var(--si-azure-text);
+}
 .si-nav.t-gold {
 	color: var(--si-gold-text);
 }
@@ -1463,13 +1471,17 @@ a.si-listitem {
 	font-size: 0.875rem;
 	overflow-wrap: anywhere;
 }
-.si-note.t-warn {
+.si-note.t-gold {
 	background: var(--si-gold-soft);
 	color: var(--si-gold-text);
 }
-.si-note.t-accent {
+.si-note.t-jade {
 	background: var(--si-jade-soft);
 	color: var(--si-jade-text);
+}
+.si-note.t-azure {
+	background: var(--si-azure-soft);
+	color: var(--si-azure-text);
 }
 .si-note.t-danger {
 	background: var(--si-cinnabar-soft);

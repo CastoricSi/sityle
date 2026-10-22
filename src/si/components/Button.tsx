@@ -7,12 +7,13 @@ import { PressableElement, type Pressable } from "../internal/pressable";
 import { InkDrop } from "./Feedback";
 import { Tooltip } from "./Tooltip";
 
-export type Color = "jade" | "azure" | "gold" | "danger";
+/** The pigments: 石绿 jade (primary), 石青 azure, 泥金 gold, 朱砂 danger. */
+export type Tone = "jade" | "azure" | "gold" | "danger";
 
 type ButtonOwn = {
 	/** solid: the one main action of an area. flat / bordered / light: secondary. ghost: quiet. shadow: solid that floats. */
 	variant?: "solid" | "shadow" | "flat" | "bordered" | "light" | "ghost";
-	color?: Color;
+	tone?: Tone;
 	size?: "sm" | "md" | "lg";
 	icon?: React.ReactNode;
 	/** Square button with only `icon`; give it `aria-label`. */
@@ -27,7 +28,7 @@ type ButtonOwn = {
 export type ButtonProps = Pressable<ButtonOwn>;
 
 export function Button(allProps: ButtonProps) {
-	const { variant = "solid", color = "jade", size = "md", icon, iconOnly, pill, loading, className, children, onPointerDown, onClick, ...props } = allProps;
+	const { variant = "solid", tone = "jade", size = "md", icon, iconOnly, pill, loading, className, children, onPointerDown, onClick, ...props } = allProps;
 	const handleClick = onClick as ((e: React.MouseEvent<HTMLElement>) => void) | undefined;
 	const handleDown = onPointerDown as React.PointerEventHandler<HTMLElement> | undefined;
 	return (
@@ -44,7 +45,7 @@ export function Button(allProps: ButtonProps) {
 			className={cn(
 				"si-btn si-ink-host",
 				`v-${variant}`,
-				color !== "jade" && `is-${color}`,
+				tone !== "jade" && `t-${tone}`,
 				size !== "md" && `s-${size}`,
 				iconOnly && "is-icon",
 				pill && "is-pill",
