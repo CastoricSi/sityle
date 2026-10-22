@@ -1,10 +1,14 @@
 # Push a tag like v0.2.0 (npm run release:patch|minor|major does it) →
 # build the package and attach sityle-<version>.tgz to a GitHub Release.
+# Or run it by hand on a branch (Actions → Release → Run workflow) after the
+# version commit is pushed: it releases v<package.json version> at that commit
+# and creates the tag itself (for when tags can't be pushed).
 name: Release
 
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,12 +25,26 @@ jobs:
           cache: npm
 
       - name: Tag must match package.json version
+        id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="$(node -p "require('./package.json').version")"
-          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match package.json version $VERSION" >&2
-            exit 1
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            TAG="v$VERSION"
+            if gh release view "$TAG" >/dev/null 2>&1; then
+              echo "Release $TAG already exists: bump the version first" >&2
+              exit 1
+            fi
+          else
+            TAG="$GITHUB_REF_NAME"
+            if [ "v$VERSION" != "$TAG" ]; then
+              echo "Tag $TAG does not match package.json version $VERSION" >&2
+              exit 1
+            fi
           fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - run: npm ci
       - run: npm run lint
@@ -38,10 +56,12 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          VERSION: ${{ steps.tag.outputs.version }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/sityle-${VERSION}.tgz"
-          gh release create "$GITHUB_REF_NAME" "sityle-${VERSION}.tgz" \
-            --title "sityle ${GITHUB_REF_NAME}" \
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/sityle-${VERSION}.tgz"
+          gh release create "$TAG" "sityle-${VERSION}.tgz" \
+            --target "$GITHUB_SHA" \
+            --title "sityle ${TAG}" \
             --generate-notes \
             --notes "Install: \`npm i ${URL}\`"
