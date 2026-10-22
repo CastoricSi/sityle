@@ -74,6 +74,30 @@
 	--si-r-xl: 26px;
 	--si-r-full: 999px;
 
+	/* control heights (density): buttons, plain inputs, floating-label fields */
+	--si-h-sm: 32px;
+	--si-h-md: 40px;
+	--si-h-lg: 48px;
+	--si-h-input: 42px;
+	--si-h-field: 56px;
+
+	/* spacing */
+	--si-space-1: 4px;
+	--si-space-2: 8px;
+	--si-space-3: 12px;
+	--si-space-4: 16px;
+	--si-space-5: 20px;
+	--si-space-6: 24px;
+	--si-space-card: 22px; /* inside a Card */
+	--si-space-dialog: var(--si-space-6); /* inside a Dialog */
+
+	/* stacking: everything sityle floats, lowest first */
+	--si-z-fab: 200;
+	--si-z-dialog: 800;
+	--si-z-popover: 850; /* menus and select lists, above dialogs */
+	--si-z-tooltip: 900;
+	--si-z-grain: 1000; /* base.css paper fibre, over everything */
+
 	/* motion (springs for JS: `spring` / `ease` in core.tsx) */
 	--si-ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* 舒展: entering */
 	--si-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* 回弹: shape changes */

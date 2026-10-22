@@ -1,6 +1,6 @@
-// 丹青 (si-style) — import the styles once, wrap the app in <SiProvider>.
+// 丹青 (si-style) — import the styles once ("sityle/style.css", plus the optional
+// page ground "sityle/base.css"), wrap the app in <SiProvider>.
 import "./tokens.css";
-import "./base.css";
 import "./components.css";
 
 export { BrushStroke, cn, ease, inkHandler, SiProvider, spawnInk, spring, themeScript, useTheme, type ThemeChoice } from "./core";

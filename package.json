@@ -14,17 +14,23 @@
 	"files": [
 		"dist/lib"
 	],
+	"main": "./dist/lib/index.js",
+	"module": "./dist/lib/index.js",
+	"types": "./dist/lib/types/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/lib/types/index.d.ts",
 			"import": "./dist/lib/index.js"
 		},
-		"./style.css": "./dist/lib/style.css"
+		"./style.css": "./dist/lib/style.css",
+		"./style.layer.css": "./dist/lib/style.layer.css",
+		"./base.css": "./dist/lib/base.css",
+		"./package.json": "./package.json"
 	},
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/clean-types.mjs",
+		"build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/finish-lib.mjs",
 		"typecheck": "tsc -b",
 		"preview": "npm run build && vite preview",
 		"deploy": "npm run build && wrangler deploy",
