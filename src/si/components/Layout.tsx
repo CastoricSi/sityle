@@ -76,15 +76,16 @@ export function GroupRow({ title, hint, children, className, ...props }: GroupRo
 /** "Step 2 of 3" with a bar per step. */
 export type StepsProps = Omit<React.ComponentPropsWithRef<"div">, "children"> & { current: number; total: number; label: string };
 
+/** `current` counts the steps reached (1 = on the first). Read out as a progress bar with `label` as its text. */
 export function Steps({ current, total, label, className, ...props }: StepsProps) {
 	return (
-		<div className={cn("si-steps", className)} aria-label={label} {...props}>
+		<div className={cn("si-steps", className)} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={total} aria-valuenow={current} aria-valuetext={label} {...props}>
 			<div className="si-steps-bar" aria-hidden="true">
 				{Array.from({ length: total }, (_, i) => (
 					<i key={i} className={cn(i < current && "is-done")} />
 				))}
 			</div>
-			<p>{label}</p>
+			<p aria-hidden="true">{label}</p>
 		</div>
 	);
 }

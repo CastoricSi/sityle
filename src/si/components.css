@@ -579,6 +579,11 @@
 .si-seg button[aria-selected="true"] {
 	color: var(--si-ink);
 }
+.si-seg button:disabled,
+.si-tabs button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
 .si-seg button > :not(.si-seg-pill) {
 	position: relative;
 	z-index: 1;
@@ -814,6 +819,10 @@
 	margin-left: auto;
 	font: 500 0.6875rem/1 var(--si-font-mono);
 	color: var(--si-ink-3);
+}
+.si-menu-item:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
 }
 .si-menu-item.is-danger,
 .si-menu-item.is-danger svg {

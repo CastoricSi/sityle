@@ -72,7 +72,7 @@ export interface IconButtonProps extends React.ComponentPropsWithRef<"button"> {
 /** Quiet square button for one icon; always has a tooltip. */
 export function IconButton({ label, active, className, children, onPointerDown, ...props }: IconButtonProps) {
 	return (
-		<Tooltip content={label}>
+		<Tooltip content={label} describe={false}>
 			<button
 				type="button"
 				aria-label={label}
@@ -101,7 +101,7 @@ export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn, class
 	}, [done]);
 
 	return (
-		<Tooltip content={done ? copiedLabel : label} open={done || undefined}>
+		<Tooltip content={done ? copiedLabel : label} open={done || undefined} describe={false}>
 			<button
 				type="button"
 				aria-label={done ? copiedLabel : label}

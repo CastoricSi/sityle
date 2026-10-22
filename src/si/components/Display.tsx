@@ -48,13 +48,20 @@ export function Tag({ color = "jade", icon, children, className, ...props }: Tag
 	);
 }
 
-export type AvatarProps = Omit<React.ComponentPropsWithRef<"span">, "color" | "children"> & { name: string; color?: Color; size?: number };
+export type AvatarProps = Omit<React.ComponentPropsWithRef<"span">, "color" | "children"> & {
+	name: string;
+	color?: Color;
+	size?: number;
+	/** Hide it from screen readers when the name is written right next to it. */
+	decorative?: boolean;
+};
 
-/** First character on a pigment tile ("招" for 招商银行). */
-export function Avatar({ name, color = "jade", size = 40, className, style, ...props }: AvatarProps) {
+/** First character on a pigment tile ("招" for 招商银行). Read out as the full name. */
+export function Avatar({ name, color = "jade", size = 40, decorative, className, style, ...props }: AvatarProps) {
 	const first = [...name.trim()][0]?.toLocaleUpperCase() ?? "·";
+	const a11y = decorative ? { "aria-hidden": true } : { role: "img", "aria-label": name };
 	return (
-		<span className={cn("si-avatar", `c-${color}`, className)} style={{ width: size, height: size, fontSize: size * 0.43, ...style }} aria-hidden="true" {...props}>
+		<span className={cn("si-avatar", `c-${color}`, className)} style={{ width: size, height: size, fontSize: size * 0.43, ...style }} {...a11y} {...props}>
 			{first}
 		</span>
 	);
@@ -64,12 +71,18 @@ export function AvatarStack({ className, ...props }: React.ComponentPropsWithRef
 	return <span className={cn("si-avatar-stack", className)} {...props} />;
 }
 
-export type SealProps = React.ComponentPropsWithRef<"span"> & { size?: number; outline?: boolean };
+export type SealProps = React.ComponentPropsWithRef<"span"> & {
+	size?: number;
+	outline?: boolean;
+	/** What the seal means, for screen readers; without it the seal is decoration. */
+	label?: string;
+};
 
 /** 朱印: one brush character in a cinnabar square. */
-export function Seal({ children, size = 30, outline, className, style, ...props }: SealProps) {
+export function Seal({ children, size = 30, outline, label, className, style, ...props }: SealProps) {
+	const a11y = label ? { role: "img", "aria-label": label } : { "aria-hidden": true };
 	return (
-		<span className={cn("si-seal", outline && "is-outline", className)} style={{ width: size, height: size, fontSize: size * 0.66, ...style }} aria-hidden="true" {...props}>
+		<span className={cn("si-seal", outline && "is-outline", className)} style={{ width: size, height: size, fontSize: size * 0.66, ...style }} {...a11y} {...props}>
 			{children}
 		</span>
 	);

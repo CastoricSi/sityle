@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { cloneElement, isValidElement, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
@@ -21,7 +21,21 @@ const keyboardRecently = () => Date.now() - lastKey < 1000;
  * Small ink label above its child on hover / keyboard focus (not on touch).
  * `open` forces it on (e.g. "已复制" after a copy).
  */
-export function Tooltip({ content, open, children, className }: { content: React.ReactNode; open?: boolean; children: React.ReactNode; className?: string }) {
+export function Tooltip({
+	content,
+	open,
+	children,
+	className,
+	describe = true,
+}: {
+	content: React.ReactNode;
+	open?: boolean;
+	children: React.ReactNode;
+	className?: string;
+	/** Link the tip to its child with aria-describedby (off when the tip only repeats the child's name). */
+	describe?: boolean;
+}) {
+	const tipId = useId();
 	const anchor = useRef<HTMLSpanElement>(null);
 	const tip = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState(false);
@@ -57,13 +71,16 @@ export function Tooltip({ content, open, children, className }: { content: React
 			onFocus={(e) => keyboardRecently() && e.target.matches(":focus-visible") && setHover(true)}
 			onBlur={() => setHover(false)}
 		>
-			{children}
+			{describe && shown && isValidElement<{ "aria-describedby"?: string }>(children)
+				? cloneElement(children, { "aria-describedby": cn(children.props["aria-describedby"], tipId) })
+				: children}
 			{client &&
 				createPortal(
 				<AnimatePresence>
 					{shown && (
 						<motion.div
 							ref={tip}
+							id={tipId}
 							role="tooltip"
 							className="si-tip"
 							style={{ left: pos.left, top: pos.top, transformOrigin: "50% 100%" }}
