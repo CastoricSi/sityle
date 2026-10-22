@@ -1,6 +1,6 @@
 import { Check, ChevronDown, Eye, EyeOff } from "lucide-react";
 import { AnimatePresence, motion, useAnimate } from "motion/react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
@@ -33,7 +33,6 @@ export type TextFieldProps = Common &
 export function TextField({ label, hint, error, end, mono, className, id, style, ...props }: TextFieldProps) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
-	const endCount = Array.isArray(end) ? end.length : end ? 1 : 0;
 	return (
 		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className}>
 			<input
@@ -42,12 +41,34 @@ export function TextField({ label, hint, error, end, mono, className, id, style,
 				aria-invalid={!!error || undefined}
 				aria-describedby={hint || error ? `${fieldId}-hint` : undefined}
 				className={cn(mono && "is-mono")}
-				style={{ paddingRight: endCount ? 8 + endCount * 42 : undefined, ...style }}
+				style={style}
 				{...props}
 			/>
 			<label htmlFor={fieldId}>{label}</label>
-			{end && <div className="si-field-end">{end}</div>}
+			{end && <FieldEnd>{end}</FieldEnd>}
 		</FieldShell>
+	);
+}
+
+/** The buttons at the right end; the box keeps its text clear of them, however many there are. */
+function FieldEnd({ children }: { children: React.ReactNode }) {
+	const ref = useRef<HTMLDivElement>(null);
+	useLayoutEffect(() => {
+		const el = ref.current!;
+		const box = el.parentElement!;
+		const set = () => box.style.setProperty("--si-end", `${el.offsetWidth}px`);
+		set();
+		const ro = new ResizeObserver(set);
+		ro.observe(el);
+		return () => {
+			ro.disconnect();
+			box.style.removeProperty("--si-end");
+		};
+	}, []);
+	return (
+		<div ref={ref} className="si-field-end">
+			{children}
+		</div>
 	);
 }
 
@@ -58,9 +79,9 @@ export function TextAreaField({ label, hint, error, end, className, id, ...props
 	const fieldId = id ?? autoId;
 	return (
 		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className}>
-			<textarea id={fieldId} placeholder=" " aria-invalid={!!error || undefined} style={end ? { paddingRight: 52 } : undefined} {...props} />
+			<textarea id={fieldId} placeholder=" " aria-invalid={!!error || undefined} aria-describedby={hint || error ? `${fieldId}-hint` : undefined} {...props} />
 			<label htmlFor={fieldId}>{label}</label>
-			{end && <div className="si-field-end">{end}</div>}
+			{end && <FieldEnd>{end}</FieldEnd>}
 		</FieldShell>
 	);
 }
@@ -317,14 +338,34 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 	);
 }
 
-/** 0 (too short) … 4 (very strong). A rough guide, not a guarantee. */
+const COMMON = /^(password|passw0rd|qwerty|qwertyuiop|asdfgh|letmein|welcome|admin|iloveyou|monkey|dragon|abc|123|1234|12345|123456|111111|000000|woaini|aini)+$/;
+
+/**
+ * 0 (too short) … 4 (very strong): roughly the bits of guessing it takes.
+ * Repeats ("aaaa"), runs ("abcd", "4321") and well-known passwords count for
+ * little. A guide for the meter, not a guarantee.
+ */
 export function passwordStrength(v: string): 0 | 1 | 2 | 3 | 4 {
-	let s = 0;
-	if (v.length >= 8) s++;
-	if (v.length >= 12) s++;
-	if (/[^A-Za-z0-9]/.test(v) && /\d/.test(v)) s++;
-	if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
-	return s as 0 | 1 | 2 | 3 | 4;
+	const chars = [...v];
+	if (chars.length < 8) return 0;
+	if (COMMON.test(v.toLowerCase().replace(/[\d!@#$%^&*._-]+$/, "")) || COMMON.test(v.toLowerCase())) return 1;
+	let pool = 0;
+	if (/[a-z]/.test(v)) pool += 26;
+	if (/[A-Z]/.test(v)) pool += 26;
+	if (/\d/.test(v)) pool += 10;
+	if (/[^A-Za-z0-9]/.test(v)) pool += 33;
+	// characters that add something: not a repeat or the next step of a run
+	let effective = 0;
+	for (let i = 0; i < chars.length; i++) {
+		const c = chars[i]!.codePointAt(0)!;
+		const p = i > 0 ? chars[i - 1]!.codePointAt(0)! : NaN;
+		const pp = i > 1 ? chars[i - 2]!.codePointAt(0)! : NaN;
+		const repeat = c === p;
+		const run = Math.abs(c - p) === 1 && c - p === p - pp;
+		if (!repeat && !run) effective++;
+	}
+	const bits = effective * Math.log2(pool);
+	return bits < 40 ? 1 : bits < 60 ? 2 : bits < 80 ? 3 : 4;
 }
 
 const STRENGTH_COLORS = ["var(--si-cinnabar)", "var(--si-cinnabar)", "var(--si-gold)", "var(--si-jade)", "var(--si-jade)"];

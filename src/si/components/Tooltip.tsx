@@ -41,8 +41,12 @@ export function Tooltip({
 	const [hover, setHover] = useState(false);
 	const [pos, setPos] = useState({ left: -999, top: -999 });
 	const shown = open ?? hover;
-	const client = useIsClient();
 	useEffect(listenForKeys, []);
+	// The portal exists only while the tip shows (and plays its exit), not for every
+	// icon button on the page.
+	const [present, setPresent] = useState(false);
+	if (shown && !present) setPresent(true);
+	const client = useIsClient();
 
 	useLayoutEffect(() => {
 		if (!shown || !anchor.current) return;
@@ -71,30 +75,29 @@ export function Tooltip({
 			onFocus={(e) => keyboardRecently() && e.target.matches(":focus-visible") && setHover(true)}
 			onBlur={() => setHover(false)}
 		>
-			{describe && shown && isValidElement<{ "aria-describedby"?: string }>(children)
-				? cloneElement(children, { "aria-describedby": cn(children.props["aria-describedby"], tipId) })
-				: children}
+			{describe && shown && isValidElement<{ "aria-describedby"?: string }>(children) ? cloneElement(children, { "aria-describedby": cn(children.props["aria-describedby"], tipId) }) : children}
 			{client &&
+				present &&
 				createPortal(
-				<AnimatePresence>
-					{shown && (
-						<motion.div
-							ref={tip}
-							id={tipId}
-							role="tooltip"
-							className="si-tip"
-							style={{ left: pos.left, top: pos.top, transformOrigin: "50% 100%" }}
-							initial={{ opacity: 0, y: 4, scale: 0.94 }}
-							animate={{ opacity: 1, y: 0, scale: 1 }}
-							exit={{ opacity: 0, y: 2, scale: 0.96, transition: { duration: 0.1 } }}
-							transition={spring.bouncy}
-						>
-							{content}
-						</motion.div>
-					)}
-				</AnimatePresence>,
-				document.body,
-			)}
+					<AnimatePresence onExitComplete={() => setPresent(false)}>
+						{shown && (
+							<motion.div
+								ref={tip}
+								id={tipId}
+								role="tooltip"
+								className="si-tip"
+								style={{ left: pos.left, top: pos.top, transformOrigin: "50% 100%" }}
+								initial={{ opacity: 0, y: 4, scale: 0.94 }}
+								animate={{ opacity: 1, y: 0, scale: 1 }}
+								exit={{ opacity: 0, y: 2, scale: 0.96, transition: { duration: 0.1 } }}
+								transition={spring.bouncy}
+							>
+								{content}
+							</motion.div>
+						)}
+					</AnimatePresence>,
+					document.body,
+				)}
 		</span>
 	);
 }

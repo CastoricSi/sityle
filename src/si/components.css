@@ -272,7 +272,8 @@
 .si-field textarea {
 	width: 100%;
 	height: 56px;
-	padding: 22px 14px 6px;
+	/* --si-end: width of the buttons at the right end (set by the component) */
+	padding: 22px calc(14px + var(--si-end, 0px)) 6px 14px;
 	border: 1.5px solid transparent;
 	border-radius: var(--si-r-md);
 	background: var(--si-paper-sunk);

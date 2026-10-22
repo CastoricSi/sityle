@@ -8,7 +8,7 @@ test("renders on the server", () => {
 	const html = renderToString(
 		<SiProvider>
 			<Button>保存</Button>
-			<Tooltip content="提示">
+			<Tooltip content="提示" open>
 				<span>a</span>
 			</Tooltip>
 			<IconButton label="设置">x</IconButton>

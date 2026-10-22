@@ -85,3 +85,18 @@ test("Tooltip describes its child; Avatar, Seal and Steps have names", async () 
 	expect(screen.getByRole("img", { name: "已删除" })).toBeTruthy();
 	expect(screen.getByRole("progressbar", { name: "第 2 步，共 3 步" }).getAttribute("aria-valuenow")).toBe("2");
 });
+
+test("Tooltip adds nothing to <body> until it shows", async () => {
+	render(
+		<SiProvider>
+			{Array.from({ length: 20 }, (_, i) => (
+				<Tooltip key={i} content={`tip ${i}`}>
+					<button>{i}</button>
+				</Tooltip>
+			))}
+		</SiProvider>,
+	);
+	expect(document.querySelectorAll(".si-tip")).toHaveLength(0);
+	await userEvent.hover(screen.getByRole("button", { name: "3" }));
+	expect(await screen.findByRole("tooltip")).toBeTruthy();
+});

@@ -63,3 +63,14 @@ test("SelectField list floats on <body> and Escape closes it, not the dialog", a
 	expect(screen.getByRole("dialog")).toBeTruthy();
 	vi.useRealTimers();
 });
+
+import { passwordStrength } from "../src/si";
+
+test("passwordStrength sees through repeats, runs and well-known passwords", () => {
+	expect(passwordStrength("short")).toBe(0);
+	expect(passwordStrength("aaaaaaaaaaaa")).toBe(1);
+	expect(passwordStrength("abcdefgh1234")).toBe(1);
+	expect(passwordStrength("password123!")).toBe(1);
+	expect(passwordStrength("Tr0ub4dor&3")).toBeGreaterThanOrEqual(3);
+	expect(passwordStrength("correct horse battery staple")).toBe(4);
+});
