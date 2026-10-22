@@ -3,12 +3,13 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import { cn, inkHandler, spring } from "../core";
+import { PressableElement, type Pressable } from "../internal/pressable";
 import { InkDrop } from "./Feedback";
 import { Tooltip } from "./Tooltip";
 
 export type Color = "jade" | "azure" | "gold" | "danger";
 
-export interface ButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "color"> {
+type ButtonOwn = {
 	/** solid: the one main action of an area. flat / bordered / light: secondary. ghost: quiet. shadow: solid that floats. */
 	variant?: "solid" | "shadow" | "flat" | "bordered" | "light" | "ghost";
 	color?: Color;
@@ -17,37 +18,28 @@ export interface ButtonProps extends Omit<React.ComponentPropsWithRef<"button">,
 	/** Square button with only `icon`; give it `aria-label`. */
 	iconOnly?: boolean;
 	pill?: boolean;
-	/** Swaps the label for an ink-drop loader (keeps the width). */
+	/** Swaps the label for an ink-drop loader (keeps the width) and ignores presses. */
 	loading?: boolean;
-}
+	disabled?: boolean;
+};
 
-export function Button({
-	variant = "solid",
-	color = "jade",
-	size = "md",
-	icon,
-	iconOnly,
-	pill,
-	loading,
-	className,
-	children,
-	type = "button",
-	onPointerDown,
-	onClick,
-	disabled,
-	...props
-}: ButtonProps) {
+/** A <button>; with `href` it is a link that looks the same (`as` renders a router link). */
+export type ButtonProps = Pressable<ButtonOwn>;
+
+export function Button(allProps: ButtonProps) {
+	const { variant = "solid", color = "jade", size = "md", icon, iconOnly, pill, loading, className, children, onPointerDown, onClick, ...props } = allProps;
+	const handleClick = onClick as ((e: React.MouseEvent<HTMLElement>) => void) | undefined;
+	const handleDown = onPointerDown as React.PointerEventHandler<HTMLElement> | undefined;
 	return (
-		<button
-			type={type}
-			disabled={disabled}
+		<PressableElement
+			{...props}
 			aria-busy={loading || undefined}
 			// While loading it keeps focus but ignores presses (no double submit).
-			aria-disabled={loading || undefined}
-			onPointerDown={loading ? onPointerDown : inkHandler(onPointerDown)}
-			onClick={(e) => {
+			aria-disabled={loading || props.disabled || undefined}
+			onPointerDown={loading ? handleDown : inkHandler(handleDown)}
+			onClick={(e: React.MouseEvent<HTMLElement>) => {
 				if (loading) return e.preventDefault();
-				onClick?.(e);
+				handleClick?.(e);
 			}}
 			className={cn(
 				"si-btn si-ink-host",
@@ -59,7 +51,6 @@ export function Button({
 				loading && "is-loading",
 				className,
 			)}
-			{...props}
 		>
 			<span className="si-btn-label">
 				{icon}
@@ -68,7 +59,7 @@ export function Button({
 			<span className="si-btn-spin" aria-hidden={!loading}>
 				<InkDrop />
 			</span>
-		</button>
+		</PressableElement>
 	);
 }
 

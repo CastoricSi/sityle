@@ -67,7 +67,9 @@ export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
 /** onPointerDown that drops ink, then calls the caller's own handler. */
 export function inkHandler<T extends HTMLElement>(own?: React.PointerEventHandler<T>): React.PointerEventHandler<T> {
 	return (e) => {
-		if (e.button === 0 && !(e.currentTarget as unknown as { disabled?: boolean }).disabled) spawnInk(e.currentTarget, e.clientX, e.clientY);
+		const el = e.currentTarget;
+		const off = ("disabled" in el && el.disabled === true) || el.getAttribute("aria-disabled") === "true";
+		if (e.button === 0 && !off) spawnInk(el, e.clientX, e.clientY);
 		own?.(e);
 	};
 }

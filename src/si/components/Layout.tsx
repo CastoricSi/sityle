@@ -5,27 +5,32 @@ import { motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
 import { useControllable } from "../internal/controllable";
+import { PressableElement, type Pressable } from "../internal/pressable";
 import { Button, IconButton } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
 
 /** A row in a side navigation: icon, label, optional count; `current` marks the open one. */
-export type NavItemProps = React.ComponentPropsWithRef<"button"> & {
+export type NavItemProps = Pressable<{
 	icon?: React.ReactNode;
 	label: React.ReactNode;
 	count?: number;
+	/** The open one (aria-current="page" for links). */
 	current?: boolean;
 	/** Colour the row (e.g. a sync status). */
 	tone?: "jade" | "gold" | "danger";
-};
+}>;
 
-export function NavItem({ icon, label, count, current, tone, className, ...props }: NavItemProps) {
+/** A <button>, or a real link with `href` (middle-click, copy link; `as` renders a router link). */
+export function NavItem(allProps: NavItemProps) {
+	const { icon, label, count, current, tone, className, ...props } = allProps;
+	const currentValue = props.href !== undefined ? "page" : "true";
 	return (
-		<button type="button" className={cn("si-nav", tone && `t-${tone}`, className)} aria-current={current || undefined} {...props}>
+		<PressableElement {...props} className={cn("si-nav", tone && `t-${tone}`, className)} aria-current={current ? currentValue : undefined}>
 			{icon}
 			<span className="si-nav-label">{label}</span>
 			{count !== undefined && <span className="si-nav-count">{count}</span>}
-		</button>
+		</PressableElement>
 	);
 }
 

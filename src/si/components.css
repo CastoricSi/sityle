@@ -180,7 +180,8 @@
 .si-btn.is-pill {
 	border-radius: var(--si-r-full);
 }
-.si-btn:disabled {
+.si-btn:disabled,
+.si-btn[aria-disabled="true"]:not(.is-loading) {
 	opacity: 0.45;
 	cursor: not-allowed;
 }
@@ -1045,6 +1046,12 @@
 .si-listitem:hover {
 	background: var(--si-paper-sunk);
 }
+.si-listitem.is-static {
+	cursor: default;
+}
+.si-listitem.is-static:hover {
+	background: none;
+}
 .si-listitem[aria-current="true"] {
 	background: var(--si-jade-soft);
 }
@@ -1280,6 +1287,17 @@ select.si-input {
 	transition:
 		background-color var(--si-t-base) var(--si-ease-out),
 		color var(--si-t-base);
+}
+a.si-nav,
+a.si-listitem {
+	text-decoration: none;
+}
+.si-nav[aria-disabled="true"],
+.si-listitem[aria-disabled="true"],
+.si-nav:disabled,
+.si-listitem:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 .si-nav:hover {
 	background: var(--si-paper-sunk);

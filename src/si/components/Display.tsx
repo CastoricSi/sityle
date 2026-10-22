@@ -2,6 +2,7 @@ import { Check, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
+import { PressableElement, type Pressable } from "../internal/pressable";
 import type { Color } from "./Button";
 
 export type CardProps = Omit<React.ComponentPropsWithRef<"div">, "title"> & { title?: React.ReactNode; note?: React.ReactNode };
@@ -74,25 +75,48 @@ export function Seal({ children, size = 30, outline, className, style, ...props 
 	);
 }
 
-export type ListItemProps = Omit<React.ComponentPropsWithRef<"button">, "title"> & {
+type ListItemOwn = {
 	title: React.ReactNode;
 	subtitle?: React.ReactNode;
 	leading?: React.ReactNode;
 	current?: boolean;
 };
 
+/** With `onClick` a <button>, with `href` a link (`as` for a router link), with neither a plain row. */
+export type ListItemProps = Pressable<ListItemOwn>;
+
 /** Row in a list: avatar, title, subtitle; an arrow appears on hover / when current. */
-export function ListItem({ title, subtitle, leading, current, className, onPointerDown, ...props }: ListItemProps) {
-	return (
-		<button type="button" className={cn("si-listitem si-ink-host", className)} aria-current={current || undefined} onPointerDown={inkHandler(onPointerDown)} {...props}>
+export function ListItem(allProps: ListItemProps) {
+	const { title, subtitle, leading, current, className, ...rest } = allProps;
+	const inner = (
+		<>
 			{leading}
 			<span className="si-listitem-text">
 				<b>{title}</b>
 				{subtitle && <span>{subtitle}</span>}
 			</span>
+		</>
+	);
+	if (rest.href === undefined && !rest.onClick) {
+		const { type: _type, disabled: _disabled, ...props } = rest;
+		return (
+			<div className={cn("si-listitem is-static", className)} aria-current={current || undefined} {...(props as React.ComponentPropsWithRef<"div">)}>
+				{inner}
+			</div>
+		);
+	}
+	const { onPointerDown, ...props } = rest;
+	return (
+		<PressableElement
+			{...props}
+			className={cn("si-listitem si-ink-host", className)}
+			aria-current={current ? (props.href !== undefined ? "page" : "true") : undefined}
+			onPointerDown={inkHandler(onPointerDown as React.PointerEventHandler<HTMLElement> | undefined)}
+		>
+			{inner}
 			<span className="si-listitem-go">
 				<ChevronRight />
 			</span>
-		</button>
+		</PressableElement>
 	);
 }
