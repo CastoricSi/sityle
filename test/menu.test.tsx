@@ -34,3 +34,20 @@ test("Menu floats on <body>, arrows move, Escape closes and returns focus", asyn
 	expect(document.activeElement).toBe(trigger);
 	vi.useRealTimers();
 });
+
+test("matchWidth makes the panel as wide as the trigger's box", async () => {
+	vi.useFakeTimers({ shouldAdvanceTime: true });
+	const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+	render(
+		<SiProvider>
+			<Menu matchWidth align="end" trigger={(p) => <button {...p}>本子</button>} items={[{ label: "甲", onSelect: () => {} }]} />
+		</SiProvider>,
+	);
+	const trigger = screen.getByRole("button", { name: "本子" });
+	const anchor = trigger.parentElement!;
+	anchor.getBoundingClientRect = () => ({ left: 10, right: 250, top: 0, bottom: 40, width: 240, height: 40, x: 10, y: 0, toJSON() {} });
+	await user.click(trigger);
+	await act(() => vi.advanceTimersByTimeAsync(60));
+	expect(screen.getByRole("menu").style.width).toBe("240px");
+	vi.useRealTimers();
+});

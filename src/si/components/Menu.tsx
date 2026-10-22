@@ -28,6 +28,8 @@ export type MenuProps = {
 	label?: string;
 	/** Class for the floating panel. */
 	className?: string;
+	/** The panel is exactly as wide as the trigger's box (a switcher that fills a sidebar). */
+	matchWidth?: boolean;
 };
 
 /**
@@ -35,14 +37,14 @@ export type MenuProps = {
  * ↑ ↓ Home End move, typing jumps to an item by its first letter, Enter picks,
  * Escape closes and returns focus to the trigger, Tab closes and moves on.
  */
-export function Menu({ trigger, items, align = "start", label, className }: MenuProps) {
+export function Menu({ trigger, items, align = "start", label, className, matchWidth = false }: MenuProps) {
 	// where focus goes once the menu is open: the first item, or the last (opened with ↑)
 	const [open, setOpen] = useState<false | "first" | "last">(false);
 	const anchor = useRef<HTMLSpanElement>(null);
 	const list = useRef<HTMLDivElement>(null);
 	const id = useId();
 	const client = useIsClient();
-	const placement = useAnchoredPosition(anchor, !!open, { align });
+	const placement = useAnchoredPosition(anchor, !!open, { align, matchWidth });
 	const triggerEl = () => anchor.current?.querySelector<HTMLButtonElement>("[aria-haspopup]");
 	const itemEls = () => [...(list.current?.querySelectorAll<HTMLButtonElement>("[role=menuitem]:not(:disabled)") ?? [])];
 
