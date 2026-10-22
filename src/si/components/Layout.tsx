@@ -1,5 +1,5 @@
 import { Search, X } from "lucide-react";
-import { useId, useRef } from "react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 
 import { motion } from "motion/react";
 
@@ -218,5 +218,37 @@ export function Fab({ icon, label, round, onClick, style }: { icon: React.ReactN
 			{icon}
 			{!round && <span>{label}</span>}
 		</motion.button>
+	);
+}
+
+/**
+ * Grows and shrinks with its content on a spring instead of jumping (e.g. one
+ * card whose steps change). Clips only while it moves, so focus rings and
+ * dropdowns inside are not cut off at rest.
+ */
+export function AutoHeight({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+	const inner = useRef<HTMLDivElement>(null);
+	const [height, setHeight] = useState<number | "auto">("auto");
+	const [moving, setMoving] = useState(false);
+	useLayoutEffect(() => {
+		const el = inner.current!;
+		const measure = () => setHeight(el.offsetHeight);
+		measure();
+		const ro = new ResizeObserver(measure);
+		ro.observe(el);
+		return () => ro.disconnect();
+	}, []);
+	return (
+		<motion.div
+			className={className}
+			style={{ ...style, overflow: moving ? "hidden" : "visible" }}
+			initial={false}
+			animate={{ height }}
+			transition={spring.gentle}
+			onAnimationStart={() => setMoving(true)}
+			onAnimationComplete={() => setMoving(false)}
+		>
+			<div ref={inner}>{children}</div>
+		</motion.div>
 	);
 }
