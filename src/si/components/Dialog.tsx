@@ -83,11 +83,27 @@ export function Dialog({
 						if (downOnScrim.current && e.target === e.currentTarget) onClose();
 						downOnScrim.current = false;
 					}}
-					initial={{ opacity: 0 }}
+					// the scrim itself stays opaque; its layers below do the fading
+					initial={{ opacity: 1 }}
 					animate={{ opacity: 1 }}
-					exit={{ opacity: 0, pointerEvents: "none", transition: { duration: 0.16 } }}
-					transition={{ duration: 0.2 }}
+					exit={{ opacity: 1, pointerEvents: "none", transition: { duration: 0.16 } }}
 				>
+					<motion.div
+						className="si-scrim-blur"
+						aria-hidden="true"
+						initial={{ backdropFilter: "blur(0px)" }}
+						animate={{ backdropFilter: "blur(6px)" }}
+						exit={{ backdropFilter: "blur(0px)", transition: { duration: 0.16 } }}
+						transition={{ duration: 0.2 }}
+					/>
+					<motion.div
+						className="si-scrim-tint"
+						aria-hidden="true"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0, transition: { duration: 0.16 } }}
+						transition={{ duration: 0.2 }}
+					/>
 					<motion.div
 						ref={box}
 						role="dialog"
