@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { cn, inkHandler, spring } from "../core";
 import { useControllable } from "../internal/controllable";
 import { PressableElement, type Pressable } from "../internal/pressable";
+import { useMessages } from "../messages";
 import { Button, IconButton, type Tone } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
@@ -146,7 +147,8 @@ export type SearchFieldProps = Omit<React.ComponentPropsWithRef<"input">, "value
 };
 
 /** Native props go to the <input>; `className` / `style` to the wrapper. */
-export function SearchField({ value: valueIn, defaultValue = "", onChange: onChangeIn, label, clearLabel = "清除", className, style, id, onKeyDown, ...props }: SearchFieldProps) {
+export function SearchField({ value: valueIn, defaultValue = "", onChange: onChangeIn, label, clearLabel, className, style, id, onKeyDown, ...props }: SearchFieldProps) {
+	const t = useMessages();
 	const [value, onChange] = useControllable(valueIn, defaultValue, onChangeIn);
 	const box = useRef<HTMLDivElement>(null);
 	const autoId = useId();
@@ -173,7 +175,7 @@ export function SearchField({ value: valueIn, defaultValue = "", onChange: onCha
 			/>
 			{value && (
 				<IconButton
-					label={clearLabel}
+					label={clearLabel ?? t.clear}
 					onClick={() => {
 						onChange("");
 						box.current?.querySelector("input")?.focus();
@@ -192,7 +194,7 @@ export function ConfirmDialog({
 	title,
 	body,
 	confirmLabel,
-	cancelLabel = "取消",
+	cancelLabel,
 	onConfirm,
 	onCancel,
 	seal,
@@ -206,6 +208,7 @@ export function ConfirmDialog({
 	onCancel: () => void;
 	seal?: string;
 }) {
+	const t = useMessages();
 	return (
 		<Dialog
 			open={open}
@@ -215,7 +218,7 @@ export function ConfirmDialog({
 			actions={
 				<>
 					<Button variant="ghost" onClick={onCancel}>
-						{cancelLabel}
+						{cancelLabel ?? t.cancel}
 					</Button>
 					<Button tone="danger" onClick={onConfirm}>
 						{confirmLabel}

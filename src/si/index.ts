@@ -37,3 +37,4 @@ export { Menu, type MenuEntry, type MenuProps } from "./components/Menu";
 export { Checkbox, Radio, RadioGroup, Switch, type CheckboxProps, type RadioGroupProps, type RadioProps, type SwitchProps } from "./components/Selection";
 export { Segmented, TabPanel, Tabs, type Option, type SegmentedProps, type TabPanelProps, type TabsProps } from "./components/Tabs";
 export { Tooltip } from "./components/Tooltip";
+export { en, useMessages, zh, type Messages } from "./messages";

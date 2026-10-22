@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { cn, spring } from "../core";
 import { useIsClient } from "../internal/client";
 import { useControllable } from "../internal/controllable";
+import { useMessages } from "../messages";
 import { LAYER_ATTR } from "../internal/modal";
 import { useAnchoredPosition, useDismiss } from "../internal/popover";
 import { CopyButton, IconButton } from "./Button";
@@ -111,17 +112,18 @@ export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono" | 
 	extra?: React.ReactNode;
 	/** Default "current-password" so password managers fill it; "new-password" for sign-up / generated ones. */
 	autoComplete?: string;
-	/** Button texts (default Chinese). */
+	/** Button texts for this field (app-wide: <SiProvider messages>). */
 	labels?: { show?: string; hide?: string; copy?: string; copied?: string };
 };
 
 /** Password box: show / hide, copy, optional strength bar. */
 export function PasswordField({ value: valueIn, defaultValue = "", onChange, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, autoComplete = "current-password", ...props }: PasswordFieldProps) {
+	const t = useMessages();
 	const [visible, setVisible] = useState(defaultVisible);
 	// Track the text even when uncontrolled: the copy button and strength bar need it.
 	const [value, setValue] = useControllable(valueIn, defaultValue, undefined);
 	const end = [
-		<IconButton key="eye" label={visible ? (labels?.hide ?? "隐藏") : (labels?.show ?? "显示")} onClick={() => setVisible((v) => !v)} active={visible}>
+		<IconButton key="eye" label={visible ? (labels?.hide ?? t.hide) : (labels?.show ?? t.show)} onClick={() => setVisible((v) => !v)} active={visible}>
 			<AnimatePresence mode="popLayout" initial={false}>
 				<motion.span key={visible ? "off" : "on"} className="si-swap" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} transition={spring.bouncy}>
 					{visible ? <EyeOff /> : <Eye />}
@@ -325,10 +327,11 @@ export function passwordStrength(v: string): 0 | 1 | 2 | 3 | 4 {
 	return s as 0 | 1 | 2 | 3 | 4;
 }
 
-const STRENGTH_LABELS = ["太短", "弱", "一般", "较强", "很强"];
 const STRENGTH_COLORS = ["var(--si-cinnabar)", "var(--si-cinnabar)", "var(--si-gold)", "var(--si-jade)", "var(--si-jade)"];
 
-export function StrengthMeter({ value, labels = STRENGTH_LABELS }: { value: string; labels?: string[] }) {
+export function StrengthMeter({ value, labels: labelsIn }: { value: string; labels?: string[] }) {
+	const t = useMessages();
+	const labels = labelsIn ?? t.strength;
 	const s = passwordStrength(value);
 	return (
 		<>

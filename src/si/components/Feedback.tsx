@@ -1,4 +1,5 @@
 import { cn } from "../core";
+import { useMessages } from "../messages";
 
 type SpanProps = Omit<React.ComponentPropsWithRef<"span">, "children">;
 
@@ -14,9 +15,10 @@ export function InkDrop({ className, label, ...props }: SpanProps & { label?: st
 }
 
 /** Three slanted bars hopping in turn (loading). Colour: currentColor (朱砂 by default). */
-export function InkBars({ label = "加载中", className, ...props }: SpanProps & { label?: string }) {
+export function InkBars({ label, className, ...props }: SpanProps & { label?: string }) {
+	const t = useMessages();
 	return (
-		<span className={cn("si-inkbars", className)} role="status" aria-label={label} {...props}>
+		<span className={cn("si-inkbars", className)} role="status" aria-label={label ?? t.loading} {...props}>
 			<i />
 			<i />
 			<i />
@@ -25,9 +27,10 @@ export function InkBars({ label = "加载中", className, ...props }: SpanProps 
 }
 
 /** A brush circle being drawn and wiped, round and round. */
-export function BrushSpinner({ label = "加载中", className, ...props }: Omit<React.ComponentPropsWithRef<"svg">, "children"> & { label?: string }) {
+export function BrushSpinner({ label, className, ...props }: Omit<React.ComponentPropsWithRef<"svg">, "children"> & { label?: string }) {
+	const t = useMessages();
 	return (
-		<svg className={cn("si-brushspin", className)} viewBox="0 0 24 24" role="status" aria-label={label} {...props}>
+		<svg className={cn("si-brushspin", className)} viewBox="0 0 24 24" role="status" aria-label={label ?? t.loading} {...props}>
 			<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" strokeWidth="2.6" />
 		</svg>
 	);

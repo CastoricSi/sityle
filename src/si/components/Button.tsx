@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { cn, inkHandler, spring } from "../core";
 import { PressableElement, type Pressable } from "../internal/pressable";
+import { useMessages } from "../messages";
 import { InkDrop } from "./Feedback";
 import { Tooltip } from "./Tooltip";
 
@@ -92,8 +93,9 @@ export function IconButton({ label, active, className, children, onPointerDown, 
 export type CopyButtonProps = Omit<React.ComponentPropsWithRef<"button">, "value" | "children"> & { value: string; label?: string; copiedLabel?: string };
 
 export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn, className, onClick, onPointerDown, ...props }: CopyButtonProps) {
-	const label = labelIn ?? "复制";
-	const copiedLabel = copiedIn ?? "已复制";
+	const t = useMessages();
+	const label = labelIn ?? t.copy;
+	const copiedLabel = copiedIn ?? t.copied;
 	const [done, setDone] = useState(false);
 	useEffect(() => {
 		if (!done) return;

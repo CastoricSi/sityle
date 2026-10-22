@@ -2,6 +2,7 @@ import { MotionConfig, type Transition } from "motion/react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
 
 import { useMediaQuery } from "./internal/client";
+import { MessagesContext, zh, type Messages } from "./messages";
 
 /* ── class names ── */
 export function cn(...classes: Array<string | false | null | undefined>): string {
@@ -134,10 +135,13 @@ export function SiProvider({
 	children,
 	theme,
 	onThemeChange,
+	messages,
 }: {
 	children: React.ReactNode;
 	theme?: ThemeChoice;
 	onThemeChange?: (choice: ThemeChoice) => void;
+	/** The texts sityle writes itself (default Chinese): `en`, or your own / a partial override. */
+	messages?: Partial<Messages>;
 }) {
 	const own = useSyncExternalStore(storedChoice.subscribe, storedChoice.get, () => "system" as const);
 	const controlled = theme !== undefined;
@@ -160,12 +164,15 @@ export function SiProvider({
 	);
 
 	const value = useMemo(() => ({ choice, resolved, setChoice }), [choice, resolved, setChoice]);
+	const texts = useMemo(() => ({ ...zh, ...messages }), [messages]);
 	return (
 		<ThemeCtx.Provider value={value}>
-			<MotionConfig reducedMotion="user">
-				<SiDefs />
-				{children}
-			</MotionConfig>
+			<MessagesContext.Provider value={texts}>
+				<MotionConfig reducedMotion="user">
+					<SiDefs />
+					{children}
+				</MotionConfig>
+			</MessagesContext.Provider>
 		</ThemeCtx.Provider>
 	);
 }
