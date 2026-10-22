@@ -24,7 +24,7 @@
 	flex: none;
 	border-radius: 22%;
 	background: var(--si-cinnabar);
-	color: #fff7f2;
+	color: var(--si-on-seal);
 	font-family: var(--si-font-brush);
 	line-height: 1;
 	transform: rotate(-4deg);
@@ -95,22 +95,22 @@
 	flex: none;
 }
 .si-btn.t-azure {
-	--c: var(--si-azure);
-	--c-hover: var(--si-azure);
+	--c: var(--si-azure-fill);
+	--c-hover: var(--si-azure-hover);
 	--c-soft: var(--si-azure-soft);
 	--c-text: var(--si-azure-text);
 	--on: var(--si-on-color);
 }
 .si-btn.t-gold {
-	--c: var(--si-gold);
-	--c-hover: var(--si-gold);
+	--c: var(--si-gold-fill);
+	--c-hover: var(--si-gold-hover);
 	--c-soft: var(--si-gold-soft);
 	--c-text: var(--si-gold-text);
 	--on: var(--si-on-color);
 }
 .si-btn.t-danger {
-	--c: var(--si-cinnabar);
-	--c-hover: var(--si-cinnabar);
+	--c: var(--si-cinnabar-fill);
+	--c-hover: var(--si-cinnabar-hover);
 	--c-soft: var(--si-cinnabar-soft);
 	--c-text: var(--si-cinnabar-text);
 	--on: var(--si-on-color);
@@ -128,6 +128,7 @@
 	box-shadow: 0 8px 22px -8px var(--c);
 }
 .si-btn.v-shadow:hover {
+	background: var(--c-hover);
 	box-shadow: 0 12px 28px -8px var(--c);
 }
 .si-btn.v-flat {

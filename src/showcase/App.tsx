@@ -229,11 +229,19 @@ function Colors() {
 	const [values, setValues] = useState<Record<string, string>>({});
 	const [copied, setCopied] = useState<string | null>(null);
 	useEffect(() => {
-		const raf = requestAnimationFrame(() => {
-			const css = getComputedStyle(document.documentElement);
-			setValues(Object.fromEntries(PIGMENTS.map(([, , v]) => [v, css.getPropertyValue(v).trim()])));
-		});
-		return () => cancelAnimationFrame(raf);
+		// tokens are light-dark(…): let the browser resolve each for the current theme
+		const probe = document.createElement("i");
+		probe.style.display = "none";
+		document.body.appendChild(probe);
+		setValues(
+			Object.fromEntries(
+				PIGMENTS.map(([, , v]) => {
+					probe.style.color = `var(${v})`;
+					return [v, toHex(getComputedStyle(probe).color)];
+				}),
+			),
+		);
+		probe.remove();
 	}, [resolved]);
 	useEffect(() => {
 		if (!copied) return;
@@ -982,4 +990,11 @@ function Icons() {
 			</Card>
 		</section>
 	);
+}
+
+/** "rgb(44, 122, 88)" → "#2c7a58" (keeps alpha as a percentage when there is one). */
+function toHex(rgb: string) {
+	const [r = 0, g = 0, b = 0, a] = (rgb.match(/[\d.]+/g) ?? []).map(Number);
+	const hex = `#${[r, g, b].map((n) => Math.round(n).toString(16).padStart(2, "0")).join("")}`;
+	return a !== undefined && a < 1 ? `${hex} · ${Math.round(a * 100)}%` : hex;
 }
