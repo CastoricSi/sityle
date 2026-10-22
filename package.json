@@ -42,7 +42,8 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"lint": "eslint . && prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"prepare": "npm run build:lib"
 	},
 	"peerDependencies": {
 		"motion": "^12.0.0 || ^13.0.0 || ^14.0.0",

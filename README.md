@@ -107,6 +107,9 @@ Per-component label props (`CopyButton label`, `PasswordField labels`, …) stil
 Current evergreen browsers: the tokens use `light-dark()` (Chrome 123, Safari
 17.5, Firefox 120), and `:has()` and `color-mix()`.
 
+An unreleased branch installs straight from git (the `prepare` script builds
+`dist/lib` on install): `npm i github:CastoricSi/sityle#<branch>`.
+
 ### Linking a local copy
 
 While working on sityle and a project together, link the local copy instead of
