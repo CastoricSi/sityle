@@ -13,6 +13,13 @@
 			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700;900&display=swap"
 		/>
 		<title>水祀丹青</title>
+		<!-- sityle's themeScript: apply the remembered theme before the first paint -->
+		<script>
+			try {
+				var t = localStorage.getItem("si-theme");
+				if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+			} catch (e) {}
+		</script>
 	</head>
 	<body>
 		<div id="root"></div>

@@ -93,7 +93,11 @@ import {
 	TextAreaField,
 	TextField,
 	Tooltip,
+	TabPanel,
 	useTheme,
+	zh,
+	en,
+	SiProvider,
 	type Tone,
 	type ThemeChoice,
 } from "@si";
@@ -112,10 +116,14 @@ const NAV = [
 	["icons", "图标"],
 ] as const;
 
+type Lang = "zh" | "en";
+
 export function App() {
+	// the texts sityle writes itself (copy, show / hide, cancel…) follow this switch
+	const [lang, setLang] = useState<Lang>("zh");
 	return (
-		<>
-			<AppBar />
+		<SiProvider messages={lang === "en" ? en : zh}>
+			<AppBar lang={lang} onLang={setLang} />
 			<Hero />
 			<main className="sc-wrap">
 				<Colors />
@@ -131,11 +139,11 @@ export function App() {
 					<Seal>青</Seal>水祀丹青 · sityle {VERSION} · <a href="https://github.com/CastoricSi/sityle">GitHub</a>
 				</div>
 			</footer>
-		</>
+		</SiProvider>
 	);
 }
 
-function AppBar() {
+function AppBar({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
 	const { choice, setChoice } = useTheme();
 	return (
 		<header className="sc-bar">
@@ -151,6 +159,15 @@ function AppBar() {
 						</a>
 					))}
 				</nav>
+				<Segmented<Lang>
+					label="组件文字"
+					value={lang}
+					onChange={onLang}
+					options={[
+						{ value: "zh", label: "中", title: "组件内置文字：中文" },
+						{ value: "en", label: "EN", title: "Built-in texts: English" },
+					]}
+				/>
 				<Segmented<ThemeChoice>
 					label="主题"
 					value={choice}
@@ -454,6 +471,12 @@ function Components() {
 							<Button disabled>不可用</Button>
 						</div>
 						<div className="sc-row">
+							<Button href="#sample" variant="light" icon={<BookOpen />}>
+								链接按钮（href）
+							</Button>
+							<span className="sc-muted">有 href 就是真正的 &lt;a&gt;，可中键新开、复制链接</span>
+						</div>
+						<div className="sc-row">
 							<Button icon={saving === "done" ? <Check /> : <Save />} loading={saving === "busy"} onClick={save} style={{ minWidth: 120 }}>
 								{saving === "done" ? "已保存" : "保存"}
 							</Button>
@@ -504,7 +527,7 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="选项卡" description="胶囊式用于切换视图；笔触式用于页面内分区。指示条在两项之间滑过去。">
+				<Card title="选项卡" description="胶囊式用于切换视图；笔触式用于页面内分区。指示条在两项之间滑过去；←→ 键切换。">
 					<div className="sc-stack">
 						<div>
 							<Segmented
@@ -521,6 +544,7 @@ function Components() {
 						</div>
 						<div>
 							<Tabs
+								id="read-tabs"
 								label="阅读"
 								value={tab}
 								onChange={setTab}
@@ -530,9 +554,11 @@ function Components() {
 									{ value: "note", label: "赏析" },
 								]}
 							/>
-							<motion.div key={tab} className="si-tab-panel" role="tabpanel" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
-								{panels[tab]}
-							</motion.div>
+							<TabPanel tabs="read-tabs" value={tab}>
+								<motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+									{panels[tab]}
+								</motion.div>
+							</TabPanel>
 						</div>
 					</div>
 				</Card>
@@ -583,7 +609,7 @@ function Components() {
 					</div>
 				</Card>
 
-				<Card title="菜单 · 对话框 · 加载" description="菜单从按钮处展开；对话框只用于需要决定的事，盖上一枚朱印。">
+				<Card title="菜单 · 对话框 · 加载" description="菜单从按钮处展开，↑↓ / 首字母跳转；对话框只用于需要决定的事，盖上一枚朱印，Tab 只在框内循环。">
 					<div className="sc-stack">
 						<div className="sc-row">
 							<Menu
@@ -597,6 +623,7 @@ function Components() {
 									{ label: "重命名", icon: <Pencil />, onSelect: () => {} },
 									{ label: "加入诗单…", icon: <FolderInput />, onSelect: () => {} },
 									{ label: "分享", icon: <Share2 />, kbd: "Ctrl S", onSelect: () => {} },
+									{ label: "导出（即将推出）", icon: <ExternalLink />, disabled: true, onSelect: () => {} },
 									"divider",
 									{ label: "删除", icon: <Trash2 />, danger: true, onSelect: () => setDialog(true) },
 								]}
@@ -623,7 +650,7 @@ function Components() {
 							<NavItem icon={<Inbox />} label="全部" count={300} current={nav === "all"} onClick={() => setNav("all")} />
 							<NavItem icon={<Folder />} label="唐诗" count={214} current={nav === "tang"} onClick={() => setNav("tang")} />
 							<NavItem icon={<Folder />} label="宋词" count={86} current={nav === "song"} onClick={() => setNav("song")} />
-							<NavItem icon={<Bookmark />} label="已收藏 · 12 首" tone="jade" />
+							<NavItem icon={<Bookmark />} label="已收藏 · 12 首（链接）" tone="jade" href="#sample" />
 						</div>
 						<Group title="外观">
 							<GroupRow title="字号" description="大字号会放大所有文字">
@@ -704,12 +731,13 @@ function Components() {
 const DIRECTORY: Array<[string, string[]]> = [
 	["按钮", ["Button", "IconButton", "CopyButton", "Fab"]],
 	["输入", ["TextField", "PasswordField", "TextAreaField", "SelectField", "SearchField", "Input", "TextArea", "Select", "StrengthMeter"]],
-	["选择", ["Switch", "Checkbox", "RadioGroup", "Radio", "RadioCard", "Slider", "Segmented", "Tabs", "Chip"]],
+	["选择", ["Switch", "Checkbox", "RadioGroup", "Radio", "RadioCard", "Slider", "Segmented", "Tabs", "TabPanel", "Chip"]],
 	["展示", ["Card", "Tag", "Avatar", "AvatarStack", "Seal", "IconBadge", "ListItem", "Note", "Tooltip"]],
 	["布局", ["NavItem", "Group", "GroupRow", "Steps", "AutoHeight"]],
 	["浮层", ["Menu", "Dialog", "ConfirmDialog"]],
 	["反馈", ["InkDrop", "InkBars", "BrushSpinner", "Skeleton"]],
-	["水墨", ["SiProvider", "InkWash", "BrushStroke", "spring", "ease", "useTheme"]],
+	["水墨", ["SiProvider", "InkWash", "BrushStroke", "spring", "ease", "useTheme", "themeScript"]],
+	["文字", ["useMessages", "zh", "en"]],
 ];
 
 function Directory() {
@@ -741,8 +769,40 @@ function More() {
 	const [phone, setPhone] = useState<"sheet" | "full">("sheet");
 	const [phoneOpen, setPhoneOpen] = useState(false);
 	const [plain, setPlain] = useState("tang");
+	const [submitted, setSubmitted] = useState<string | null>(null);
 	return (
 		<>
+			<Card title="原生表单（非受控）" description="不写 value / onChange：给 name 和 defaultValue，交给 <form>。提交看看 FormData 里有什么。">
+				<form
+					className="sc-stack"
+					onSubmit={(e) => {
+						e.preventDefault();
+						setSubmitted(JSON.stringify(Object.fromEntries(new FormData(e.currentTarget)), null, 1));
+					}}
+				>
+					<TextField name="title" label="诗名" defaultValue="山居秋暝" required />
+					<SelectField
+						name="dynasty"
+						label="朝代"
+						defaultValue="tang"
+						options={[
+							{ value: "tang", label: "唐" },
+							{ value: "song", label: "宋" },
+						]}
+					/>
+					<Switch name="pinyin" label="显示拼音" defaultChecked />
+					<RadioGroup name="pace" label="朗读速度" defaultValue="mid">
+						<Radio value="slow" label="慢" />
+						<Radio value="mid" label="适中" />
+					</RadioGroup>
+					<Slider name="size" label="字号" defaultValue={18} min={14} max={28} format={(v) => `${v}px`} />
+					<div className="sc-row">
+						<Button type="submit">提交</Button>
+					</div>
+					{submitted && <pre className="sc-pre">{submitted}</pre>}
+				</form>
+			</Card>
+
 			<Card title="滑块 · 强度 · 提示" description="滑块右上角显示当前值；强度条随输入变化；提示在悬停或键盘聚焦时出现。">
 				<div className="sc-stack">
 					<Slider label="每页行数" value={lines} min={4} max={24} onChange={setLines} format={(v) => `${v} 行`} />
@@ -833,7 +893,24 @@ function More() {
 					title={phone === "full" ? "阅读设置" : "加入诗单"}
 					actions={<Button onClick={() => setPhoneOpen(false)}>关闭</Button>}
 				>
-					{phone === "full" ? "长内容铺满手机屏幕，底部一条线隔开操作按钮。" : "短内容从屏幕底部升起，点空白处或按 Esc 关闭。"}
+					{phone === "full" ? (
+						<div className="sc-stack" style={{ alignContent: "start" }}>
+							<span>长内容铺满手机屏幕，底部一条线隔开操作按钮。下拉列表浮在对话框之上，不会被裁掉。</span>
+							<TextField label="诗单名" defaultValue="江南" />
+							<SelectField
+								label="排序"
+								defaultValue="time"
+								options={[
+									{ value: "time", label: "加入时间" },
+									{ value: "author", label: "作者" },
+									{ value: "dynasty", label: "朝代" },
+								]}
+							/>
+							<Switch label="同步到其他设备" defaultChecked />
+						</div>
+					) : (
+						"短内容从屏幕底部升起，点空白处或按 Esc 关闭。"
+					)}
 				</Dialog>
 			</Card>
 		</>
@@ -869,7 +946,14 @@ function Sample() {
 				<Card style={{ padding: 10 }}>
 					<div style={{ display: "grid", gap: 4 }}>
 						{POEMS.map((p, k) => (
-							<ListItem key={p.title} title={p.title} description={`${p.dynasty} · ${p.author}`} current={k === i} onClick={() => setI(k)} leading={<Avatar name={p.author} tone={p.tone} />} />
+							<ListItem
+								key={p.title}
+								title={p.title}
+								description={`${p.dynasty} · ${p.author}`}
+								current={k === i}
+								onClick={() => setI(k)}
+								leading={<Avatar name={p.author} tone={p.tone} decorative />}
+							/>
 						))}
 					</div>
 				</Card>

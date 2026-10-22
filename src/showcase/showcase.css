@@ -475,3 +475,13 @@
 	background: var(--si-paper-sunk);
 	font: 500 12.5px/1.6 var(--si-font-mono);
 }
+
+.sc-pre {
+	margin: 0;
+	padding: 10px 12px;
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-sunk);
+	color: var(--si-ink-2);
+	font: 400 12px/1.6 var(--si-font-mono);
+	white-space: pre-wrap;
+}
