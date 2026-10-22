@@ -13,8 +13,7 @@
 :where([class*="si-"]) *::after {
 	box-sizing: border-box;
 }
-:where([class*="si-"]):focus-visible,
-:where([class*="si-"]) :focus-visible {
+:where([class*="si-"]:focus-visible, [class*="si-"] :focus-visible) {
 	outline: 2px solid var(--si-jade);
 	outline-offset: 2px;
 }
