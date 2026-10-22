@@ -26,10 +26,17 @@ export function lockScroll(): () => void {
 	const html = document.documentElement;
 	if (locks++ === 0) {
 		saved = { overflow: html.style.overflow, paddingRight: html.style.paddingRight };
-		// keep the layout from jumping when the scrollbar disappears
-		const bar = innerWidth - html.clientWidth;
+		// Keep the page from moving when its scrollbar goes: pad by exactly the width
+		// it gained, measured to the fraction (zoomed pages have fractional scrollbars;
+		// a whole-pixel guess shifted them). --si-scrollbar: the same, for an app's own
+		// fixed bars.
+		const before = html.getBoundingClientRect().width;
 		html.style.overflow = "hidden";
-		if (bar > 0) html.style.paddingRight = `${bar}px`;
+		const bar = html.getBoundingClientRect().width - before;
+		if (bar > 0) {
+			html.style.paddingRight = `calc(${saved.paddingRight || "0px"} + ${bar}px)`;
+			html.style.setProperty("--si-scrollbar", `${bar}px`);
+		}
 	}
 	let done = false;
 	return () => {
@@ -38,6 +45,7 @@ export function lockScroll(): () => void {
 		if (--locks === 0 && saved) {
 			html.style.overflow = saved.overflow;
 			html.style.paddingRight = saved.paddingRight;
+			html.style.removeProperty("--si-scrollbar");
 			saved = null;
 		}
 	};
