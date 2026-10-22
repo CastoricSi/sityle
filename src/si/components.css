@@ -49,13 +49,13 @@
 	transition: background-color var(--si-t-slow) var(--si-ease-out);
 }
 .si-card-title {
-	font: 700 15px/1.3 var(--si-font-serif);
+	font: 700 0.9375rem/1.3 var(--si-font-serif);
 	letter-spacing: 0.04em;
 }
 .si-card-note {
 	margin: 4px 0 18px;
 	color: var(--si-ink-3);
-	font-size: 13px;
+	font-size: 0.8125rem;
 }
 
 /* ── Button ── */
@@ -73,7 +73,7 @@
 	padding: 0 18px;
 	border: 0;
 	border-radius: var(--si-r-md);
-	font: 500 14px/1 var(--si-font-sans);
+	font: 500 0.875rem/1 var(--si-font-sans);
 	letter-spacing: 0.02em;
 	text-decoration: none;
 	white-space: nowrap;
@@ -158,13 +158,13 @@
 .si-btn.s-sm {
 	height: 32px;
 	padding: 0 12px;
-	font-size: 13px;
+	font-size: 0.8125rem;
 	border-radius: var(--si-r-sm);
 }
 .si-btn.s-lg {
 	height: 48px;
 	padding: 0 24px;
-	font-size: 15px;
+	font-size: 0.9375rem;
 	border-radius: 14px;
 }
 .si-btn.is-icon {
@@ -272,7 +272,7 @@
 	border-radius: var(--si-r-md);
 	background: var(--si-paper-sunk);
 	color: var(--si-ink);
-	font: 400 15px/1.3 var(--si-font-sans);
+	font: 400 0.9375rem/1.3 var(--si-font-sans);
 	outline: none;
 	transition:
 		border-color var(--si-t-base) var(--si-ease-out),
@@ -306,7 +306,7 @@
 	display: flex;
 	align-items: center;
 	color: var(--si-ink-3);
-	font-size: 15px;
+	font-size: 0.9375rem;
 	line-height: 1.2;
 	pointer-events: none;
 	transform-origin: 0 50%;
@@ -338,7 +338,7 @@
 }
 .si-field-hint {
 	margin: 6px 4px 0;
-	font-size: 12px;
+	font-size: 0.75rem;
 	color: var(--si-ink-3);
 }
 .si-field.is-invalid :is(input, textarea) {
@@ -381,7 +381,7 @@
 }
 .si-strength-label {
 	margin: 4px 4px 0;
-	font-size: 12px;
+	font-size: 0.75rem;
 	color: var(--si-ink-3);
 }
 
@@ -438,7 +438,7 @@
 	font-weight: 500;
 }
 .si-switch-text span {
-	font-size: 13px;
+	font-size: 0.8125rem;
 	color: var(--si-ink-3);
 }
 
@@ -559,7 +559,7 @@
 	border-radius: var(--si-r-full);
 	background: none;
 	color: var(--si-ink-2);
-	font: 500 13px/1 var(--si-font-sans);
+	font: 500 0.8125rem/1 var(--si-font-sans);
 	white-space: nowrap;
 	cursor: pointer;
 	transition: color var(--si-t-base) var(--si-ease-out);
@@ -600,7 +600,7 @@
 	border-radius: 10px 10px 0 0;
 	background: none;
 	color: var(--si-ink-3);
-	font: 500 14px/1 var(--si-font-sans);
+	font: 500 0.875rem/1 var(--si-font-sans);
 	white-space: nowrap;
 	cursor: pointer;
 	transition: color var(--si-t-base);
@@ -630,7 +630,7 @@
 .si-tab-panel {
 	padding-top: 14px;
 	color: var(--si-ink-2);
-	font-size: 14px;
+	font-size: 0.875rem;
 }
 
 /* ── Chip / Tag ── */
@@ -643,7 +643,7 @@
 	border-radius: var(--si-r-full);
 	background: var(--si-paper-raised);
 	color: var(--si-ink-2);
-	font: 500 13px/1 var(--si-font-sans);
+	font: 500 0.8125rem/1 var(--si-font-sans);
 	cursor: pointer;
 	transition:
 		background-color var(--si-t-base) var(--si-ease-out),
@@ -675,7 +675,7 @@
 	height: 24px;
 	padding: 0 9px;
 	border-radius: 7px;
-	font-size: 12px;
+	font-size: 0.75rem;
 	font-weight: 500;
 	white-space: nowrap;
 }
@@ -748,7 +748,7 @@
 	border-radius: 8px;
 	background: var(--si-ink);
 	color: var(--si-paper);
-	font-size: 12px;
+	font-size: 0.75rem;
 	white-space: nowrap;
 	pointer-events: none;
 	box-shadow: var(--si-e2);
@@ -782,7 +782,7 @@
 	border-radius: 9px;
 	background: none;
 	color: var(--si-ink);
-	font: 400 14px/1.2 var(--si-font-sans);
+	font: 400 0.875rem/1.2 var(--si-font-sans);
 	text-align: left;
 	cursor: pointer;
 	transition: background-color var(--si-t-quick);
@@ -799,7 +799,7 @@
 }
 .si-menu-item kbd {
 	margin-left: auto;
-	font: 500 11px/1 var(--si-font-mono);
+	font: 500 0.6875rem/1 var(--si-font-mono);
 	color: var(--si-ink-3);
 }
 .si-menu-item.is-danger,
@@ -846,11 +846,11 @@
 	top: 18px;
 	width: 54px;
 	height: 54px;
-	font-size: 30px;
+	font-size: 1.875rem;
 	opacity: 0.85;
 }
 .si-dialog h2 {
-	font: 700 19px/1.35 var(--si-font-serif);
+	font: 700 1.1875rem/1.35 var(--si-font-serif);
 }
 .si-dialog.has-seal h2 {
 	padding-right: 60px;
@@ -858,7 +858,7 @@
 .si-dialog-body {
 	margin-top: 8px;
 	color: var(--si-ink-2);
-	font-size: 14px;
+	font-size: 0.875rem;
 }
 .si-dialog-actions {
 	display: flex;
@@ -987,7 +987,7 @@
 	font-weight: 500;
 }
 .si-listitem-text span {
-	font-size: 13px;
+	font-size: 0.8125rem;
 	color: var(--si-ink-3);
 }
 .si-listitem-go {
@@ -1018,10 +1018,10 @@
 	display: flex;
 	justify-content: space-between;
 	gap: 12px;
-	font-size: 14px;
+	font-size: 0.875rem;
 }
 .si-slider-head output {
-	font: 500 13px/1.6 var(--si-font-mono);
+	font: 500 0.8125rem/1.6 var(--si-font-mono);
 	color: var(--si-ink-2);
 	font-variant-numeric: tabular-nums;
 }
@@ -1109,3 +1109,54 @@
 	}
 }
 
+
+/* ── Plain input / textarea / select (label outside, e.g. above) ── */
+.si-input {
+	width: 100%;
+	height: 42px;
+	padding: 0 12px;
+	border: 1.5px solid transparent;
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-sunk);
+	color: var(--si-ink);
+	font: 400 0.9375rem/1.3 var(--si-font-sans);
+	outline: none;
+	transition:
+		border-color var(--si-t-base) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base) var(--si-ease-out);
+}
+.si-input::placeholder {
+	color: var(--si-ink-3);
+}
+.si-input:hover {
+	background: color-mix(in srgb, var(--si-paper-sunk) 70%, var(--si-line));
+}
+.si-input:focus {
+	border-color: var(--si-jade);
+	background: var(--si-paper-raised);
+	box-shadow: 0 0 0 4px var(--si-jade-soft);
+}
+.si-input[aria-invalid="true"] {
+	border-color: var(--si-cinnabar);
+	background: var(--si-cinnabar-soft);
+}
+.si-input:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+textarea.si-input {
+	height: auto;
+	min-height: 96px;
+	padding: 10px 12px;
+	resize: vertical;
+	line-height: 1.6;
+}
+select.si-input {
+	padding-right: 8px;
+	cursor: pointer;
+}
+.si-input.is-mono {
+	font-family: var(--si-font-mono);
+	letter-spacing: 0.06em;
+}

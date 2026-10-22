@@ -13,7 +13,7 @@ body {
 body {
 	background: var(--si-paper);
 	color: var(--si-ink);
-	font: 400 15px/1.65 var(--si-font-sans);
+	font: 400 0.9375rem/1.65 var(--si-font-sans);
 	-webkit-font-smoothing: antialiased;
 	transition:
 		background-color var(--si-t-slow) var(--si-ease-out),

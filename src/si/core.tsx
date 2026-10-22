@@ -99,11 +99,23 @@ function useSystemDark() {
 }
 
 /**
- * Wrap the app once: theme (宣纸 / 浓墨 / system, remembered), the SVG
- * filters the ink effects use, and Motion's reduced-motion handling.
+ * Wrap the app once: theme (宣纸 / 浓墨 / system), the SVG filters the ink
+ * effects use, and Motion's reduced-motion handling.
+ * Uncontrolled, the theme is remembered in localStorage. Pass `theme` (and
+ * `onThemeChange`) when the app keeps the setting itself.
  */
-export function SiProvider({ children }: { children: React.ReactNode }) {
-	const [choice, setChoiceState] = useState<ThemeChoice>(readChoice);
+export function SiProvider({
+	children,
+	theme,
+	onThemeChange,
+}: {
+	children: React.ReactNode;
+	theme?: ThemeChoice;
+	onThemeChange?: (choice: ThemeChoice) => void;
+}) {
+	const [own, setOwn] = useState<ThemeChoice>(readChoice);
+	const controlled = theme !== undefined;
+	const choice = controlled ? theme : own;
 	const systemDark = useSystemDark();
 	const resolved = choice === "system" ? (systemDark ? "dark" : "light") : choice;
 
@@ -113,14 +125,20 @@ export function SiProvider({ children }: { children: React.ReactNode }) {
 		else root.setAttribute("data-theme", choice);
 	}, [choice]);
 
-	const setChoice = useCallback((c: ThemeChoice) => {
-		setChoiceState(c);
-		try {
-			localStorage.setItem(STORAGE_KEY, c);
-		} catch {
-			// not remembered; still applied
-		}
-	}, []);
+	const setChoice = useCallback(
+		(c: ThemeChoice) => {
+			if (!controlled) {
+				setOwn(c);
+				try {
+					localStorage.setItem(STORAGE_KEY, c);
+				} catch {
+					// not remembered; still applied
+				}
+			}
+			onThemeChange?.(c);
+		},
+		[controlled, onThemeChange],
+	);
 
 	const value = useMemo(() => ({ choice, resolved, setChoice }), [choice, resolved, setChoice]);
 	return (

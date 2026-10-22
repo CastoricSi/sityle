@@ -32,8 +32,10 @@ import "sityle/style.css";
   see `index.html`), or the fallbacks are used.
 - `style.css` includes page basics (`body` background and text, focus ring,
   reduced motion). Colours are CSS variables `--si-*`; classes are `si-*`.
-- `useTheme()` → `{ choice, resolved, setChoice }` ("light" | "dark" | "system",
-  remembered); `<html data-theme>` is set for you.
+- `useTheme()` → `{ choice, resolved, setChoice }` ("light" | "dark" | "system");
+  `<html data-theme>` is set for you. Uncontrolled, the choice is remembered;
+  an app that keeps its own setting passes `<SiProvider theme onThemeChange>`.
+- Text sizes are in `rem`, so they follow the page's root font size.
 
 While working on sityle and a project together, link the local copy instead
 of the release (don't commit this): `npm i ../sityle` in the project, and run
@@ -70,7 +72,7 @@ src/si/            The package.
   components.css     Component styles (.si-*).
   core.tsx           SiProvider, useTheme, spring presets, ink ripple, BrushStroke, cn.
   components/        Button, IconButton, CopyButton, TextField, TextAreaField,
-                     PasswordField, StrengthMeter, Switch, Checkbox, RadioGroup,
+                     Input / TextArea / Select (label outside), PasswordField, StrengthMeter, Switch, Checkbox, RadioGroup,
                      Segmented, Tabs, Chip, Tag, Avatar(Stack), Seal, Card,
                      ListItem, Tooltip, Menu, Dialog, Slider, InkDrop, InkBars,
                      BrushSpinner, Skeleton, InkWash.

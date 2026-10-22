@@ -58,6 +58,7 @@ import {
 	InkBars,
 	InkDrop,
 	InkWash,
+	Input,
 	ListItem,
 	Menu,
 	PasswordField,
@@ -427,6 +428,12 @@ function Components() {
 							error={mailOk ? undefined : "邮箱格式不对，少了「@」后面的部分"}
 						/>
 						<TextAreaField label="备注" value={notes} onChange={(e) => setNotes(e.target.value)} />
+						<div style={{ display: "grid", gap: 6 }}>
+							<label htmlFor="plain-input" className="sc-muted">
+								普通输入框（标签在上方）
+							</label>
+							<Input id="plain-input" placeholder="如：日常、工作、机密" />
+						</div>
 					</div>
 				</Card>
 

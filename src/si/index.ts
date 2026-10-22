@@ -8,6 +8,7 @@ export { Button, CopyButton, IconButton, type ButtonProps, type Color, type Icon
 export { Avatar, AvatarStack, Card, Chip, ListItem, Seal, Tag } from "./components/Display";
 export { BrushSpinner, InkBars, InkDrop, Skeleton } from "./components/Feedback";
 export { PasswordField, passwordStrength, StrengthMeter, TextAreaField, TextField } from "./components/Field";
+export { Input, Select, TextArea } from "./components/Input";
 export { Dialog } from "./components/Dialog";
 export { InkWash } from "./components/InkWash";
 export { Slider } from "./components/Slider";
