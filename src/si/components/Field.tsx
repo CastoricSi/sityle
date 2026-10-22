@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { cn, spring } from "../core";
+import { cn, popover, spring } from "../core";
 import { useIsClient } from "../internal/client";
 import { useControllable } from "../internal/controllable";
 import { useMessages } from "../messages";
@@ -342,19 +342,7 @@ export function SelectField<T extends string = string>({
 				createPortal(
 					<AnimatePresence>
 						{open && placement && (
-							<motion.ul
-								ref={list}
-								id={listId}
-								role="listbox"
-								aria-label={label}
-								{...{ [LAYER_ATTR]: "" }}
-								className={cn("si-listbox", up && "is-up")}
-								style={placement.style}
-								initial={{ opacity: 0, scale: 0.96, y: up ? 6 : -6 }}
-								animate={{ opacity: 1, scale: 1, y: 0 }}
-								exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.12 } }}
-								transition={spring.bouncy}
-							>
+							<motion.ul ref={list} id={listId} role="listbox" aria-label={label} {...{ [LAYER_ATTR]: "" }} className={cn("si-listbox", up && "is-up")} style={placement.style} {...popover(up)}>
 								{options.map((o, i) => (
 									<li
 										key={o.value}

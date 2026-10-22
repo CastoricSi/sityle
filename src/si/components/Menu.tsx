@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { cn, spring } from "../core";
+import { cn, popover } from "../core";
 import { useIsClient } from "../internal/client";
 import { LAYER_ATTR } from "../internal/modal";
 import { useAnchoredPosition, useDismiss } from "../internal/popover";
@@ -118,10 +118,7 @@ export function Menu({ trigger, items, align = "start", label, className, matchW
 								className={cn("si-menu", className)}
 								style={{ ...placement.style, transformOrigin: `${align === "end" ? "calc(100% - 20px)" : "20px"} ${placement.up ? "100%" : "0"}` }}
 								onKeyDown={onKey}
-								initial={{ opacity: 0, scale: 0.9, y: -6 }}
-								animate={{ opacity: 1, scale: 1, y: 0 }}
-								exit={{ opacity: 0, scale: 0.95, y: -4, transition: { duration: 0.12 } }}
-								transition={spring.bouncy}
+								{...popover(placement.up)}
 							>
 								{items.map((item, k) => {
 									if (item === "divider") return <hr key={k} />;
@@ -134,8 +131,9 @@ export function Menu({ trigger, items, align = "start", label, className, matchW
 											disabled={item.disabled}
 											data-text={item.textValue}
 											className={cn("si-menu-item", item.danger && "is-danger")}
-											initial={{ opacity: 0, y: -4 }}
-											animate={{ opacity: 1, y: 0, transition: { delay: 0.03 + order.get(k)! * 0.028, duration: 0.2 } }}
+											// items fade in one after another, in place (sliding them too reads as a jump)
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1, transition: { delay: 0.02 + order.get(k)! * 0.02, duration: 0.16 } }}
 											onClick={() => {
 												setOpen(false);
 												triggerEl()?.focus();

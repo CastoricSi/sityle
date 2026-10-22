@@ -24,6 +24,18 @@ export const ease = {
 	in: [0.55, 0, 0.75, 0.2],
 } as const;
 
+/**
+ * Menus and lists unfolding from their trigger: a short ease-out, no spring —
+ * an overshoot reads as the content jumping. `up`: it opens above the trigger,
+ * so it rises from it instead of dropping.
+ */
+export const popover = (up: boolean) =>
+	({
+		initial: { opacity: 0, scale: 0.96, y: up ? 6 : -6 },
+		animate: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.18, ease: ease.out } },
+		exit: { opacity: 0, scale: 0.98, transition: { duration: 0.12, ease: ease.in } },
+	}) as const;
+
 /* ── ink ripple ── */
 const prefersReducedMotion = () => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
