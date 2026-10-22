@@ -413,14 +413,10 @@
 .sc-icon svg {
 	width: 22px;
 	height: 22px;
-	transition: transform var(--si-t-slow) var(--si-ease-spring);
 }
 .sc-icon:hover {
 	background: var(--si-jade-soft);
 	color: var(--si-jade-text);
-}
-.sc-icon:hover svg {
-	transform: translateY(-3px) rotate(-6deg);
 }
 .sc-sizes {
 	display: flex;
