@@ -9,7 +9,9 @@
   `motionReduced()` tells your own code. The style page has the switch under 动效.
 - Dialog: the page behind no longer moves when its scrollbar is hidden: the padding
   that stands in for it is measured exactly (fractional scrollbars on zoomed pages
-  were rounded). `--si-scrollbar` holds the width for an app's own fixed bars.
+  were rounded), and the dialog stays centred on the page instead of sliding 7.5px
+  sideways as it opens and closes (its fixed layer leaves the scrollbar's room too).
+  `--si-scrollbar` holds the width for an app's own fixed bars.
 
 - Dialog backdrop on iPhone: Safari clips `position: fixed` layers to the viewport, so
   the 0.9.2 overscan never showed under its status bar and toolbar. The tint, and the

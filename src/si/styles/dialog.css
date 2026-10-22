@@ -2,6 +2,10 @@
 .si-scrim {
 	position: fixed;
 	inset: 0;
+	/* the page's scrollbar is hidden while a dialog is open and the page padded in
+	   its place; leave the same room, so the dialog is centred on the page as
+	   before and doesn't slide sideways while it opens or closes */
+	right: var(--si-scrollbar, 0px);
 	z-index: var(--si-z-dialog);
 	display: grid;
 	place-items: center;
