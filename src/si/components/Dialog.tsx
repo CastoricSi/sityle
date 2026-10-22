@@ -8,7 +8,8 @@ import { LAYER_ATTR, lockScroll, tabbables } from "../internal/modal";
 import { Seal } from "./Display";
 
 /**
- * Only for decisions. The page dims and blurs, the dialog is set down like a
+ * Only for decisions. The page dims (no blur: re-blurring the whole screen
+ * every frame made opening heavy), the dialog is set down like a
  * sheet of paper, and an optional seal (朱印) is stamped on it.
  * Escape / clicking outside closes; focus goes to the first button and back
  * to where it was afterwards.
@@ -145,14 +146,6 @@ export function Dialog({
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 1, pointerEvents: "none", transition: { duration: 0.16 } }}
 				>
-					<motion.div
-						className="si-scrim-blur"
-						aria-hidden="true"
-						initial={{ backdropFilter: "blur(0px)" }}
-						animate={{ backdropFilter: "blur(6px)" }}
-						exit={{ backdropFilter: "blur(0px)", transition: { duration: 0.16 } }}
-						transition={{ duration: 0.2 }}
-					/>
 					<motion.div
 						className="si-scrim-tint"
 						aria-hidden="true"

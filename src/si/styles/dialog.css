@@ -7,10 +7,8 @@
 	place-items: center;
 	padding: 16px;
 }
-/* The backdrop is two layers so neither fades a blur with opacity (which
-   GPU compositing draws with dark bands over sticky / layered content):
-   the blur animates its radius, the tint its opacity. */
-.si-scrim-blur,
+/* The backdrop: a tint that fades in (no blur — re-blurring the whole screen on
+   every frame was the heaviest part of opening a dialog). */
 .si-scrim-tint {
 	position: absolute;
 	/* past the viewport: covers the page under Safari's status bar and toolbar too */

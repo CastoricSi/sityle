@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Dialog backdrop: dims only, no blur (re-blurring the whole screen on every frame was the
+  heaviest part of opening a dialog, about a quarter of its frame time).
+
 - **Performance:** every Button carried its loading spinner with its animation running
   (hidden, but restyled and laid out on every frame) — dozens of idle loops behind any
   page with buttons. The spinner now only animates while loading. Loaders loop on
