@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useId, useLayoutEffect, useRef } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
@@ -57,6 +57,7 @@ export function Dialog({
 	const box = useRef<HTMLDivElement>(null);
 	const lastFocus = useRef<HTMLElement | null>(null);
 	const downOnScrim = useRef(false);
+	const scrimRef = useRef<HTMLDivElement>(null);
 	// Callers pass inline arrows; keep the latest without re-running the open/close effect
 	// (re-running it would hand focus back to the trigger on every parent render).
 	const closeRef = useRef(onClose);
@@ -124,11 +125,53 @@ export function Dialog({
 		};
 	}, [open]);
 
+	// Safari on iPhone shows the page under its status bar and floating toolbar,
+	// but clips position: fixed layers to the viewport, so a fixed backdrop can't
+	// reach there. Layers in the document flow can: the tint (and the sheet's
+	// paper) are absolute layers at the scrim's place in the page, reaching
+	// --si-overscan past it. The page doesn't scroll while a dialog is open.
+	const [edge, setEdge] = useState<{ top: number; bottom: number } | null>(null);
+	useLayoutEffect(() => {
+		if (!open) return;
+		const measure = () => {
+			const scrim = scrimRef.current;
+			if (!scrim) return;
+			const r = scrim.getBoundingClientRect();
+			// relative to the containing block of an absolute child of <body>
+			const cb = getComputedStyle(document.body).position === "static" ? document.documentElement : document.body;
+			const origin = cb.getBoundingClientRect().top;
+			setEdge({ top: r.top - origin, bottom: r.bottom - origin });
+		};
+		measure();
+		addEventListener("resize", measure);
+		visualViewport?.addEventListener("resize", measure);
+		return () => {
+			removeEventListener("resize", measure);
+			visualViewport?.removeEventListener("resize", measure);
+		};
+	}, [open]);
+
 	if (!client) return null;
+	const under = (key: string, className: string, top: string, height: string, delay = 0) => (
+		<motion.div
+			key={key}
+			className={className}
+			aria-hidden="true"
+			style={{ top, height }}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1, transition: { duration: 0.2, delay } }}
+			exit={{ opacity: 0, transition: { duration: 0.16 } }}
+		/>
+	);
 	return createPortal(
 		<AnimatePresence>
+			{open && edge && under("tint", "si-scrim-under", `calc(${edge.top}px - var(--si-overscan))`, `calc(${edge.bottom - edge.top}px + 2 * var(--si-overscan))`)}
+			{open && edge && mode !== "center" && under("paper-bottom", "si-scrim-paper", `${edge.bottom}px`, "var(--si-overscan)", 0.12)}
+			{open && edge && mode === "full" && under("paper-top", "si-scrim-paper", `calc(${edge.top}px - var(--si-overscan))`, "var(--si-overscan)", 0.12)}
 			{open && (
 				<motion.div
+					key="scrim"
+					ref={scrimRef}
 					className={cn("si-scrim", mode !== "center" && `is-${mode}`)}
 					// Close when a press both starts and ends on the backdrop. Pressing it
 					// starts no text selection (the dialog slides away under the cursor), and
@@ -146,14 +189,6 @@ export function Dialog({
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 1, pointerEvents: "none", transition: { duration: 0.16 } }}
 				>
-					<motion.div
-						className="si-scrim-tint"
-						aria-hidden="true"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0, transition: { duration: 0.16 } }}
-						transition={{ duration: 0.2 }}
-					/>
 					<motion.div
 						ref={box}
 						role="dialog"

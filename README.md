@@ -61,9 +61,10 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
 - Colours are CSS variables `--si-*`, each written once as `light-dark(light, dark)`.
   Fields draw a `--si-ring` focus halo outside their box: a scroll container
   (`overflow` not visible) right at a field's edge clips it, so leave that much
-  padding there. `--si-overscan` is how far fixed layers reach past the viewport
-  (Safari on iPhone shows the page under its bars); an app's own fixed or sticky
-  bars can extend their paper by it too. There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
+  padding there. `--si-overscan` is how far a dialog's backdrop reaches past the
+  viewport: Safari on iPhone shows the page under its status bar and toolbar but
+  clips `position: fixed` layers to the viewport, so the backdrop (and a sheet's
+  paper) are absolute layers in the page instead, which Safari does paint there. There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
   spacing (`--si-space-*`) and stacking (`--si-z-*`).
 
 ### Server rendering (Next.js, Remix…)

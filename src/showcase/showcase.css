@@ -173,6 +173,23 @@
 		width: 148px;
 		height: 148px;
 	}
+	/* phones: portrait, title, subtitle and the rest centred in one column */
+	.sc-hero .sc-wrap {
+		justify-items: center;
+		text-align: center;
+	}
+	.sc-hero h1 {
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+	}
+	.sc-lede,
+	.sc-sub {
+		margin-inline: auto;
+	}
+	.sc-cta {
+		justify-content: center;
+	}
 }
 
 /* sections */

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Dialog backdrop on iPhone: Safari clips `position: fixed` layers to the viewport, so
+  the 0.9.2 overscan never showed under its status bar and toolbar. The tint, and the
+  sheet's / full-screen dialog's paper past the screen edges, are now absolute layers
+  in the page at the dialog's place (the page doesn't scroll while it is open).
+- Style page: on phones the hero (portrait, title, subtitle) is centred.
+
 - Dialog backdrop: dims only, no blur (re-blurring the whole screen on every frame was the
   heaviest part of opening a dialog, about a quarter of its frame time).
 

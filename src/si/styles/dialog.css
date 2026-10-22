@@ -8,15 +8,23 @@
 	padding: 16px;
 }
 /* The backdrop: a tint that fades in (no blur — re-blurring the whole screen on
-   every frame was the heaviest part of opening a dialog). */
-.si-scrim-tint {
+   every frame was the heaviest part of opening a dialog). It is an absolute layer
+   in the page, placed by the component where the fixed scrim is and reaching
+   --si-overscan past it, so it also covers the page under Safari's status bar and
+   toolbar (which clips fixed layers). The sheet's paper runs on the same way. */
+.si-scrim-under,
+.si-scrim-paper {
 	position: absolute;
-	/* past the viewport: covers the page under Safari's status bar and toolbar too */
-	inset: calc(-1 * var(--si-overscan)) 0;
+	left: 0;
+	right: 0;
+	z-index: calc(var(--si-z-dialog) - 1);
 	pointer-events: none;
 }
-.si-scrim-tint {
+.si-scrim-under {
 	background: var(--si-scrim);
+}
+.si-scrim-paper {
+	background: var(--si-paper-raised);
 }
 .si-dialog {
 	position: relative;
