@@ -1,24 +1,26 @@
 import {
+	Bookmark,
 	BookOpen,
 	Check,
 	ChevronDown,
 	Cloud,
-	CloudCheck,
 	Copy,
 	ExternalLink,
+	Feather,
 	Eye,
 	EyeOff,
 	Folder,
 	FolderInput,
+	Heart,
 	Inbox,
-	KeyRound,
 	LayoutGrid,
+	Leaf,
 	List,
 	Lock,
-	LockOpen,
 	LogOut,
 	Menu as MenuIcon,
 	Monitor,
+	Mountain,
 	Moon,
 	Paperclip,
 	Pencil,
@@ -29,7 +31,6 @@ import {
 	Search,
 	Settings,
 	Share2,
-	ShieldCheck,
 	SlidersHorizontal,
 	Smartphone,
 	Sparkles,
@@ -38,7 +39,7 @@ import {
 	Tag as TagIcon,
 	Trash2,
 	Users,
-	WandSparkles,
+	Volume2,
 	X,
 	type LucideIcon,
 } from "lucide-react";
@@ -186,7 +187,7 @@ function Hero() {
 						水祀丹青<small>SITYLE · 设计语言 · {VERSION}</small>
 					</h1>
 					<p className="sc-lede">石绿为发，石青为手，泥金为饰，浓墨为衣——取「祀」的颜色，铺在一张宣纸上。</p>
-					<p className="sc-sub">安静的水墨底子，加上现代 Material 式的交互：按下时墨滴在纸上晕开，开关带一点弹性，对话框像一张纸被轻轻放下。适用于密码管理器，也适用于以后的每个项目。</p>
+					<p className="sc-sub">安静的水墨底子，加上现代 Material 式的交互：按下时墨滴在纸上晕开，开关带一点弹性，对话框像一张纸被轻轻放下。一套颜色、一种节奏，用在以后的每一个项目里。</p>
 					<div className="sc-cta">
 						<Button size="lg" pill icon={<Sparkles />} onClick={() => document.getElementById("components")?.scrollIntoView({ behavior: "smooth" })}>
 							看看组件
@@ -283,17 +284,17 @@ function Colors() {
 /* ── 字体 ── */
 function Type() {
 	const rows: Array<[string, React.CSSProperties, string]> = [
-		["brush · 72\n马善政楷", { font: "400 64px/1.05 var(--si-font-brush)" }, "密码管理器"],
-		["display · 30/700\n思源宋体", { font: "700 30px/1.3 var(--si-font-serif)", letterSpacing: ".03em" }, "盗贼之神也无可奈何的神器"],
-		["title · 19/700\n思源宋体", { font: "700 19px/1.4 var(--si-font-serif)" }, "删除「招商银行」？"],
-		["body · 15/400\n思源黑体", { maxWidth: "36em" }, "内容在你的浏览器里加密后才保存，谷歌和我们都看不到。正文保持每行三十到四十个汉字，行高 1.65。"],
-		["label · 13/500\n思源黑体", { font: "500 13px/1.4 var(--si-font-sans)", color: "var(--si-ink-2)" }, "账号 · 密码 · 网址 · 备注"],
-		["mono · 14/500\nJetBrains Mono", { font: "500 14px/1.4 var(--si-font-mono)", letterSpacing: ".06em" }, "k7#Vq2!mR9@xL4 · 6225 8800 0000 5678"],
+		["brush · 72\n马善政楷", { font: "400 64px/1.05 var(--si-font-brush)" }, "春江花月夜"],
+		["display · 30/700\n思源宋体", { font: "700 30px/1.3 var(--si-font-serif)", letterSpacing: ".03em" }, "江畔何人初见月，江月何年初照人"],
+		["title · 19/700\n思源宋体", { font: "700 19px/1.4 var(--si-font-serif)" }, "删除「静夜思」？"],
+		["body · 15/400\n思源黑体", { maxWidth: "36em" }, "春江潮水连海平，海上明月共潮生。滟滟随波千万里，何处春江无月明。正文保持每行三十到四十个汉字，行高 1.65。"],
+		["label · 13/500\n思源黑体", { font: "500 13px/1.4 var(--si-font-sans)", color: "var(--si-ink-2)" }, "诗名 · 作者 · 朝代 · 注释"],
+		["mono · 14/500\nJetBrains Mono", { font: "500 14px/1.4 var(--si-font-mono)", letterSpacing: ".06em" }, "卷一百一十七 · 618–907 · #2c7a58"],
 	];
 	return (
 		<section className="sc-section" id="type" aria-labelledby="h-type">
 			<Head id="type" title="字体" en="Type">
-				书法字只用于品牌和极少数大标题；标题用宋体，正文和界面用黑体，密码、色值等用等宽字。
+				书法字只用于品牌和极少数大标题；标题用宋体，正文和界面用黑体，编号、年份、色值等用等宽字。
 			</Head>
 			<Card>
 				{rows.map(([spec, style, text]) => (
@@ -373,27 +374,27 @@ function MotionSection() {
 /* ── 组件 ── */
 function Components() {
 	const [saving, setSaving] = useState<"idle" | "busy" | "done">("idle");
-	const [user, setUser] = useState("wang.xiaoming@163.com");
-	const [pw, setPw] = useState("k7#Vq2!mR9@xL4");
-	const [mail, setMail] = useState("xiaoming@");
-	const [notes, setNotes] = useState("网银 U 盾放在书房抽屉");
+	const [title, setTitle] = useState("春江花月夜");
+	const [pw, setPw] = useState("chunjiang-huayue-ye");
+	const [page, setPage] = useState("一二七");
+	const [notes, setNotes] = useState("张若虚，扬州人，与贺知章、张旭、包融并称「吴中四士」。");
 	const [sync, setSync] = useState(true);
 	const [fields, setFields] = useState(false);
 	const [symbols, setSymbols] = useState(true);
 	const [similar, setSimilar] = useState(false);
-	const [lock, setLock] = useState("10");
+	const [pace, setPace] = useState("mid");
 	const [view, setView] = useState<"list" | "table" | "cards">("list");
-	const [tab, setTab] = useState<"book" | "general" | "account">("book");
+	const [tab, setTab] = useState<"text" | "plain" | "note">("text");
 	const [chips, setChips] = useState<Set<string>>(new Set(["全部"]));
 	const [dialog, setDialog] = useState(false);
 	const [confirm, setConfirm] = useState(false);
 	const [search, setSearch] = useState("");
-	const [nav, setNav] = useState("bank");
+	const [nav, setNav] = useState("tang");
 	const [size, setSize] = useState("n");
 	const [step, setStep] = useState(2);
-	const [mode, setMode] = useState<"pw" | "open">("pw");
-	const [category, setCategory] = useState("bank");
-	const mailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail);
+	const [layout, setLayout] = useState<"v" | "h">("v");
+	const [form, setForm] = useState("shi");
+	const pageOk = /^\d+$/.test(page);
 
 	const save = () => {
 		if (saving !== "idle") return;
@@ -401,7 +402,11 @@ function Components() {
 		setTimeout(() => setSaving("done"), 1200);
 		setTimeout(() => setSaving("idle"), 2800);
 	};
-	const panels = { book: "名称、保护方式、分享、功能开关和备份。", general: "外观（宣纸 / 浓墨）、字号、语言、自动锁定。", account: "谷歌账户、同步状态、别人分享给我的密码本。" };
+	const panels = {
+		text: "春江潮水连海平，海上明月共潮生。",
+		plain: "春天的江潮浩浩荡荡，与大海连成一片；一轮明月从海上升起，像是随着潮水一同涌出。",
+		note: "全篇以月为线索，由景入情，闻一多称之为「诗中的诗，顶峰上的顶峰」。",
+	};
 
 	return (
 		<section className="sc-section" id="components" aria-labelledby="h-components">
@@ -450,52 +455,52 @@ function Components() {
 
 				<Card title="输入框" note="标签在框内，输入时上浮；复制、显示等操作放在框的右端。">
 					<div className="sc-stack">
-						<TextField label="账号" value={user} onChange={(e) => setUser(e.target.value)} end={<CopyButton value={user} />} />
-						<PasswordField label="密码" value={pw} onChange={(e) => setPw(e.target.value)} strength />
+						<TextField label="诗名" value={title} onChange={(e) => setTitle(e.target.value)} end={<CopyButton value={title} />} />
+						<PasswordField label="口令" value={pw} onChange={(e) => setPw(e.target.value)} strength />
 						<TextField
-							label="找回邮箱"
-							value={mail}
-							onChange={(e) => setMail(e.target.value)}
-							hint="用来接收找回提示"
-							error={mailOk ? undefined : "邮箱格式不对，少了「@」后面的部分"}
+							label="页码"
+							value={page}
+							onChange={(e) => setPage(e.target.value)}
+							hint="《全唐诗》中的页码"
+							error={pageOk ? undefined : "页码只能填数字，如 127"}
 						/>
-						<TextAreaField label="备注" value={notes} onChange={(e) => setNotes(e.target.value)} />
+						<TextAreaField label="注释" value={notes} onChange={(e) => setNotes(e.target.value)} />
 						<SelectField
-							label="分类"
-							value={category}
-							onChange={setCategory}
+							label="体裁"
+							value={form}
+							onChange={setForm}
 							options={[
-								{ value: "", label: "不分类" },
-								{ value: "bank", label: "银行理财" },
-								{ value: "social", label: "社交" },
-								{ value: "shop", label: "购物" },
+								{ value: "", label: "不限" },
+								{ value: "shi", label: "诗" },
+								{ value: "ci", label: "词" },
+								{ value: "qu", label: "曲" },
 							]}
 						/>
 						<div style={{ display: "grid", gap: 6 }}>
 							<label htmlFor="plain-input" className="sc-muted">
 								普通输入框（标签在上方）
 							</label>
-							<Input id="plain-input" placeholder="如：日常、工作、机密" />
+							<Input id="plain-input" placeholder="如：思乡、送别、边塞" />
 						</div>
 					</div>
 				</Card>
 
 				<Card title="开关 · 勾选 · 单选" note="按住开关时滑块会变宽，松开后弹到位。">
 					<div className="sc-stack">
-						<Switch checked={sync} onChange={setSync} label="自动同步" description="登录谷歌账户后保持同步" />
-						<Switch checked={fields} onChange={setFields} label="自定义字段" description="每本单独开启" />
+						<Switch checked={sync} onChange={setSync} label="显示拼音" description="在每个字上方标注读音" />
+						<Switch checked={fields} onChange={setFields} label="显示注释" description="读到生僻字时展开" />
 						<div className="sc-row" style={{ gap: 20 }}>
 							<Checkbox checked={symbols} onChange={setSymbols}>
-								包含符号
+								标点
 							</Checkbox>
 							<Checkbox checked={similar} onChange={setSimilar}>
-								避开易混字符
+								繁体
 							</Checkbox>
 						</div>
-						<RadioGroup label="自动锁定" value={lock} onChange={setLock}>
-							<Radio value="5">5 分钟</Radio>
-							<Radio value="10">10 分钟</Radio>
-							<Radio value="0">从不</Radio>
+						<RadioGroup label="朗读速度" value={pace} onChange={setPace}>
+							<Radio value="slow">慢</Radio>
+							<Radio value="mid">适中</Radio>
+							<Radio value="fast">快</Radio>
 						</RadioGroup>
 					</div>
 				</Card>
@@ -517,13 +522,13 @@ function Components() {
 						</div>
 						<div>
 							<Tabs
-								label="设置"
+								label="阅读"
 								value={tab}
 								onChange={setTab}
 								options={[
-									{ value: "book", label: "本密码本" },
-									{ value: "general", label: "通用" },
-									{ value: "account", label: "账户与同步" },
+									{ value: "text", label: "原文" },
+									{ value: "plain", label: "译文" },
+									{ value: "note", label: "赏析" },
 								]}
 							/>
 							<motion.div key={tab} className="si-tab-panel" role="tabpanel" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
@@ -536,7 +541,7 @@ function Components() {
 				<Card title="标签 · 头像 · 提示" note="筛选用可点的标签；状态用小色块。鼠标停在图标按钮上会出现提示。">
 					<div className="sc-stack">
 						<div className="sc-row">
-							{["全部", "社交", "银行理财", "购物", "邮箱"].map((c) => (
+							{["全部", "唐诗", "宋词", "元曲", "乐府"].map((c) => (
 								<Chip
 									key={c}
 									selected={chips.has(c)}
@@ -554,26 +559,26 @@ function Components() {
 							))}
 						</div>
 						<div className="sc-row">
-							<Tag icon={<Check />}>已同步</Tag>
-							<Tag color="azure">共享</Tag>
-							<Tag color="gold">等待打开后同步</Tag>
-							<Tag color="danger">保存失败</Tag>
+							<Tag icon={<Check />}>已背诵</Tag>
+							<Tag color="azure">盛唐</Tag>
+							<Tag color="gold">待复习</Tag>
+							<Tag color="danger">有异文</Tag>
 						</div>
 						<div className="sc-row" style={{ gap: 18 }}>
 							<AvatarStack>
-								<Avatar name="微信" />
-								<Avatar name="招商银行" color="azure" />
-								<Avatar name="支付宝" color="gold" />
-								<Avatar name="京东" color="danger" />
+								<Avatar name="李白" />
+								<Avatar name="杜甫" color="azure" />
+								<Avatar name="王维" color="gold" />
+								<Avatar name="苏轼" color="danger" />
 							</AvatarStack>
-							<IconButton label="锁定">
-								<Lock />
+							<IconButton label="收藏">
+								<Bookmark />
 							</IconButton>
 							<IconButton label="设置">
 								<Settings />
 							</IconButton>
-							<IconButton label="同步状态：刚刚">
-								<CloudCheck />
+							<IconButton label="朗读">
+								<Volume2 />
 							</IconButton>
 						</div>
 					</div>
@@ -591,7 +596,7 @@ function Components() {
 								)}
 								items={[
 									{ label: "重命名", icon: <Pencil />, onSelect: () => {} },
-									{ label: "移到分类…", icon: <FolderInput />, onSelect: () => {} },
+									{ label: "加入诗单…", icon: <FolderInput />, onSelect: () => {} },
 									{ label: "分享", icon: <Share2 />, kbd: "Ctrl S", onSelect: () => {} },
 									"divider",
 									{ label: "删除", icon: <Trash2 />, danger: true, onSelect: () => setDialog(true) },
@@ -616,16 +621,16 @@ function Components() {
 					<div className="sc-stack">
 						<SearchField value={search} onChange={setSearch} label="搜索" />
 						<div style={{ display: "grid", gap: 2 }}>
-							<NavItem icon={<Inbox />} label="全部" count={46} current={nav === "all"} onClick={() => setNav("all")} />
-							<NavItem icon={<Folder />} label="银行理财" count={7} current={nav === "bank"} onClick={() => setNav("bank")} />
-							<NavItem icon={<Folder />} label="社交" count={6} current={nav === "social"} onClick={() => setNav("social")} />
-							<NavItem icon={<CloudCheck />} label="已同步 · 刚刚" tone="jade" />
+							<NavItem icon={<Inbox />} label="全部" count={300} current={nav === "all"} onClick={() => setNav("all")} />
+							<NavItem icon={<Folder />} label="唐诗" count={214} current={nav === "tang"} onClick={() => setNav("tang")} />
+							<NavItem icon={<Folder />} label="宋词" count={86} current={nav === "song"} onClick={() => setNav("song")} />
+							<NavItem icon={<Bookmark />} label="已收藏 · 12 首" tone="jade" />
 						</div>
 						<Group title="外观">
 							<GroupRow title="字号" hint="大字号会放大所有文字">
 								<Segmented label="字号" value={size} onChange={setSize} options={[{ value: "n", label: "标准" }, { value: "l", label: "大" }]} />
 							</GroupRow>
-							<GroupRow title="自动锁定" hint="一段时间不操作后锁上">
+							<GroupRow title="朗读" hint="读完一首后自动读下一首">
 								<Button variant="bordered" size="sm">更改</Button>
 							</GroupRow>
 						</Group>
@@ -635,11 +640,11 @@ function Components() {
 				<Card title="步骤 · 选项卡片 · 提示" note="向导用步骤条；二选一用选项卡片；提醒用浅色底的提示。">
 					<div className="sc-stack">
 						<Steps current={step} total={3} label={`第 ${step} 步，共 3 步`} />
-						<RadioCard name="protect" checked={mode === "pw"} onChange={() => setMode("pw")} icon={<Lock />} title="设置总密码（推荐）" description="内容加密保存，打开时需要总密码。" />
-						<RadioCard name="protect" checked={mode === "open"} onChange={() => setMode("open")} icon={<BookOpen />} title="不设密码" description="打开即用，适合不敏感的内容。" />
-						<Note tone="warn">请把总密码写在纸上，放在安全的地方。</Note>
+						<RadioCard name="layout" checked={layout === "v"} onChange={() => setLayout("v")} icon={<BookOpen />} title="竖排（推荐）" description="从右到左，像翻一本线装书。" />
+						<RadioCard name="layout" checked={layout === "h"} onChange={() => setLayout("h")} icon={<List />} title="横排" description="从左到右，适合在手机上读。" />
+						<Note tone="warn">此篇有异文，各版本字句略有不同。</Note>
 						<Note tone="accent" icon={<Users />}>
-							小明 和你分享了「家里」
+							小明 和你分享了诗单「江南」
 						</Note>
 						<div style={{ position: "relative", height: 88, borderRadius: 12, background: "var(--si-paper-sunk)" }}>
 							<span className="sc-muted" style={{ position: "absolute", left: 14, top: 12 }}>
@@ -649,7 +654,7 @@ function Components() {
 						</div>
 						<div className="sc-row">
 							<IconBadge>
-								<Lock />
+								<Feather />
 							</IconBadge>
 							<Button size="sm" variant="flat" onClick={() => setStep((n) => (n % 3) + 1)}>
 								下一步
@@ -666,7 +671,7 @@ function Components() {
 			<ConfirmDialog
 				open={confirm}
 				seal="删"
-				title="删除「家里 Wi-Fi」？"
+				title="删除「江雪」？"
 				body="删除后无法恢复。"
 				confirmLabel="删除"
 				onCancel={() => setConfirm(false)}
@@ -676,7 +681,7 @@ function Components() {
 				open={dialog}
 				onClose={() => setDialog(false)}
 				seal="删"
-				title="删除「招商银行」？"
+				title="删除「静夜思」？"
 				actions={
 					<>
 						<Button variant="ghost" onClick={() => setDialog(false)}>
@@ -688,7 +693,7 @@ function Components() {
 					</>
 				}
 			>
-				删除后无法恢复。同步的设备上也会一起删除。
+				删除后无法恢复，你写的批注也会一起删除。
 			</Dialog>
 		</section>
 	);
@@ -728,20 +733,20 @@ function Directory() {
 
 /* ── 其余组件：滑块、强度、提示、基础输入、自适应高度、印章、手机上的对话框 ── */
 function More() {
-	const [length, setLength] = useState(16);
-	const [pw, setPw] = useState("spring2026");
+	const [lines, setLines] = useState(12);
+	const [pw, setPw] = useState("chunxiao");
 	const [more, setMore] = useState(false);
 	// the kind stays while the dialog plays its closing animation
 	const [phone, setPhone] = useState<"sheet" | "full">("sheet");
 	const [phoneOpen, setPhoneOpen] = useState(false);
-	const [plain, setPlain] = useState("bank");
+	const [plain, setPlain] = useState("tang");
 	return (
 		<>
 			<Card title="滑块 · 强度 · 提示" note="滑块右上角显示当前值；强度条随输入变化；提示在悬停或键盘聚焦时出现。">
 				<div className="sc-stack">
-					<Slider label="密码长度" value={length} min={8} max={32} onChange={setLength} format={(v) => `${v} 位`} />
+					<Slider label="每页行数" value={lines} min={4} max={24} onChange={setLines} format={(v) => `${v} 行`} />
 					<div style={{ display: "grid", gap: 8 }}>
-						<Input mono value={pw} onChange={(e) => setPw(e.target.value)} aria-label="试一个密码" />
+						<Input mono value={pw} onChange={(e) => setPw(e.target.value)} aria-label="试一个口令" />
 						<StrengthMeter value={pw} />
 					</div>
 					<div className="sc-row">
@@ -756,12 +761,12 @@ function More() {
 
 			<Card title="基础输入 · 自适应高度" note="Input / TextArea / Select 是不带浮动标签的原始控件；AutoHeight 让内容变化时高度平滑过渡。">
 				<div className="sc-stack">
-					<Select value={plain} onChange={(e) => setPlain(e.target.value)} aria-label="分类">
-						<option value="bank">银行理财</option>
-						<option value="social">社交</option>
-						<option value="shop">购物</option>
+					<Select value={plain} onChange={(e) => setPlain(e.target.value)} aria-label="朝代">
+						<option value="tang">唐</option>
+						<option value="song">宋</option>
+						<option value="yuan">元</option>
 					</Select>
-					<TextArea rows={2} placeholder="原生多行输入框" aria-label="备注" />
+					<TextArea rows={2} placeholder="写下你的批注" aria-label="批注" />
 					<div className="sc-row">
 						<Button variant="flat" size="sm" icon={<SlidersHorizontal />} onClick={() => setMore((o) => !o)}>
 							{more ? "收起" : "展开更多"}
@@ -779,10 +784,10 @@ function More() {
 
 			<Card title="分组（无卡片）· 印章" note="Group plain 用在本身已是一张纸的地方（如设置对话框）；印章有实心和描边两种。">
 				<div className="sc-stack">
-					<Group plain title="安全">
-						<GroupRow title="自动锁定" hint="一段时间不操作后锁上">
+					<Group plain title="阅读">
+						<GroupRow title="朗读速度" hint="每分钟读多少字">
 							<Button variant="bordered" size="sm">
-								10 分钟
+								200 字
 							</Button>
 						</GroupRow>
 					</Group>
@@ -810,7 +815,7 @@ function More() {
 					open={phoneOpen}
 					onClose={() => setPhoneOpen(false)}
 					phone={phone}
-					title={phone === "full" ? "设置" : "移到分类"}
+					title={phone === "full" ? "阅读设置" : "加入诗单"}
 					actions={<Button onClick={() => setPhoneOpen(false)}>关闭</Button>}
 				>
 					{phone === "full" ? "长内容铺满手机屏幕，底部一条线隔开操作按钮。" : "短内容从屏幕底部升起，点空白处或按 Esc 关闭。"}
@@ -821,13 +826,13 @@ function More() {
 }
 
 /* ── 实例 ── */
-type Sample = { n: string; u: string; c: string; color: Color; pw: string; url: string };
-const ENTRIES: Sample[] = [
-	{ n: "招商银行", u: "6225 8800 0000 5678", c: "银行理财", color: "azure", pw: "Zs!8kq2#Lm4v", url: "cmbchina.com" },
-	{ n: "微信", u: "wxid_xiaoming", c: "社交", color: "jade", pw: "Wx@2026-spring", url: "weixin.qq.com" },
-	{ n: "支付宝", u: "13800138000", c: "银行理财", color: "gold", pw: "Alp#9v!t2Qw", url: "alipay.com" },
-	{ n: "京东", u: "jd_xiaoming", c: "购物", color: "danger", pw: "Jd$4m8@pZr", url: "jd.com" },
-	{ n: "家里 Wi-Fi", u: "TP-LINK_5G_1201", c: "家里设备", color: "jade", pw: "home-1201-green", url: "" },
+type Poem = { title: string; author: string; dynasty: string; form: string; color: Color; text: string; source: string };
+const POEMS: Poem[] = [
+	{ title: "静夜思", author: "李白", dynasty: "唐", form: "五言绝句", color: "jade", text: "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。", source: "zh.wikisource.org/wiki/靜夜思" },
+	{ title: "春晓", author: "孟浩然", dynasty: "唐", form: "五言绝句", color: "azure", text: "春眠不觉晓，处处闻啼鸟。\n夜来风雨声，花落知多少。", source: "zh.wikisource.org/wiki/春曉" },
+	{ title: "江雪", author: "柳宗元", dynasty: "唐", form: "五言绝句", color: "gold", text: "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。", source: "zh.wikisource.org/wiki/江雪" },
+	{ title: "水调歌头", author: "苏轼", dynasty: "宋", form: "词", color: "danger", text: "明月几时有？把酒问青天。\n不知天上宫阙，今夕是何年。", source: "zh.wikisource.org/wiki/水調歌頭_(蘇軾)" },
+	{ title: "天净沙·秋思", author: "马致远", dynasty: "元", form: "小令", color: "jade", text: "枯藤老树昏鸦，小桥流水人家，古道西风瘦马。\n夕阳西下，断肠人在天涯。", source: "zh.wikisource.org/wiki/天淨沙·秋思" },
 ];
 
 function Sample() {
@@ -835,55 +840,59 @@ function Sample() {
 	return (
 		<section className="sc-section" id="sample" aria-labelledby="h-sample">
 			<Head id="sample" title="实例" en="In context">
-				放进密码管理器的样子：列表和详情。示例数据。
+				放进一个读诗的小应用里：左边是诗目，右边是正文和批注。
 			</Head>
 			<div className="sc-sample">
 				<Card style={{ padding: 10 }}>
 					<div style={{ display: "grid", gap: 4 }}>
-						{ENTRIES.map((e, k) => (
-							<ListItem key={e.n} title={e.n} subtitle={e.u} current={k === i} onClick={() => setI(k)} leading={<Avatar name={e.n} color={e.color} />} />
+						{POEMS.map((p, k) => (
+							<ListItem key={p.title} title={p.title} subtitle={`${p.dynasty} · ${p.author}`} current={k === i} onClick={() => setI(k)} leading={<Avatar name={p.author} color={p.color} />} />
 						))}
 					</div>
 				</Card>
 				<Card>
-					<SampleDetail key={i} entry={ENTRIES[i]} />
+					<SampleDetail key={i} poem={POEMS[i]} />
 				</Card>
 			</div>
 		</section>
 	);
 }
 
-function SampleDetail({ entry }: { entry: Sample }) {
-	const [user, setUser] = useState(entry.u);
-	const [pw, setPw] = useState(entry.pw);
-	const [url, setUrl] = useState(entry.url);
+function SampleDetail({ poem }: { poem: Poem }) {
+	const [text, setText] = useState(poem.text);
+	const [note, setNote] = useState("");
+	const [loved, setLoved] = useState(false);
 	return (
 		<motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}>
 			<div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
-				<Avatar name={entry.n} color={entry.color} size={52} />
+				<Avatar name={poem.author} color={poem.color} size={52} />
 				<div style={{ minWidth: 0, flex: 1 }}>
-					<div style={{ font: "700 22px/1.3 var(--si-font-serif)" }}>{entry.n}</div>
-					<div style={{ marginTop: 4 }}>
-						<Tag color={entry.color}>{entry.c}</Tag>
+					<div style={{ font: "700 22px/1.3 var(--si-font-serif)" }}>{poem.title}</div>
+					<div className="sc-row" style={{ marginTop: 4, gap: 8 }}>
+						<span className="sc-muted">
+							{poem.dynasty} · {poem.author}
+						</span>
+						<Tag color={poem.color}>{poem.form}</Tag>
 					</div>
 				</div>
+				<IconButton label={loved ? "取消收藏" : "收藏"} active={loved} onClick={() => setLoved((v) => !v)}>
+					<Heart fill={loved ? "currentColor" : "none"} />
+				</IconButton>
 			</div>
 			<div className="sc-stack">
-				<TextField label="账号" value={user} onChange={(e) => setUser(e.target.value)} end={<CopyButton value={user} />} />
-				<PasswordField label="密码" value={pw} onChange={(e) => setPw(e.target.value)} />
-				{entry.url && (
-					<TextField
-						label="网址"
-						value={url}
-						onChange={(e) => setUrl(e.target.value)}
-						end={[
-							<CopyButton key="c" value={url} />,
-							<IconButton key="o" label="打开网站" onClick={() => window.open(`https://${url}`, "_blank", "noopener")}>
-								<ExternalLink />
-							</IconButton>,
-						]}
-					/>
-				)}
+				<TextAreaField label="原文" value={text} onChange={(e) => setText(e.target.value)} end={<CopyButton value={text} />} />
+				<TextAreaField label="批注" value={note} onChange={(e) => setNote(e.target.value)} hint="读后的一点想法" />
+				<TextField
+					label="出处"
+					value={poem.source}
+					readOnly
+					end={[
+						<CopyButton key="c" value={`https://${poem.source}`} />,
+						<IconButton key="o" label="打开出处" onClick={() => window.open(`https://${poem.source}`, "_blank", "noopener")}>
+							<ExternalLink />
+						</IconButton>,
+					]}
+				/>
 			</div>
 			<div className="sc-row" style={{ marginTop: 18, justifyContent: "flex-end" }}>
 				<Button variant="light" color="danger" icon={<Trash2 />}>
@@ -897,10 +906,10 @@ function SampleDetail({ entry }: { entry: Sample }) {
 
 /* ── 图标 ── */
 const ICONS: Array<[string, LucideIcon]> = [
-	["key-round", KeyRound],
-	["lock", Lock],
-	["lock-open", LockOpen],
-	["shield-check", ShieldCheck],
+	["feather", Feather],
+	["book-open", BookOpen],
+	["bookmark", Bookmark],
+	["heart", Heart],
 	["eye", Eye],
 	["eye-off", EyeOff],
 	["copy", Copy],
@@ -913,15 +922,16 @@ const ICONS: Array<[string, LucideIcon]> = [
 	["tag", TagIcon],
 	["paperclip", Paperclip],
 	["cloud", Cloud],
-	["cloud-check", CloudCheck],
+	["leaf", Leaf],
+	["mountain", Mountain],
 	["refresh-cw", RefreshCw],
 	["share-2", Share2],
 	["users", Users],
 	["settings", Settings],
 	["log-out", LogOut],
 	["external-link", ExternalLink],
-	["wand-sparkles", WandSparkles],
-	["book-open", BookOpen],
+	["volume-2", Volume2],
+	["lock", Lock],
 	["inbox", Inbox],
 	["menu", MenuIcon],
 	["x", X],
@@ -938,7 +948,7 @@ function Icons() {
 					<div className="sc-sizes">
 						{[16, 20, 24, 32].map((s) => (
 							<figure key={s}>
-								<KeyRound size={s} strokeWidth={s >= 32 ? 1.5 : 1.75} />
+								<Feather size={s} strokeWidth={s >= 32 ? 1.5 : 1.75} />
 								{s}
 							</figure>
 						))}
