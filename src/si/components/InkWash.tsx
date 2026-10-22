@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { useTheme } from "../core";
+import { motionReduced, useTheme } from "../core";
 
 type Blot = { x: number; y: number; r: number; rgb: [number, number, number]; alpha: number };
 /** [x, y, radius (fractions of the box), colour token, strength] */
@@ -22,7 +22,7 @@ export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS, className, sty
 	useEffect(() => {
 		const cv = canvas.current!;
 		const list = JSON.parse(blotsKey) as InkBlot[];
-		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const reduce = motionReduced();
 		let raf = 0;
 		const paint = (animate: boolean) => {
 			cancelAnimationFrame(raf);

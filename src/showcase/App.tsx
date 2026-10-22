@@ -99,6 +99,7 @@ import {
 	en,
 	SiProvider,
 	type Tone,
+	type MotionChoice,
 	type ThemeChoice,
 } from "@si";
 import { LangContext, useL, useLang, type Lang } from "./lang";
@@ -138,19 +139,20 @@ export function App() {
 			// not remembered
 		}
 	};
+	const [motionChoice, setMotionChoice] = useState<MotionChoice>("on");
 	useEffect(() => {
 		document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
 	}, [lang]);
 	return (
 		<LangContext.Provider value={lang}>
-			<SiProvider messages={lang === "en" ? en : zh}>
+			<SiProvider messages={lang === "en" ? en : zh} motion={motionChoice}>
 				<AppBar lang={lang} onLang={setLang} />
 				<Hero />
 				<main className="sc-wrap">
 					<Colors />
 					<Type />
 					<Shape />
-					<MotionSection />
+					<MotionSection motion={motionChoice} onMotion={setMotionChoice} />
 					{/* examples hold their own text in state: start them over in the new language */}
 					<Components key={`c-${lang}`} />
 					<Sample key={`s-${lang}`} />
@@ -448,15 +450,15 @@ const LANES: Array<[string, string, string, Transition]> = [
 	["墨晕 ink\n620ms", "ink bloom\n620ms", "var(--si-cinnabar)", { duration: 0.62, ease: [0.22, 1, 0.36, 1] }],
 ];
 
-function MotionSection() {
+function MotionSection({ motion: choice, onMotion }: { motion: MotionChoice; onMotion: (m: MotionChoice) => void }) {
 	const L = useL();
 	const [far, setFar] = useState(false);
 	return (
 		<section className="sc-section" id="motion" aria-labelledby="h-motion">
 			<Head id="motion" title="动效" en="Motion">
 				{L(
-					"四种节奏。进入用「舒展」，有形变的控件（开关、选项卡、对话框）用「回弹」弹簧，离开用「收」，按钮按下时的墨晕用 620ms 慢慢化开。系统开启「减少动态效果」时全部关闭。",
-					'Four rhythms. Things arrive with "unfold", controls that change shape (switches, tabs, dialogs) "bounce" on a spring, things leave with "gather", and the ink under a pressed button blooms over 620ms. All of it stops when the system asks for reduced motion.',
+					"四种节奏。进入用「舒展」，有形变的控件（开关、选项卡、对话框）用「回弹」弹簧，离开用「收」，按钮按下时的墨晕用 620ms 慢慢化开。动效默认一直开着；<SiProvider motion> 可改为「减少」（只留淡入淡出）或跟随系统的「减少动态效果」。",
+					'Four rhythms. Things arrive with "unfold", controls that change shape (switches, tabs, dialogs) "bounce" on a spring, things leave with "gather", and the ink under a pressed button blooms over 620ms. Motion is always on by default; <SiProvider motion> can reduce it (fades only) or follow the system\'s "reduce motion".',
 				)}
 			</Head>
 			<Card>
@@ -474,6 +476,16 @@ function MotionSection() {
 					<Button variant="flat" size="sm" icon={<Play />} onClick={() => setFar((f) => !f)}>
 						{L("播放", "Play")}
 					</Button>
+					<Segmented<MotionChoice>
+						label={L("动效", "Motion")}
+						value={choice}
+						onChange={onMotion}
+						options={[
+							{ value: "on", label: L("开", "On") },
+							{ value: "reduce", label: L("减少", "Reduced") },
+							{ value: "system", label: L("跟随系统", "System") },
+						]}
+					/>
 				</div>
 			</Card>
 		</section>

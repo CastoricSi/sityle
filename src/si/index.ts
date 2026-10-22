@@ -3,7 +3,7 @@
 import "./tokens.css";
 import "./components.css";
 
-export { BrushStroke, ease, inkHandler, popover, SiProvider, spawnInk, spring, themeScript, useTheme, type ThemeChoice } from "./core";
+export { BrushStroke, ease, inkHandler, popover, SiProvider, motionReduced, spawnInk, spring, themeScript, useTheme, type MotionChoice, type ThemeChoice } from "./core";
 export { Button, CopyButton, IconButton, type ButtonLinkProps, type ButtonProps, type Tone, type CopyButtonProps, type IconButtonProps } from "./components/Button";
 export {
 	Avatar,

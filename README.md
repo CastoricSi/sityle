@@ -58,10 +58,17 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
   <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
   ```
 
+- **Motion** is always on by default, even when the system asks to reduce it
+  (Windows "animation effects" off, macOS "reduce motion"), which would otherwise
+  quietly turn the ink, springs and slides off. `<SiProvider motion="reduce">`
+  keeps fades only; `motion="system"` follows the system setting. The choice is
+  on `<html data-si-motion>`, which the CSS (and `base.css`) read too.
 - Colours are CSS variables `--si-*`, each written once as `light-dark(light, dark)`.
   Fields draw a `--si-ring` focus halo outside their box: a scroll container
   (`overflow` not visible) right at a field's edge clips it, so leave that much
-  padding there. `--si-overscan` is how far a dialog's backdrop reaches past the
+  padding there. While a dialog is open the page's scrollbar is hidden and the page
+  padded by exactly its width; `--si-scrollbar` on `<html>` holds that width for an
+  app's own `position: fixed` bars. `--si-overscan` is how far a dialog's backdrop reaches past the
   viewport: Safari on iPhone shows the page under its status bar and toolbar but
   clips `position: fixed` layers to the viewport, so the backdrop (and a sheet's
   paper) are absolute layers in the page instead, which Safari does paint there. There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
@@ -191,7 +198,7 @@ vite.lib.config.ts Package build; react / motion stay external.
 - **Buttons:** one `solid` per area; `flat` / `bordered` / `light` for the rest.
   Navigation is a link (`href`), an action is a button.
 - **Motion:** entering ease-out; shape changes spring (`spring.bouncy`);
-  leaving ease-in, short. Everything respects "reduce motion".
+  leaving ease-in, short. `<SiProvider motion>` decides whether "reduce motion" applies.
 - **Icons:** stroke icons (Lucide in the style page); icon-only buttons always have a tooltip.
 - **Dialogs** only for decisions; feedback where the action was, no toasts.
   On phones (≤600px) a Dialog is a bottom sheet; pass `phone="full"` for

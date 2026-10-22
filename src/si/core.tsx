@@ -36,8 +36,23 @@ export const popover = (up: boolean) =>
 		exit: { opacity: 0, scale: 0.98, transition: { duration: 0.12, ease: ease.in } },
 	}) as const;
 
+/* ── motion setting ── */
+/**
+ * `on` (default): full motion, whatever the system says. `reduce`: fades only.
+ * `system`: follow the system's "reduce motion" setting.
+ */
+export type MotionChoice = "on" | "reduce" | "system";
+const MOTION_ATTR = "data-si-motion";
+const REDUCE_QUERY = "(prefers-reduced-motion: reduce)";
+
+/** Whether motion is reduced right now (the provider's `motion`, read from <html data-si-motion>). */
+export function motionReduced(): boolean {
+	if (typeof document === "undefined") return false;
+	const m = document.documentElement.getAttribute(MOTION_ATTR);
+	return m === "reduce" || (m === "system" && typeof matchMedia !== "undefined" && matchMedia(REDUCE_QUERY).matches);
+}
+
 /* ── ink ripple ── */
-const prefersReducedMotion = () => typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
  * Drops ink at the pointer: grows with a ragged, bleeding edge, then fades
@@ -49,7 +64,7 @@ const prefersReducedMotion = () => typeof matchMedia !== "undefined" && matchMed
  * and a quick tap still gets its drop when it lifts.
  */
 export function spawnInk(host: HTMLElement, clientX: number, clientY: number, pointerType = "mouse") {
-	if (prefersReducedMotion()) return;
+	if (motionReduced()) return;
 	ensureDefs();
 	if (pointerType !== "touch") {
 		const release = drop(host, clientX, clientY);
@@ -178,7 +193,7 @@ export const themeScript = `try{var t=localStorage.getItem(${JSON.stringify(STOR
 
 /**
  * Wrap the app once: theme (宣纸 / 浓墨 / system), the SVG filters the ink
- * effects use, and Motion's reduced-motion handling.
+ * effects use, and how much things move (`motion`).
  * Uncontrolled, the theme is remembered in localStorage. Pass `theme` (and
  * `onThemeChange`) when the app keeps the setting itself.
  */
@@ -187,18 +202,23 @@ export function SiProvider({
 	theme,
 	onThemeChange,
 	messages,
+	motion = "on",
 }: {
 	children: React.ReactNode;
 	theme?: ThemeChoice;
 	onThemeChange?: (choice: ThemeChoice) => void;
 	/** The texts sityle writes itself (default Chinese): `en`, or your own / a partial override. */
 	messages?: Partial<Messages>;
+	/** Motion: `on` (default) ignores the system's "reduce motion"; `reduce` or `system` to honour it. */
+	motion?: MotionChoice;
 }) {
 	const own = useSyncExternalStore(storedChoice.subscribe, storedChoice.get, () => "system" as const);
 	const controlled = theme !== undefined;
 	const choice = controlled ? theme : own;
 	const systemDark = useMediaQuery("(prefers-color-scheme: dark)");
 	const resolved = choice === "system" ? (systemDark ? "dark" : "light") : choice;
+	const systemReduce = useMediaQuery(REDUCE_QUERY);
+	const reduce = motion === "reduce" || (motion === "system" && systemReduce);
 
 	useLayoutEffect(ensureDefs, []);
 	// a layout effect: children's effects (InkWash reads tokens) already see the new theme
@@ -207,6 +227,13 @@ export function SiProvider({
 		if (choice === "system") root.removeAttribute("data-theme");
 		else root.setAttribute("data-theme", choice);
 	}, [choice]);
+	// the CSS (shortened transitions) and the ink read the setting from <html>
+	useLayoutEffect(() => {
+		const root = document.documentElement;
+		const before = root.getAttribute(MOTION_ATTR);
+		root.setAttribute(MOTION_ATTR, motion);
+		return () => (before === null ? root.removeAttribute(MOTION_ATTR) : root.setAttribute(MOTION_ATTR, before));
+	}, [motion]);
 
 	const setChoice = useCallback(
 		(c: ThemeChoice) => {
@@ -221,7 +248,7 @@ export function SiProvider({
 	return (
 		<ThemeCtx.Provider value={value}>
 			<MessagesContext.Provider value={texts}>
-				<MotionConfig reducedMotion="user">{children}</MotionConfig>
+				<MotionConfig reducedMotion={reduce ? "always" : "never"}>{children}</MotionConfig>
 			</MessagesContext.Provider>
 		</ThemeCtx.Provider>
 	);

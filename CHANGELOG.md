@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **Motion is on by default.** The system's "reduce motion" (Windows' animation
+  effects switched off, macOS' reduce motion) used to turn off the ink, springs and
+  slides without a word, so one computer looked smooth and another stripped.
+  `<SiProvider motion>`: `"on"` (default), `"reduce"` (fades only) or `"system"`.
+  `motionReduced()` tells your own code. The style page has the switch under 动效.
+- Dialog: the page behind no longer moves when its scrollbar is hidden: the padding
+  that stands in for it is measured exactly (fractional scrollbars on zoomed pages
+  were rounded). `--si-scrollbar` holds the width for an app's own fixed bars.
+
 - Dialog backdrop on iPhone: Safari clips `position: fixed` layers to the viewport, so
   the 0.9.2 overscan never showed under its status bar and toolbar. The tint, and the
   sheet's / full-screen dialog's paper past the screen edges, are now absolute layers

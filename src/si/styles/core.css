@@ -21,13 +21,24 @@
 	margin: 0;
 	text-wrap: balance;
 }
+/* Reduced motion only when the app asks (<SiProvider motion="reduce" | "system">). */
+:where([data-si-motion="reduce"]) :where([class*="si-"]),
+:where([data-si-motion="reduce"]) :where([class*="si-"])::before,
+:where([data-si-motion="reduce"]) :where([class*="si-"])::after,
+:where([data-si-motion="reduce"]) :where([class*="si-"]) *,
+:where([data-si-motion="reduce"]) :where([class*="si-"]) *::before,
+:where([data-si-motion="reduce"]) :where([class*="si-"]) *::after {
+	animation-duration: 1ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 1ms !important;
+}
 @media (prefers-reduced-motion: reduce) {
-	:where([class*="si-"]),
-	:where([class*="si-"])::before,
-	:where([class*="si-"])::after,
-	:where([class*="si-"]) *,
-	:where([class*="si-"]) *::before,
-	:where([class*="si-"]) *::after {
+	:where([data-si-motion="system"]) :where([class*="si-"]),
+	:where([data-si-motion="system"]) :where([class*="si-"])::before,
+	:where([data-si-motion="system"]) :where([class*="si-"])::after,
+	:where([data-si-motion="system"]) :where([class*="si-"]) *,
+	:where([data-si-motion="system"]) :where([class*="si-"]) *::before,
+	:where([data-si-motion="system"]) :where([class*="si-"]) *::after {
 		animation-duration: 1ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 1ms !important;
