@@ -47,7 +47,11 @@ export function Dialog({
 	useEffect(() => {
 		if (!open) return;
 		lastFocus.current = document.activeElement as HTMLElement | null;
-		const t = setTimeout(() => box.current?.querySelector<HTMLElement>(".si-dialog-actions button, button, input")?.focus(), 30);
+		// Focus the first action (the safe choice); without actions, the first control.
+		const t = setTimeout(() => {
+			const el = box.current?.querySelector<HTMLElement>(".si-dialog-actions button") ?? box.current?.querySelector<HTMLElement>("button, input, [tabindex]");
+			el?.focus({ preventScroll: true });
+		}, 30);
 		// Only the topmost dialog answers Escape (a confirm over settings closes alone).
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key !== "Escape") return;
