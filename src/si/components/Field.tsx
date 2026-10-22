@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
 import { useIsClient } from "../internal/client";
+import { useControllable } from "../internal/controllable";
 import { LAYER_ATTR } from "../internal/modal";
 import { useAnchoredPosition, useDismiss } from "../internal/popover";
 import { CopyButton, IconButton } from "./Button";
@@ -95,8 +96,10 @@ function FieldShell({ error, hint, hintId, className, children }: { error?: Reac
 	);
 }
 
-export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono"> & {
-	value: string;
+export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono" | "value" | "defaultValue"> & {
+	/** Controlled value; or leave it out and give `defaultValue`. */
+	value?: string;
+	defaultValue?: string;
 	/** Show the strength bar under the box. */
 	strength?: boolean;
 	/** Strength bar labels, weakest first (5). */
@@ -113,8 +116,10 @@ export type PasswordFieldProps = Omit<TextFieldProps, "type" | "end" | "mono"> &
 };
 
 /** Password box: show / hide, copy, optional strength bar. */
-export function PasswordField({ value, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, autoComplete = "current-password", ...props }: PasswordFieldProps) {
+export function PasswordField({ value: valueIn, defaultValue = "", onChange, strength, strengthLabels, copy = true, defaultVisible = false, extra, labels, className, autoComplete = "current-password", ...props }: PasswordFieldProps) {
 	const [visible, setVisible] = useState(defaultVisible);
+	// Track the text even when uncontrolled: the copy button and strength bar need it.
+	const [value, setValue] = useControllable(valueIn, defaultValue, undefined);
 	const end = [
 		<IconButton key="eye" label={visible ? (labels?.hide ?? "隐藏") : (labels?.show ?? "显示")} onClick={() => setVisible((v) => !v)} active={visible}>
 			<AnimatePresence mode="popLayout" initial={false}>
@@ -128,7 +133,19 @@ export function PasswordField({ value, strength, strengthLabels, copy = true, de
 	].filter(Boolean);
 	return (
 		<div className={className}>
-			<TextField spellCheck={false} {...props} autoComplete={autoComplete} value={value} type={visible ? "text" : "password"} mono end={end} />
+			<TextField
+				spellCheck={false}
+				{...props}
+				autoComplete={autoComplete}
+				value={value}
+				onChange={(e) => {
+					setValue(e.target.value);
+					onChange?.(e);
+				}}
+				type={visible ? "text" : "password"}
+				mono
+				end={end}
+			/>
 			{strength && <StrengthMeter value={value} labels={strengthLabels} />}
 		</div>
 	);
@@ -137,9 +154,11 @@ export function PasswordField({ value, strength, strengthLabels, copy = true, de
 export type SelectOption<T extends string = string> = { value: T; label: React.ReactNode; icon?: React.ReactNode };
 
 export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> &
-	Omit<React.ComponentPropsWithRef<"button">, "value" | "onChange" | "children" | "type" | "name" | "className"> & {
-		value: T;
-		onChange: (value: T) => void;
+	Omit<React.ComponentPropsWithRef<"button">, "value" | "defaultValue" | "onChange" | "children" | "type" | "name" | "className"> & {
+		/** Controlled value; or leave it out and give `defaultValue`. */
+		value?: T;
+		defaultValue?: T;
+		onChange?: (value: T) => void;
 		options: SelectOption<T>[];
 		/** Submitted with the form (a hidden input carries the value). */
 		name?: string;
@@ -152,7 +171,8 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> &
  * The list floats above the page, so a dialog or card never clips it.
  */
 /** Other button props (onBlur, aria-*, ref…) go to the trigger; `style` to the box. */
-export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, name, disabled, style, ref, onKeyDown, onClick, ...props }: SelectFieldProps<T>) {
+export function SelectField<T extends string = string>({ label, hint, error, className, id, value: valueIn, defaultValue, onChange: onChangeIn, options, name, disabled, style, ref, onKeyDown, onClick, ...props }: SelectFieldProps<T>) {
+	const [value, onChange] = useControllable(valueIn, defaultValue ?? options[0]?.value, onChangeIn);
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	const listId = `${fieldId}-list`;
@@ -249,7 +269,7 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 				</button>
 				<label htmlFor={fieldId}>{label}</label>
 				<ChevronDown className="si-field-chevron" aria-hidden="true" />
-				{name !== undefined && <input type="hidden" name={name} value={value} disabled={disabled} />}
+				{name !== undefined && <input type="hidden" name={name} value={value ?? ""} disabled={disabled} />}
 			</div>
 			{client &&
 				createPortal(

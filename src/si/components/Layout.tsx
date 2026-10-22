@@ -4,6 +4,7 @@ import { useId, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 
 import { cn, inkHandler, spring } from "../core";
+import { useControllable } from "../internal/controllable";
 import { Button, IconButton } from "./Button";
 import { Card } from "./Display";
 import { Dialog } from "./Dialog";
@@ -129,10 +130,18 @@ export function IconBadge({ children, size = 40, className, style, ...props }: R
 }
 
 /** Search box with a magnifier; Escape or the × clears it. */
-export type SearchFieldProps = Omit<React.ComponentPropsWithRef<"input">, "value" | "onChange" | "type"> & { value: string; onChange: (q: string) => void; label: string; clearLabel?: string };
+export type SearchFieldProps = Omit<React.ComponentPropsWithRef<"input">, "value" | "defaultValue" | "onChange" | "type"> & {
+	/** Controlled query; or leave it out and give `defaultValue`. */
+	value?: string;
+	defaultValue?: string;
+	onChange?: (q: string) => void;
+	label: string;
+	clearLabel?: string;
+};
 
 /** Native props go to the <input>; `className` / `style` to the wrapper. */
-export function SearchField({ value, onChange, label, clearLabel = "清除", className, style, id, onKeyDown, ...props }: SearchFieldProps) {
+export function SearchField({ value: valueIn, defaultValue = "", onChange: onChangeIn, label, clearLabel = "清除", className, style, id, onKeyDown, ...props }: SearchFieldProps) {
+	const [value, onChange] = useControllable(valueIn, defaultValue, onChangeIn);
 	const box = useRef<HTMLDivElement>(null);
 	const autoId = useId();
 	return (

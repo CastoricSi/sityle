@@ -1,11 +1,14 @@
 import { useId } from "react";
 
 import { cn } from "../core";
+import { useControllable } from "../internal/controllable";
 
-export type SliderProps = Omit<React.ComponentPropsWithRef<"input">, "type" | "value" | "onChange" | "min" | "max" | "step"> & {
+export type SliderProps = Omit<React.ComponentPropsWithRef<"input">, "type" | "value" | "defaultValue" | "onChange" | "min" | "max" | "step"> & {
 	label: React.ReactNode;
-	value: number;
-	onChange: (v: number) => void;
+	/** Controlled value; or leave it out and give `defaultValue`. */
+	value?: number;
+	defaultValue?: number;
+	onChange?: (v: number) => void;
 	min?: number;
 	max?: number;
 	step?: number;
@@ -18,7 +21,8 @@ export type SliderProps = Omit<React.ComponentPropsWithRef<"input">, "type" | "v
  * grows a little while dragged. Shows the current value (formatted) on the right.
  * Native props go to the <input type="range">; `className` / `style` to the wrapper.
  */
-export function Slider({ label, value, onChange, min = 0, max = 100, step = 1, format = String, id, className, style, disabled, ...props }: SliderProps) {
+export function Slider({ label, value: valueIn, defaultValue, onChange: onChangeIn, min = 0, max = 100, step = 1, format = String, id, className, style, disabled, ...props }: SliderProps) {
+	const [value, onChange] = useControllable(valueIn, defaultValue ?? min, onChangeIn);
 	const autoId = useId();
 	const inputId = id ?? autoId;
 	const p = max > min ? Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100)) : 0;

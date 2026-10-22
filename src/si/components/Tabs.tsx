@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { useId } from "react";
 
 import { cn, spring } from "../core";
+import { useControllable } from "../internal/controllable";
 
 export type Option<T extends string> = { value: T; label?: React.ReactNode; icon?: React.ReactNode; title?: string };
 
@@ -9,15 +10,17 @@ export type Option<T extends string> = { value: T; label?: React.ReactNode; icon
  * Switch between a few views or settings. The raised pill slides to the
  * chosen option. `role="radiogroup"` for settings, `"tablist"` for views.
  */
-export type SegmentedProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role"> & {
-	value: T;
-	onChange: (v: T) => void;
+export type SegmentedProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role" | "defaultValue"> & {
+	value?: T;
+	defaultValue?: T;
+	onChange?: (v: T) => void;
 	options: Option<T>[];
 	label: string;
 	role?: "radiogroup" | "tablist";
 };
 
-export function Segmented<T extends string>({ value, onChange, options, label, role = "radiogroup", className, ...props }: SegmentedProps<T>) {
+export function Segmented<T extends string>({ value: valueIn, defaultValue, onChange: onChangeIn, options, label, role = "radiogroup", className, ...props }: SegmentedProps<T>) {
+	const [value, onChange] = useControllable(valueIn, defaultValue ?? options[0]?.value, onChangeIn);
 	const id = useId();
 	const itemRole = role === "tablist" ? "tab" : "radio";
 	return (
@@ -46,9 +49,16 @@ export function Segmented<T extends string>({ value, onChange, options, label, r
 }
 
 /** Sections within a page; a translucent brush swipe slides behind the current one, like a highlighter. */
-export type TabsProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role"> & { value: T; onChange: (v: T) => void; options: Option<T>[]; label: string };
+export type TabsProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role" | "defaultValue"> & {
+	value?: T;
+	defaultValue?: T;
+	onChange?: (v: T) => void;
+	options: Option<T>[];
+	label: string;
+};
 
-export function Tabs<T extends string>({ value, onChange, options, label, className, ...props }: TabsProps<T>) {
+export function Tabs<T extends string>({ value: valueIn, defaultValue, onChange: onChangeIn, options, label, className, ...props }: TabsProps<T>) {
+	const [value, onChange] = useControllable(valueIn, defaultValue ?? options[0]?.value, onChangeIn);
 	const id = useId();
 	return (
 		<div className={cn("si-tabs", className)} role="tablist" aria-label={label} {...props}>
