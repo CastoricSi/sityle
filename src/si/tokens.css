@@ -1,0 +1,125 @@
+/*
+ * 丹青 tokens. Everything a component may use comes from here.
+ * Light ("宣纸") on :root; dark ("浓墨") when the system is dark and no explicit
+ * light choice was made, or when <html data-theme="dark">.
+ */
+:root {
+	/* 丹青 pigments */
+	--si-paper: #f0f1e9; /* 宣纸 page */
+	--si-paper-raised: #fafbf5; /* cards, menus, dialogs */
+	--si-paper-sunk: #e4e7dc; /* input wells, tracks */
+	--si-ink: #1d2320; /* 浓墨 text */
+	--si-ink-2: #4a534d; /* 淡墨 secondary text */
+	--si-ink-3: #747d76; /* hints, icons at rest */
+	--si-line: rgba(29, 35, 32, 0.13);
+
+	--si-jade: #2c7a58; /* 石绿 primary (hair) */
+	--si-jade-hover: #24684a;
+	--si-jade-soft: #d6e9db;
+	--si-jade-text: #1d5a40;
+	--si-on-jade: #ffffff;
+
+	--si-azure: #288ba8; /* 石青 secondary (gloves) */
+	--si-azure-soft: #d5eaf0;
+	--si-azure-text: #1b6680;
+
+	--si-gold: #a87c12; /* 泥金 highlight (trim, beads) */
+	--si-gold-soft: #f1e6c4;
+	--si-gold-text: #7a5a08;
+
+	--si-cinnabar: #b05344; /* 朱砂 danger, seals */
+	--si-cinnabar-soft: #f3ddd8;
+	--si-cinnabar-text: #8c3a2d;
+
+	--si-on-color: #ffffff; /* text on azure / gold / cinnabar fills */
+	--si-scrim: rgba(18, 24, 21, 0.32);
+	--si-grain-opacity: 0.5;
+
+	/* elevation: green-black ink, paper laid on paper */
+	--si-shadow-rgb: 29, 40, 33;
+	--si-e1: 0 1px 2px rgba(var(--si-shadow-rgb), 0.08), 0 1px 1px rgba(var(--si-shadow-rgb), 0.04);
+	--si-e2: 0 4px 14px -4px rgba(var(--si-shadow-rgb), 0.16), 0 2px 4px rgba(var(--si-shadow-rgb), 0.06);
+	--si-e3: 0 18px 48px -12px rgba(var(--si-shadow-rgb), 0.28), 0 6px 14px -6px rgba(var(--si-shadow-rgb), 0.14);
+
+	/* type */
+	--si-font-brush: "Ma Shan Zheng", "STXingkai", "KaiTi", cursive;
+	--si-font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+	--si-font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+	--si-font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+
+	/* shape */
+	--si-r-sm: 8px;
+	--si-r-md: 12px;
+	--si-r-lg: 18px;
+	--si-r-xl: 26px;
+	--si-r-full: 999px;
+
+	/* motion (springs for JS live in motion.ts) */
+	--si-ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* 舒展: entering */
+	--si-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* 回弹: shape changes */
+	--si-ease-in: cubic-bezier(0.55, 0, 0.75, 0.2); /* 收: leaving */
+	--si-t-quick: 140ms;
+	--si-t-base: 220ms;
+	--si-t-slow: 360ms;
+	--si-t-ink: 620ms;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--si-paper: #131715;
+		--si-paper-raised: #1b201d;
+		--si-paper-sunk: #0d100f;
+		--si-ink: #e6e9e1;
+		--si-ink-2: #aeb5ad;
+		--si-ink-3: #7f8880;
+		--si-line: rgba(230, 233, 225, 0.12);
+		--si-jade: #6dc59c;
+		--si-jade-hover: #86d3ae;
+		--si-jade-soft: rgba(109, 197, 156, 0.15);
+		--si-jade-text: #9be0bf;
+		--si-on-jade: #0b1d15;
+		--si-azure: #6cc0d8;
+		--si-azure-soft: rgba(108, 192, 216, 0.15);
+		--si-azure-text: #9ad6e7;
+		--si-gold: #dcb956;
+		--si-gold-soft: rgba(220, 185, 86, 0.15);
+		--si-gold-text: #ecd08a;
+		--si-cinnabar: #e48a7b;
+		--si-cinnabar-soft: rgba(228, 138, 123, 0.15);
+		--si-cinnabar-text: #f0aea2;
+		--si-on-color: #10140f;
+		--si-shadow-rgb: 0, 0, 0;
+		--si-scrim: rgba(0, 0, 0, 0.5);
+		--si-grain-opacity: 0.25;
+		color-scheme: dark;
+	}
+}
+
+:root[data-theme="dark"] {
+	--si-paper: #131715;
+	--si-paper-raised: #1b201d;
+	--si-paper-sunk: #0d100f;
+	--si-ink: #e6e9e1;
+	--si-ink-2: #aeb5ad;
+	--si-ink-3: #7f8880;
+	--si-line: rgba(230, 233, 225, 0.12);
+	--si-jade: #6dc59c;
+	--si-jade-hover: #86d3ae;
+	--si-jade-soft: rgba(109, 197, 156, 0.15);
+	--si-jade-text: #9be0bf;
+	--si-on-jade: #0b1d15;
+	--si-azure: #6cc0d8;
+	--si-azure-soft: rgba(108, 192, 216, 0.15);
+	--si-azure-text: #9ad6e7;
+	--si-gold: #dcb956;
+	--si-gold-soft: rgba(220, 185, 86, 0.15);
+	--si-gold-text: #ecd08a;
+	--si-cinnabar: #e48a7b;
+	--si-cinnabar-soft: rgba(228, 138, 123, 0.15);
+	--si-cinnabar-text: #f0aea2;
+	--si-on-color: #10140f;
+	--si-shadow-rgb: 0, 0, 0;
+	--si-scrim: rgba(0, 0, 0, 0.5);
+	--si-grain-opacity: 0.25;
+	color-scheme: dark;
+}

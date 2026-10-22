@@ -1,0 +1,1111 @@
+/* 丹青 component styles. Class names are all `si-*`; colours only from tokens. */
+
+/* ── Ink ripple: a drop of ink bleeding into wet paper ── */
+.si-ink-host {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+	-webkit-tap-highlight-color: transparent;
+}
+.si-ink {
+	position: absolute;
+	z-index: -1;
+	border-radius: 50%;
+	pointer-events: none;
+	background: radial-gradient(circle, currentColor 0 38%, transparent 70%);
+	filter: url(#si-bleed);
+	transform: scale(0);
+}
+
+/* ── Seal (朱印) ── */
+.si-seal {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	border-radius: 22%;
+	background: var(--si-cinnabar);
+	color: #fff7f2;
+	font-family: var(--si-font-brush);
+	line-height: 1;
+	transform: rotate(-4deg);
+	box-shadow:
+		inset 0 0 0 2px rgba(255, 255, 255, 0.25),
+		inset 0 0 6px rgba(0, 0, 0, 0.25);
+}
+.si-seal.is-outline {
+	background: transparent;
+	color: var(--si-cinnabar);
+	box-shadow: inset 0 0 0 2px var(--si-cinnabar);
+}
+
+/* ── Card ── */
+.si-card {
+	min-width: 0;
+	padding: 22px;
+	border-radius: var(--si-r-lg);
+	border: 1px solid var(--si-line);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e1);
+	transition: background-color var(--si-t-slow) var(--si-ease-out);
+}
+.si-card-title {
+	font: 700 15px/1.3 var(--si-font-serif);
+	letter-spacing: 0.04em;
+}
+.si-card-note {
+	margin: 4px 0 18px;
+	color: var(--si-ink-3);
+	font-size: 13px;
+}
+
+/* ── Button ── */
+.si-btn {
+	--c: var(--si-jade);
+	--c-hover: var(--si-jade-hover);
+	--c-soft: var(--si-jade-soft);
+	--c-text: var(--si-jade-text);
+	--on: var(--si-on-jade);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	height: 40px;
+	padding: 0 18px;
+	border: 0;
+	border-radius: var(--si-r-md);
+	font: 500 14px/1 var(--si-font-sans);
+	letter-spacing: 0.02em;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	transition:
+		transform var(--si-t-quick) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base) var(--si-ease-out),
+		color var(--si-t-base),
+		opacity var(--si-t-base);
+}
+.si-btn:active:not(:disabled) {
+	transform: scale(0.96);
+}
+.si-btn svg {
+	width: 17px;
+	height: 17px;
+	flex: none;
+}
+.si-btn.is-azure {
+	--c: var(--si-azure);
+	--c-hover: var(--si-azure);
+	--c-soft: var(--si-azure-soft);
+	--c-text: var(--si-azure-text);
+	--on: var(--si-on-color);
+}
+.si-btn.is-gold {
+	--c: var(--si-gold);
+	--c-hover: var(--si-gold);
+	--c-soft: var(--si-gold-soft);
+	--c-text: var(--si-gold-text);
+	--on: var(--si-on-color);
+}
+.si-btn.is-danger {
+	--c: var(--si-cinnabar);
+	--c-hover: var(--si-cinnabar);
+	--c-soft: var(--si-cinnabar-soft);
+	--c-text: var(--si-cinnabar-text);
+	--on: var(--si-on-color);
+}
+.si-btn.v-solid {
+	background: var(--c);
+	color: var(--on);
+}
+.si-btn.v-solid:hover {
+	background: var(--c-hover);
+}
+.si-btn.v-shadow {
+	background: var(--c);
+	color: var(--on);
+	box-shadow: 0 8px 22px -8px var(--c);
+}
+.si-btn.v-shadow:hover {
+	box-shadow: 0 12px 28px -8px var(--c);
+}
+.si-btn.v-flat {
+	background: var(--c-soft);
+	color: var(--c-text);
+}
+.si-btn.v-bordered {
+	background: transparent;
+	color: var(--c-text);
+	box-shadow: inset 0 0 0 1.5px var(--c);
+}
+.si-btn.v-light {
+	background: transparent;
+	color: var(--c-text);
+}
+.si-btn.v-light:hover,
+.si-btn.v-bordered:hover {
+	background: var(--c-soft);
+}
+.si-btn.v-ghost {
+	background: transparent;
+	color: var(--si-ink-2);
+}
+.si-btn.v-ghost:hover {
+	background: var(--si-paper-sunk);
+	color: var(--si-ink);
+}
+.si-btn.s-sm {
+	height: 32px;
+	padding: 0 12px;
+	font-size: 13px;
+	border-radius: var(--si-r-sm);
+}
+.si-btn.s-lg {
+	height: 48px;
+	padding: 0 24px;
+	font-size: 15px;
+	border-radius: 14px;
+}
+.si-btn.is-icon {
+	width: 40px;
+	padding: 0;
+}
+.si-btn.s-sm.is-icon {
+	width: 32px;
+}
+.si-btn.s-lg.is-icon {
+	width: 48px;
+}
+.si-btn.is-pill {
+	border-radius: var(--si-r-full);
+}
+.si-btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+.si-btn-label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition:
+		transform var(--si-t-slow) var(--si-ease-spring),
+		opacity var(--si-t-base);
+}
+.si-btn.is-loading .si-btn-label {
+	opacity: 0;
+	transform: translateY(8px);
+}
+.si-btn-spin {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	opacity: 0;
+	transform: scale(0.6);
+	transition:
+		opacity var(--si-t-base),
+		transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-btn.is-loading .si-btn-spin {
+	opacity: 1;
+	transform: none;
+}
+
+/* ── Icon button ── */
+.si-iconbtn {
+	width: 40px;
+	height: 40px;
+	flex: none;
+	display: grid;
+	place-items: center;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: var(--si-ink-3);
+	cursor: pointer;
+	transition:
+		color var(--si-t-base),
+		background-color var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
+}
+.si-iconbtn:hover {
+	color: var(--si-ink);
+	background: color-mix(in srgb, var(--si-paper-sunk) 60%, transparent);
+}
+.si-iconbtn:active {
+	transform: scale(0.9);
+}
+.si-iconbtn:disabled {
+	opacity: 0.35;
+	cursor: default;
+}
+.si-iconbtn svg {
+	width: 18px;
+	height: 18px;
+}
+.si-iconbtn.is-done {
+	color: var(--si-jade-text);
+}
+.si-iconbtn.is-active {
+	color: var(--si-jade-text);
+	background: var(--si-jade-soft);
+}
+.si-swap {
+	display: grid;
+	place-items: center;
+}
+
+/* ── Text field (label floats) ── */
+.si-field {
+	position: relative;
+}
+.si-field-box {
+	position: relative;
+}
+.si-field input,
+.si-field textarea {
+	width: 100%;
+	height: 56px;
+	padding: 22px 14px 6px;
+	border: 1.5px solid transparent;
+	border-radius: var(--si-r-md);
+	background: var(--si-paper-sunk);
+	color: var(--si-ink);
+	font: 400 15px/1.3 var(--si-font-sans);
+	outline: none;
+	transition:
+		border-color var(--si-t-base) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base) var(--si-ease-out);
+}
+.si-field textarea {
+	height: auto;
+	min-height: 96px;
+	padding-top: 26px;
+	resize: vertical;
+	line-height: 1.6;
+}
+.si-field input:hover,
+.si-field textarea:hover {
+	background: color-mix(in srgb, var(--si-paper-sunk) 70%, var(--si-line));
+}
+.si-field input:focus,
+.si-field textarea:focus {
+	border-color: var(--si-jade);
+	background: var(--si-paper-raised);
+	box-shadow: 0 0 0 4px var(--si-jade-soft);
+}
+/* The label box is as tall as the input and centres its text, so an empty
+   field shows the label in the middle; it floats up when there is text. */
+.si-field label {
+	position: absolute;
+	left: 15px;
+	top: 0;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	color: var(--si-ink-3);
+	font-size: 15px;
+	line-height: 1.2;
+	pointer-events: none;
+	transform-origin: 0 50%;
+	transition:
+		transform var(--si-t-base) var(--si-ease-out),
+		color var(--si-t-base);
+}
+.si-field :is(input, textarea):focus + label,
+.si-field :is(input, textarea):not(:placeholder-shown) + label {
+	transform: translateY(-11px) scale(0.78);
+	color: var(--si-jade-text);
+}
+.si-field :is(input, textarea):not(:focus):not(:placeholder-shown) + label {
+	color: var(--si-ink-3);
+}
+.si-field :is(input, textarea)::placeholder {
+	color: transparent;
+}
+.si-field .is-mono {
+	font-family: var(--si-font-mono);
+	letter-spacing: 0.06em;
+}
+.si-field-end {
+	position: absolute;
+	right: 6px;
+	top: 8px;
+	display: flex;
+	gap: 2px;
+}
+.si-field-hint {
+	margin: 6px 4px 0;
+	font-size: 12px;
+	color: var(--si-ink-3);
+}
+.si-field.is-invalid :is(input, textarea) {
+	border-color: var(--si-cinnabar);
+	background: var(--si-cinnabar-soft);
+}
+.si-field.is-invalid :is(input, textarea):focus {
+	box-shadow: 0 0 0 4px var(--si-cinnabar-soft);
+}
+.si-field.is-invalid label,
+.si-field.is-invalid .si-field-hint {
+	color: var(--si-cinnabar-text) !important;
+}
+
+/* ── Strength meter ── */
+.si-strength {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 5px;
+	margin: 8px 4px 0;
+}
+.si-strength i {
+	position: relative;
+	height: 4px;
+	overflow: hidden;
+	border-radius: 4px;
+	background: var(--si-paper-sunk);
+}
+.si-strength i::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--sc, var(--si-jade));
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform var(--si-t-slow) var(--si-ease-out);
+}
+.si-strength i.is-on::after {
+	transform: scaleX(1);
+}
+.si-strength-label {
+	margin: 4px 4px 0;
+	font-size: 12px;
+	color: var(--si-ink-3);
+}
+
+/* ── Switch ── */
+.si-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-switch input,
+.si-check input,
+.si-radio input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+.si-switch-track {
+	position: relative;
+	display: flex;
+	flex: none;
+	width: 50px;
+	height: 30px;
+	padding: 3px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-sunk);
+	box-shadow: inset 0 0 0 1px var(--si-line);
+	transition: background-color var(--si-t-base) var(--si-ease-out);
+}
+.si-switch input:checked + .si-switch-track {
+	justify-content: flex-end;
+	background: var(--si-jade);
+}
+.si-switch input:focus-visible + .si-switch-track {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+.si-switch-knob {
+	height: 24px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e2);
+	display: grid;
+	place-items: center;
+	color: var(--si-jade);
+}
+.si-switch-knob svg {
+	width: 14px;
+	height: 14px;
+}
+.si-switch-text b {
+	display: block;
+	font-weight: 500;
+}
+.si-switch-text span {
+	font-size: 13px;
+	color: var(--si-ink-3);
+}
+
+/* ── Checkbox ── */
+.si-check {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-check-box {
+	width: 22px;
+	height: 22px;
+	flex: none;
+	display: grid;
+	place-items: center;
+	border-radius: 7px;
+	box-shadow: inset 0 0 0 1.75px var(--si-ink-3);
+	transition:
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
+}
+.si-check:active .si-check-box {
+	transform: scale(0.88);
+}
+.si-check-box svg {
+	width: 15px;
+	height: 15px;
+	color: var(--si-on-jade);
+}
+.si-check-box path {
+	stroke-dasharray: 22;
+	stroke-dashoffset: 22;
+	transition: stroke-dashoffset var(--si-t-slow) var(--si-ease-out) 60ms;
+}
+.si-check input:checked + .si-check-box {
+	background: var(--si-jade);
+	box-shadow: inset 0 0 0 1.75px var(--si-jade);
+	animation: si-pop var(--si-t-slow) var(--si-ease-spring);
+}
+.si-check input:checked + .si-check-box path {
+	stroke-dashoffset: 0;
+}
+.si-check input:focus-visible + .si-check-box {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+@keyframes si-pop {
+	40% {
+		transform: scale(1.14);
+	}
+}
+
+/* ── Radio ── */
+.si-radio {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+}
+.si-radio-dot {
+	width: 22px;
+	height: 22px;
+	flex: none;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 1.75px var(--si-ink-3);
+	transition: box-shadow var(--si-t-base);
+}
+.si-radio-dot::after {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--si-jade);
+	transform: scale(0);
+	transition: transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-radio input:checked + .si-radio-dot {
+	box-shadow: inset 0 0 0 1.75px var(--si-jade);
+}
+.si-radio input:checked + .si-radio-dot::after {
+	transform: scale(1);
+}
+.si-radio input:focus-visible + .si-radio-dot {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 2px;
+}
+.si-radio-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 20px;
+}
+
+/* ── Segmented (sliding pill) ── */
+.si-seg {
+	position: relative;
+	display: inline-flex;
+	padding: 3px;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-sunk);
+	isolation: isolate;
+	max-width: 100%;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.si-seg button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	border: 0;
+	border-radius: var(--si-r-full);
+	background: none;
+	color: var(--si-ink-2);
+	font: 500 13px/1 var(--si-font-sans);
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color var(--si-t-base) var(--si-ease-out);
+}
+.si-seg button[aria-checked="true"],
+.si-seg button[aria-selected="true"] {
+	color: var(--si-ink);
+}
+.si-seg button > :not(.si-seg-pill) {
+	position: relative;
+	z-index: 1;
+}
+.si-seg svg {
+	width: 15px;
+	height: 15px;
+}
+.si-seg-pill {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e1);
+}
+
+/* ── Tabs (brush stroke) ── */
+.si-tabs {
+	display: flex;
+	gap: 4px;
+	border-bottom: 1px solid var(--si-line);
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.si-tabs button {
+	position: relative;
+	padding: 12px 14px 13px;
+	border: 0;
+	border-radius: 10px 10px 0 0;
+	background: none;
+	color: var(--si-ink-3);
+	font: 500 14px/1 var(--si-font-sans);
+	white-space: nowrap;
+	cursor: pointer;
+	transition: color var(--si-t-base);
+}
+.si-tabs button[aria-selected="true"] {
+	color: var(--si-ink);
+}
+/* A translucent highlighter swipe behind the current tab's text. */
+.si-tabs-brush {
+	position: absolute;
+	z-index: 0;
+	left: 8px;
+	right: 8px;
+	bottom: 11px;
+	height: 12px;
+	/* translucency lives in the colour: Motion owns this element's opacity during the slide */
+	color: color-mix(in srgb, var(--si-jade) 28%, transparent);
+	pointer-events: none;
+}
+.si-tabs-label {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.si-tab-panel {
+	padding-top: 14px;
+	color: var(--si-ink-2);
+	font-size: 14px;
+}
+
+/* ── Chip / Tag ── */
+.si-chip {
+	display: inline-flex;
+	align-items: center;
+	height: 32px;
+	padding: 0 12px;
+	border: 1px solid var(--si-line);
+	border-radius: var(--si-r-full);
+	background: var(--si-paper-raised);
+	color: var(--si-ink-2);
+	font: 500 13px/1 var(--si-font-sans);
+	cursor: pointer;
+	transition:
+		background-color var(--si-t-base) var(--si-ease-out),
+		color var(--si-t-base),
+		border-color var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
+}
+.si-chip:active {
+	transform: scale(0.95);
+}
+.si-chip[aria-pressed="true"] {
+	background: var(--si-jade-soft);
+	color: var(--si-jade-text);
+	border-color: transparent;
+}
+.si-chip-tick {
+	display: inline-grid;
+	overflow: hidden;
+}
+.si-chip svg {
+	width: 14px;
+	height: 14px;
+	margin-right: 6px;
+}
+.si-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	height: 24px;
+	padding: 0 9px;
+	border-radius: 7px;
+	font-size: 12px;
+	font-weight: 500;
+	white-space: nowrap;
+}
+.si-tag svg {
+	width: 13px;
+	height: 13px;
+}
+.c-jade {
+	background: var(--si-jade-soft);
+	color: var(--si-jade-text);
+}
+.c-azure {
+	background: var(--si-azure-soft);
+	color: var(--si-azure-text);
+}
+.c-gold {
+	background: var(--si-gold-soft);
+	color: var(--si-gold-text);
+}
+.c-danger {
+	background: var(--si-cinnabar-soft);
+	color: var(--si-cinnabar-text);
+}
+
+/* ── Avatar ── */
+.si-avatar {
+	display: grid;
+	place-items: center;
+	flex: none;
+	border-radius: 30%;
+	font-family: var(--si-font-serif);
+	font-weight: 700;
+	line-height: 1;
+}
+/* Avatars are solid: the (translucent in dark) pigment tint sits on paper,
+   so overlapping avatars in a stack don't show through each other. */
+.si-avatar.c-jade {
+	background: linear-gradient(var(--si-jade-soft), var(--si-jade-soft)) var(--si-paper-raised);
+}
+.si-avatar.c-azure {
+	background: linear-gradient(var(--si-azure-soft), var(--si-azure-soft)) var(--si-paper-raised);
+}
+.si-avatar.c-gold {
+	background: linear-gradient(var(--si-gold-soft), var(--si-gold-soft)) var(--si-paper-raised);
+}
+.si-avatar.c-danger {
+	background: linear-gradient(var(--si-cinnabar-soft), var(--si-cinnabar-soft)) var(--si-paper-raised);
+}
+.si-avatar-stack {
+	display: flex;
+}
+.si-avatar-stack .si-avatar {
+	border-radius: 50%;
+	box-shadow: 0 0 0 3px var(--si-paper-raised);
+	margin-left: -10px;
+	transition: transform var(--si-t-base) var(--si-ease-spring);
+}
+.si-avatar-stack .si-avatar:first-child {
+	margin-left: 0;
+}
+.si-avatar-stack .si-avatar:hover {
+	transform: translateY(-4px);
+}
+
+/* ── Tooltip ── */
+.si-tip {
+	position: fixed;
+	z-index: 900;
+	padding: 6px 10px;
+	border-radius: 8px;
+	background: var(--si-ink);
+	color: var(--si-paper);
+	font-size: 12px;
+	white-space: nowrap;
+	pointer-events: none;
+	box-shadow: var(--si-e2);
+}
+
+/* ── Menu ── */
+.si-menu-anchor {
+	position: relative;
+	display: inline-block;
+}
+.si-menu {
+	position: absolute;
+	z-index: 400;
+	top: calc(100% + 6px);
+	left: 0;
+	min-width: 200px;
+	padding: 6px;
+	border: 1px solid var(--si-line);
+	border-radius: 14px;
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e3);
+	transform-origin: 20px 0;
+}
+.si-menu-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 10px;
+	border: 0;
+	border-radius: 9px;
+	background: none;
+	color: var(--si-ink);
+	font: 400 14px/1.2 var(--si-font-sans);
+	text-align: left;
+	cursor: pointer;
+	transition: background-color var(--si-t-quick);
+}
+.si-menu-item:hover,
+.si-menu-item:focus-visible {
+	background: var(--si-paper-sunk);
+	outline: none;
+}
+.si-menu-item svg {
+	width: 16px;
+	height: 16px;
+	color: var(--si-ink-3);
+}
+.si-menu-item kbd {
+	margin-left: auto;
+	font: 500 11px/1 var(--si-font-mono);
+	color: var(--si-ink-3);
+}
+.si-menu-item.is-danger,
+.si-menu-item.is-danger svg {
+	color: var(--si-cinnabar-text);
+}
+.si-menu-item.is-danger:hover,
+.si-menu-item.is-danger:focus-visible {
+	background: var(--si-cinnabar-soft);
+}
+.si-menu hr {
+	margin: 6px 4px;
+	border: 0;
+	border-top: 1px solid var(--si-line);
+}
+
+/* ── Dialog ── */
+.si-scrim {
+	position: fixed;
+	inset: 0;
+	z-index: 800;
+	display: grid;
+	place-items: center;
+	padding: 16px;
+	background: var(--si-scrim);
+	backdrop-filter: blur(6px);
+	-webkit-backdrop-filter: blur(6px);
+}
+.si-dialog {
+	position: relative;
+	overflow: hidden;
+	width: min(420px, 100%);
+	padding: 24px;
+	border-radius: var(--si-r-xl);
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e3);
+}
+.si-dialog.is-wide {
+	width: min(640px, 100%);
+}
+.si-dialog-seal {
+	position: absolute;
+	right: 20px;
+	top: 18px;
+	width: 54px;
+	height: 54px;
+	font-size: 30px;
+	opacity: 0.85;
+}
+.si-dialog h2 {
+	font: 700 19px/1.35 var(--si-font-serif);
+}
+.si-dialog.has-seal h2 {
+	padding-right: 60px;
+}
+.si-dialog-body {
+	margin-top: 8px;
+	color: var(--si-ink-2);
+	font-size: 14px;
+}
+.si-dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 22px;
+}
+
+/* ── Loaders ── */
+.si-inkdrop {
+	position: relative;
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	color: inherit;
+}
+.si-inkdrop i {
+	position: absolute;
+	inset: 0;
+	border: 2px solid currentColor;
+	border-radius: 50%;
+	opacity: 0;
+	animation: si-drop 1.4s var(--si-ease-out) infinite;
+}
+.si-inkdrop i:nth-child(2) {
+	animation-delay: 0.45s;
+}
+.si-inkdrop i:nth-child(3) {
+	animation-delay: 0.9s;
+}
+@keyframes si-drop {
+	0% {
+		transform: scale(0.15);
+		opacity: 0.9;
+		border-width: 5px;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 0;
+		border-width: 1px;
+	}
+}
+.si-brushspin {
+	width: 26px;
+	height: 26px;
+	color: var(--si-jade);
+	animation: si-spin 1s linear infinite;
+}
+.si-brushspin circle {
+	stroke-linecap: round;
+	animation: si-dash 1.4s var(--si-ease-out) infinite;
+}
+@keyframes si-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes si-dash {
+	0% {
+		stroke-dasharray: 2 100;
+	}
+	50% {
+		stroke-dasharray: 48 100;
+	}
+	100% {
+		stroke-dasharray: 2 100;
+		stroke-dashoffset: -62;
+	}
+}
+.si-skeleton {
+	height: 12px;
+	border-radius: var(--si-r-full);
+	background: linear-gradient(
+		90deg,
+		var(--si-paper-sunk) 0 40%,
+		color-mix(in srgb, var(--si-paper-sunk) 40%, var(--si-paper-raised)) 50%,
+		var(--si-paper-sunk) 60% 100%
+	);
+	background-size: 300% 100%;
+	animation: si-shimmer 1.8s ease-in-out infinite;
+}
+@keyframes si-shimmer {
+	from {
+		background-position: 100% 0;
+	}
+	to {
+		background-position: 0 0;
+	}
+}
+
+/* ── List item ── */
+.si-listitem {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px;
+	border: 0;
+	border-radius: 14px;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition: background-color var(--si-t-base) var(--si-ease-out);
+}
+.si-listitem:hover {
+	background: var(--si-paper-sunk);
+}
+.si-listitem[aria-current="true"] {
+	background: var(--si-jade-soft);
+}
+.si-listitem-text {
+	flex: 1;
+	min-width: 0;
+}
+.si-listitem-text b,
+.si-listitem-text span {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.si-listitem-text b {
+	font-weight: 500;
+}
+.si-listitem-text span {
+	font-size: 13px;
+	color: var(--si-ink-3);
+}
+.si-listitem-go {
+	color: var(--si-ink-3);
+	opacity: 0;
+	transform: translateX(-6px);
+	transition:
+		opacity var(--si-t-base),
+		transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-listitem:hover .si-listitem-go,
+.si-listitem[aria-current="true"] .si-listitem-go {
+	opacity: 1;
+	transform: none;
+}
+.si-listitem-go svg {
+	width: 16px;
+	height: 16px;
+}
+
+/* ── Slider ── */
+.si-slider {
+	display: grid;
+	gap: 8px;
+	min-width: 0;
+}
+.si-slider-head {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	font-size: 14px;
+}
+.si-slider-head output {
+	font: 500 13px/1.6 var(--si-font-mono);
+	color: var(--si-ink-2);
+	font-variant-numeric: tabular-nums;
+}
+.si-slider input {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 22px;
+	margin: 0;
+	background: transparent;
+	cursor: pointer;
+}
+.si-slider input::-webkit-slider-runnable-track {
+	height: 6px;
+	border-radius: var(--si-r-full);
+	background: linear-gradient(to right, var(--si-jade) var(--p), var(--si-paper-sunk) var(--p));
+}
+.si-slider input::-moz-range-track {
+	height: 6px;
+	border-radius: var(--si-r-full);
+	background: linear-gradient(to right, var(--si-jade) var(--p), var(--si-paper-sunk) var(--p));
+}
+.si-slider input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	margin-top: -7px;
+	border-radius: 50%;
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e2), inset 0 0 0 5px var(--si-jade);
+	transition: transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-slider input::-moz-range-thumb {
+	width: 20px;
+	height: 20px;
+	border: 0;
+	border-radius: 50%;
+	background: var(--si-paper-raised);
+	box-shadow: var(--si-e2), inset 0 0 0 5px var(--si-jade);
+	transition: transform var(--si-t-slow) var(--si-ease-spring);
+}
+.si-slider input:active::-webkit-slider-thumb {
+	transform: scale(1.18);
+}
+.si-slider input:active::-moz-range-thumb {
+	transform: scale(1.18);
+}
+.si-slider input:focus-visible {
+	outline: none;
+}
+.si-slider input:focus-visible::-webkit-slider-thumb {
+	outline: 2px solid var(--si-jade);
+	outline-offset: 3px;
+}
+/* ── Ink bars: three slanted bars hopping in turn (loading) ── */
+.si-inkbars {
+	display: inline-flex;
+	align-items: flex-end;
+	gap: 3px;
+	height: 22px;
+	color: var(--si-cinnabar);
+}
+.si-inkbars i {
+	width: 5px;
+	height: 15px;
+	border-radius: 2px;
+	background: currentColor;
+	transform: skewX(-14deg);
+	animation: si-hop 0.72s var(--si-ease-out) infinite;
+}
+.si-inkbars i:nth-child(2) {
+	animation-delay: 0.12s;
+}
+.si-inkbars i:nth-child(3) {
+	animation-delay: 0.24s;
+}
+@keyframes si-hop {
+	0%,
+	60%,
+	100% {
+		transform: skewX(-14deg) translateY(0) scaleY(1);
+	}
+	30% {
+		transform: skewX(-14deg) translateY(-5px) scaleY(1.12);
+	}
+}
+

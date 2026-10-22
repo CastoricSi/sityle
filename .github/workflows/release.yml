@@ -1,0 +1,45 @@
+# Push a tag like v0.2.0 (npm run release:patch|minor|major does it) →
+# build the package and attach sityle-<version>.tgz to a GitHub Release.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Tag must match package.json version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $VERSION" >&2
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build:lib
+      - run: npm pack
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/sityle-${VERSION}.tgz"
+          gh release create "$GITHUB_REF_NAME" "sityle-${VERSION}.tgz" \
+            --title "sityle ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            --notes "Install: \`npm i ${URL}\`"

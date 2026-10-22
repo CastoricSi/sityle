@@ -1,0 +1,55 @@
+{
+	"name": "sityle",
+	"version": "0.1.0",
+	"description": "丹青 — an ink-wash design language: tokens, styles and React components.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CastoricSi/sityle.git"
+	},
+	"type": "module",
+	"sideEffects": [
+		"*.css"
+	],
+	"files": [
+		"dist/lib"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/lib/types/index.d.ts",
+			"import": "./dist/lib/index.js"
+		},
+		"./style.css": "./dist/lib/style.css"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/clean-types.mjs",
+		"typecheck": "tsc -b",
+		"preview": "npm run build && vite preview",
+		"deploy": "npm run build && wrangler deploy",
+		"preversion": "npm run typecheck && npm run build:lib",
+		"release:patch": "npm version patch && git push --follow-tags",
+		"release:minor": "npm version minor && git push --follow-tags",
+		"release:major": "npm version major && git push --follow-tags"
+	},
+	"peerDependencies": {
+		"lucide-react": ">=1.0.0",
+		"motion": ">=12.0.0",
+		"react": ">=19.0.0",
+		"react-dom": ">=19.0.0"
+	},
+	"devDependencies": {
+		"@cloudflare/vite-plugin": "1.52.1",
+		"@types/react": "19.2.7",
+		"@types/react-dom": "19.2.3",
+		"@vitejs/plugin-react": "5.1.1",
+		"lucide-react": "^1.21.0",
+		"motion": "^14.5.0",
+		"react": "19.2.1",
+		"react-dom": "19.2.1",
+		"typescript": "5.9.3",
+		"vite": "^7.0.0",
+		"wrangler": "4.136.1"
+	}
+}
