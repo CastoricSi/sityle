@@ -43,6 +43,7 @@ export function Dialog({
 			: { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%", transition: { duration: 0.22, ease: [0.55, 0, 0.75, 0.2] as const } }, transition: { type: "spring" as const, stiffness: 420, damping: 40 } };
 	const box = useRef<HTMLDivElement>(null);
 	const lastFocus = useRef<HTMLElement | null>(null);
+	const downOnScrim = useRef(false);
 
 	useEffect(() => {
 		if (!open) return;
@@ -71,10 +72,20 @@ export function Dialog({
 			{open && (
 				<motion.div
 					className={cn("si-scrim", mode !== "center" && `is-${mode}`)}
-					onMouseDown={(e) => e.target === e.currentTarget && onClose()}
+					// Close when a press both starts and ends on the backdrop. Pressing it
+					// starts no text selection (the dialog slides away under the cursor), and
+					// dragging out of a text box onto it doesn't close.
+					onMouseDown={(e) => {
+						downOnScrim.current = e.target === e.currentTarget;
+						if (downOnScrim.current) e.preventDefault();
+					}}
+					onMouseUp={(e) => {
+						if (downOnScrim.current && e.target === e.currentTarget) onClose();
+						downOnScrim.current = false;
+					}}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					exit={{ opacity: 0, transition: { duration: 0.16 } }}
+					exit={{ opacity: 0, pointerEvents: "none", transition: { duration: 0.16 } }}
 					transition={{ duration: 0.2 }}
 				>
 					<motion.div
