@@ -8,7 +8,7 @@ import { Tooltip } from "./Tooltip";
 
 export type Color = "jade" | "azure" | "gold" | "danger";
 
-export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+export interface ButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "color"> {
 	/** solid: the one main action of an area. flat / bordered / light: secondary. ghost: quiet. shadow: solid that floats. */
 	variant?: "solid" | "shadow" | "flat" | "bordered" | "light" | "ghost";
 	color?: Color;
@@ -72,7 +72,7 @@ export function Button({
 	);
 }
 
-export interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps extends React.ComponentPropsWithRef<"button"> {
 	/** Tooltip and accessible name. */
 	label: string;
 	active?: boolean;
@@ -97,7 +97,9 @@ export function IconButton({ label, active, className, children, onPointerDown, 
 }
 
 /** Copies `value`; the icon turns into a check and the tooltip says 已复制. */
-export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn }: { value: string; label?: string; copiedLabel?: string }) {
+export type CopyButtonProps = Omit<React.ComponentPropsWithRef<"button">, "value" | "children"> & { value: string; label?: string; copiedLabel?: string };
+
+export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn, className, onClick, onPointerDown, ...props }: CopyButtonProps) {
 	const label = labelIn ?? "复制";
 	const copiedLabel = copiedIn ?? "已复制";
 	const [done, setDone] = useState(false);
@@ -113,8 +115,10 @@ export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn }: { v
 				type="button"
 				aria-label={done ? copiedLabel : label}
 				disabled={!value}
-				onPointerDown={inkHandler()}
-				onClick={async () => {
+				{...props}
+				onPointerDown={inkHandler(onPointerDown)}
+				onClick={async (e) => {
+					onClick?.(e);
 					try {
 						await navigator.clipboard.writeText(value);
 						setDone(true);
@@ -122,7 +126,7 @@ export function CopyButton({ value, label: labelIn, copiedLabel: copiedIn }: { v
 						// clipboard blocked: nothing to confirm
 					}
 				}}
-				className={cn("si-iconbtn si-ink-host", done && "is-done")}
+				className={cn("si-iconbtn si-ink-host", done && "is-done", className)}
 			>
 				<AnimatePresence mode="popLayout" initial={false}>
 					<motion.span

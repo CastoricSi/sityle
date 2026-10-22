@@ -13,15 +13,18 @@ export type MenuEntry = { label: React.ReactNode; icon?: React.ReactNode; kbd?: 
  * Drop-down that unfolds from its trigger; items arrive one after another.
  * Arrow keys move, Escape closes and returns focus to the trigger.
  */
-export function Menu({
-	trigger,
-	items,
-	align = "start",
-}: {
+export type MenuProps = {
+	/** Renders the button that opens the menu; spread the given props onto it. */
 	trigger: (props: Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">) => React.ReactNode;
 	items: MenuEntry[];
 	align?: "start" | "end";
-}) {
+	/** Accessible name of the menu. */
+	label?: string;
+	/** Class for the floating panel. */
+	className?: string;
+};
+
+export function Menu({ trigger, items, align = "start", label, className }: MenuProps) {
 	const [open, setOpen] = useState(false);
 	const anchor = useRef<HTMLSpanElement>(null);
 	const list = useRef<HTMLDivElement>(null);
@@ -66,7 +69,8 @@ export function Menu({
 								id={id}
 								role="menu"
 								{...{ [LAYER_ATTR]: "" }}
-								className="si-menu"
+								aria-label={label}
+						className={cn("si-menu", className)}
 								style={{ ...placement.style, transformOrigin: `${align === "end" ? "calc(100% - 20px)" : "20px"} ${placement.up ? "100%" : "0"}` }}
 								onKeyDown={onKey}
 								initial={{ opacity: 0, scale: 0.9, y: -6 }}

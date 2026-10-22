@@ -9,7 +9,7 @@ type Blot = { x: number; y: number; r: number; color: string; alpha: number };
  * of 石绿 / 石青 / 墨 / 泥金 bloom in once, then stay still. Repaints on
  * theme change and resize. Deterministic: the same seed paints the same wash.
  */
-export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS }: { seed?: number; blots?: Array<[number, number, number, string, number]> }) {
+export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS, className, style }: { seed?: number; blots?: Array<[number, number, number, string, number]>; className?: string; style?: React.CSSProperties }) {
 	const canvas = useRef<HTMLCanvasElement>(null);
 	const { resolved } = useTheme();
 	const first = useRef(true);
@@ -83,7 +83,7 @@ export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS }: { seed?: num
 		};
 	}, [resolved, seed, blots]);
 
-	return <canvas ref={canvas} aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} />;
+	return <canvas ref={canvas} aria-hidden="true" className={className} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", ...style }} />;
 }
 
 /** [x, y, radius (fractions of the box), colour token, strength] */

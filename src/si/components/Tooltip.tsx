@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { spring } from "../core";
+import { cn, spring } from "../core";
 import { useIsClient } from "../internal/client";
 
 // Focus that follows a key press (Tab) shows the tooltip; focus moved by
@@ -21,7 +21,7 @@ const keyboardRecently = () => Date.now() - lastKey < 1000;
  * Small ink label above its child on hover / keyboard focus (not on touch).
  * `open` forces it on (e.g. "已复制" after a copy).
  */
-export function Tooltip({ content, open, children }: { content: React.ReactNode; open?: boolean; children: React.ReactNode }) {
+export function Tooltip({ content, open, children, className }: { content: React.ReactNode; open?: boolean; children: React.ReactNode; className?: string }) {
 	const anchor = useRef<HTMLSpanElement>(null);
 	const tip = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState(false);
@@ -51,7 +51,7 @@ export function Tooltip({ content, open, children }: { content: React.ReactNode;
 	return (
 		<span
 			ref={anchor}
-			style={{ display: "inline-flex" }}
+			className={cn("si-tip-anchor", className)}
 			onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
 			onPointerLeave={() => setHover(false)}
 			onFocus={(e) => keyboardRecently() && e.target.matches(":focus-visible") && setHover(true)}

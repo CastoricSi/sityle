@@ -24,7 +24,11 @@ export function Dialog({
 	seal,
 	wide,
 	phone = "sheet",
-}: {
+	id,
+	className,
+	style,
+	"aria-describedby": describedBy,
+}: Pick<React.ComponentPropsWithRef<"div">, "id" | "className" | "style" | "aria-describedby"> & {
 	open: boolean;
 	onClose: () => void;
 	title: React.ReactNode;
@@ -155,9 +159,12 @@ export function Dialog({
 						ref={box}
 						role="dialog"
 						aria-modal="true"
+						id={id}
 						aria-labelledby={titleId}
+						aria-describedby={describedBy}
 						tabIndex={-1}
-						className={cn("si-dialog", seal && "has-seal", wide && "is-wide", mode !== "center" && `is-${mode}`)}
+						style={style}
+						className={cn("si-dialog", seal && "has-seal", wide && "is-wide", mode !== "center" && `is-${mode}`, className)}
 						{...motionProps}
 					>
 						{seal && (

@@ -20,7 +20,7 @@ type Common = {
 };
 
 export type TextFieldProps = Common &
-	Omit<React.InputHTMLAttributes<HTMLInputElement>, "placeholder"> & {
+	Omit<React.ComponentPropsWithRef<"input">, "placeholder"> & {
 		mono?: boolean;
 	};
 
@@ -49,7 +49,7 @@ export function TextField({ label, hint, error, end, mono, className, id, style,
 	);
 }
 
-export type TextAreaFieldProps = Common & Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "placeholder">;
+export type TextAreaFieldProps = Common & Omit<React.ComponentPropsWithRef<"textarea">, "placeholder">;
 
 export function TextAreaField({ label, hint, error, end, className, id, ...props }: TextAreaFieldProps) {
 	const autoId = useId();
@@ -136,16 +136,14 @@ export function PasswordField({ value, strength, strengthLabels, copy = true, de
 
 export type SelectOption<T extends string = string> = { value: T; label: React.ReactNode; icon?: React.ReactNode };
 
-export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> & {
-	value: T;
-	onChange: (value: T) => void;
-	options: SelectOption<T>[];
-	/** Submitted with the form (a hidden input carries the value). */
-	name?: string;
-	id?: string;
-	disabled?: boolean;
-	style?: React.CSSProperties;
-};
+export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> &
+	Omit<React.ComponentPropsWithRef<"button">, "value" | "onChange" | "children" | "type" | "name" | "className"> & {
+		value: T;
+		onChange: (value: T) => void;
+		options: SelectOption<T>[];
+		/** Submitted with the form (a hidden input carries the value). */
+		name?: string;
+	};
 
 /**
  * A dropdown in the TextField box; the label sits up top. Opens sityle's own
@@ -153,14 +151,20 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> & 
  * Escape closes, typing a letter jumps to the next option starting with it.
  * The list floats above the page, so a dialog or card never clips it.
  */
-export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, name, disabled, style }: SelectFieldProps<T>) {
+/** Other button props (onBlur, aria-*, ref…) go to the trigger; `style` to the box. */
+export function SelectField<T extends string = string>({ label, hint, error, className, id, value, onChange, options, name, disabled, style, ref, onKeyDown, onClick, ...props }: SelectFieldProps<T>) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	const listId = `${fieldId}-list`;
 	const [open, setOpen] = useState(false);
 	const [active, setActive] = useState(0);
 	const wrap = useRef<HTMLDivElement>(null);
-	const trigger = useRef<HTMLButtonElement>(null);
+	const trigger = useRef<HTMLButtonElement | null>(null);
+	const setTrigger = (el: HTMLButtonElement | null) => {
+		trigger.current = el;
+		if (typeof ref === "function") ref(el);
+		else if (ref) ref.current = el;
+	};
 	const list = useRef<HTMLUListElement>(null);
 	const current = options.find((o) => o.value === value);
 	const placement = useAnchoredPosition(wrap, open, { matchWidth: true });
@@ -219,7 +223,8 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", className)}>
 			<div ref={wrap} style={style}>
 				<button
-					ref={trigger}
+					{...props}
+					ref={setTrigger}
 					id={fieldId}
 					type="button"
 					className="si-select-trigger"
@@ -231,8 +236,14 @@ export function SelectField<T extends string = string>({ label, hint, error, cla
 					aria-invalid={!!error || undefined}
 					aria-describedby={hint || error ? `${fieldId}-hint` : undefined}
 					disabled={disabled}
-					onClick={() => (open ? setOpen(false) : show())}
-					onKeyDown={onKey}
+					onClick={(e) => {
+						onClick?.(e);
+						if (!e.defaultPrevented) open ? setOpen(false) : show();
+					}}
+					onKeyDown={(e) => {
+						onKeyDown?.(e);
+						if (!e.defaultPrevented) onKey(e);
+					}}
 				>
 					{current?.label ?? "\u00a0"}
 				</button>

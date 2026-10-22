@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useId } from "react";
 
-import { spring } from "../core";
+import { cn, spring } from "../core";
 
 export type Option<T extends string> = { value: T; label?: React.ReactNode; icon?: React.ReactNode; title?: string };
 
@@ -9,23 +9,19 @@ export type Option<T extends string> = { value: T; label?: React.ReactNode; icon
  * Switch between a few views or settings. The raised pill slides to the
  * chosen option. `role="radiogroup"` for settings, `"tablist"` for views.
  */
-export function Segmented<T extends string>({
-	value,
-	onChange,
-	options,
-	label,
-	role = "radiogroup",
-}: {
+export type SegmentedProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role"> & {
 	value: T;
 	onChange: (v: T) => void;
 	options: Option<T>[];
 	label: string;
 	role?: "radiogroup" | "tablist";
-}) {
+};
+
+export function Segmented<T extends string>({ value, onChange, options, label, role = "radiogroup", className, ...props }: SegmentedProps<T>) {
 	const id = useId();
 	const itemRole = role === "tablist" ? "tab" : "radio";
 	return (
-		<div className="si-seg" role={role} aria-label={label}>
+		<div className={cn("si-seg", className)} role={role} aria-label={label} {...props}>
 			{options.map((o) => {
 				const on = o.value === value;
 				return (
@@ -50,10 +46,12 @@ export function Segmented<T extends string>({
 }
 
 /** Sections within a page; a translucent brush swipe slides behind the current one, like a highlighter. */
-export function Tabs<T extends string>({ value, onChange, options, label }: { value: T; onChange: (v: T) => void; options: Option<T>[]; label: string }) {
+export type TabsProps<T extends string> = Omit<React.ComponentPropsWithRef<"div">, "onChange" | "role"> & { value: T; onChange: (v: T) => void; options: Option<T>[]; label: string };
+
+export function Tabs<T extends string>({ value, onChange, options, label, className, ...props }: TabsProps<T>) {
 	const id = useId();
 	return (
-		<div className="si-tabs" role="tablist" aria-label={label}>
+		<div className={cn("si-tabs", className)} role="tablist" aria-label={label} {...props}>
 			{options.map((o) => {
 				const on = o.value === value;
 				return (

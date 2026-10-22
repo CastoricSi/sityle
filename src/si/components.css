@@ -445,6 +445,13 @@
 	color: var(--si-ink-3);
 }
 
+.si-switch.is-disabled,
+.si-check.is-disabled,
+.si-radio.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 /* ── Checkbox ── */
 .si-check {
 	display: inline-flex;
@@ -744,6 +751,9 @@
 }
 
 /* ── Tooltip ── */
+.si-tip-anchor {
+	display: inline-flex;
+}
 .si-tip {
 	position: fixed;
 	z-index: 900;
@@ -1142,6 +1152,12 @@
 	outline: 2px solid var(--si-jade);
 	outline-offset: 3px;
 }
+.si-slider.is-disabled {
+	opacity: 0.5;
+}
+.si-slider.is-disabled input {
+	cursor: not-allowed;
+}
 /* ── Ink bars: three slanted bars hopping in turn (loading) ── */
 .si-inkbars {
 	display: inline-flex;
@@ -1369,6 +1385,10 @@ select.si-input {
 	transition:
 		border-color var(--si-t-base) var(--si-ease-out),
 		background-color var(--si-t-base) var(--si-ease-out);
+}
+.si-radiocard.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 .si-radiocard input {
 	position: absolute;
