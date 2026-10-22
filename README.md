@@ -93,7 +93,11 @@ Per-component label props (`CopyButton label`, `PasswordField labels`, …) stil
 - **Links.** `Button`, `NavItem` and `ListItem` with `href` render a real `<a>`;
   `as` renders your router's link instead (Next.js `Link` takes `href` as is; for
   `to`-style links pass a small wrapper). A `ListItem` with neither `onClick` nor
-  `href` is a plain row.
+  `href` is a plain row. `ButtonProps` is the button form (extend or `Omit<>` it in
+  a wrapper); `ButtonLinkProps` the link form.
+- **Popovers.** Menus and select lists float on `<body>`, so a dialog or card never
+  clips them; place a menu with `align`, `matchWidth` and `className`, not with
+  descendant selectors. Their height is capped by `--si-room` (room left on screen).
 - **Names.** Colour is `tone` (`jade | azure | gold | danger`, Note also `neutral`).
   Secondary text of an item is `description`; `hint` is the helper text under a
   form field. Toggles take `label` + `description`.

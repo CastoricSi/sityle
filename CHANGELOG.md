@@ -30,7 +30,12 @@ needs. Several renames — see **Migrating** below.
 - Uncontrolled form controls (`defaultValue` / `defaultChecked`, optional `onChange`),
   `name` on SelectField and RadioGroup (forms submit them), `disabled` on RadioGroup,
   Slider, Tabs / Segmented options and Menu items.
-- `href` (and `as` for router links) on Button, NavItem, ListItem.
+- `href` (and `as` for router links) on Button, NavItem, ListItem. `ButtonProps` /
+  `NavItemProps` / `ListItemProps` stay the button form (wrappers can `Omit<>` them); the
+  link form is `ButtonLinkProps` / `NavItemLinkProps` / `ListItemLinkProps`.
+- Menu `matchWidth` (panel as wide as the trigger); popovers expose the room left on
+  screen as `--si-room`, so an app class can cap their height without `!important`.
+- `prepare` script: an unreleased branch installs from git.
 - `TabPanel`; Tabs / Segmented with roving focus and arrow keys; Menu Home / End,
   typeahead and Tab; Tooltip `aria-describedby`; Avatar and Seal names; Steps as a
   progress bar.
@@ -45,7 +50,8 @@ needs. Several renames — see **Migrating** below.
 ### Changed
 
 - `style.css` no longer resets the page or adds the paper-fibre overlay: import
-  `sityle/base.css` for that.
+  `sityle/base.css` for that. Its rules have zero specificity (`:where`), so it can be
+  imported before or after `style.css`.
 - Colour tokens are written once with `light-dark()`; `--si-ink-3` is darker
   (4.5:1 on every paper); solid azure / gold fills are a shade darker for contrast.
 - InkWash resolves any CSS colour and repaints when its own box resizes.
@@ -58,21 +64,22 @@ needs. Several renames — see **Migrating** below.
 
 ### Migrating
 
-| Before                                               | After                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------ |
-| `color="azure"` on Button, Tag, Avatar               | `tone="azure"`                                         |
-| type `Color`                                         | type `Tone`                                            |
-| `<Note tone="warn">` / `tone="accent"`               | `tone="gold"` / `tone="jade"`                          |
-| `<Card note>`                                        | `<Card description>`                                   |
-| `<ListItem subtitle>`                                | `<ListItem description>`                               |
-| `<GroupRow hint>`                                    | `<GroupRow description>`                               |
-| `<Checkbox>标点</Checkbox>`                          | `<Checkbox label="标点" />`                            |
-| `<Radio value="a">慢</Radio>`                        | `<Radio value="a" label="慢" />`                       |
-| `<ConfirmDialog>` without `open`                     | pass `open`                                            |
-| CSS `.si-btn.is-azure`, `.c-jade`, `.si-note.t-warn` | `.si-btn.t-azure`, `.si-tag.t-jade`, `.si-note.t-gold` |
-| page reset / paper fibre from `style.css`            | also `import "sityle/base.css"`                        |
-| `import { cn } from "sityle"`                        | your own `clsx` / join                                 |
-| `lucide-react` installed for sityle                  | not needed (keep it if your app uses it)               |
+| Before                                               | After                                                             |
+| ---------------------------------------------------- | ----------------------------------------------------------------- |
+| `color="azure"` on Button, Tag, Avatar               | `tone="azure"`                                                    |
+| type `Color`                                         | type `Tone`                                                       |
+| `<Note tone="warn">` / `tone="accent"`               | `tone="gold"` / `tone="jade"`                                     |
+| `<Card note>`                                        | `<Card description>`                                              |
+| `<ListItem subtitle>`                                | `<ListItem description>`                                          |
+| `<GroupRow hint>`                                    | `<GroupRow description>`                                          |
+| `<Checkbox>标点</Checkbox>`                          | `<Checkbox label="标点" />`                                       |
+| `<Radio value="a">慢</Radio>`                        | `<Radio value="a" label="慢" />`                                  |
+| `<ConfirmDialog>` without `open`                     | pass `open`                                                       |
+| CSS `.si-btn.is-azure`, `.c-jade`, `.si-note.t-warn` | `.si-btn.t-azure`, `.si-tag.t-jade`, `.si-note.t-gold`            |
+| page reset / paper fibre from `style.css`            | also `import "sityle/base.css"`                                   |
+| `import { cn } from "sityle"`                        | your own `clsx` / join                                            |
+| `lucide-react` installed for sityle                  | not needed (keep it if your app uses it)                          |
+| `.app .si-menu { … }` to place a menu                | Menu `align` / `matchWidth` / `className` (it floats on `<body>`) |
 
 ## 0.8.3 and earlier
 
