@@ -201,6 +201,9 @@
 	color: var(--si-ink);
 	cursor: pointer;
 	font-size: 0.9375rem;
+	transition:
+		background-color var(--si-t-quick),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-option[data-active="true"] {
 	background: var(--si-paper-sunk);

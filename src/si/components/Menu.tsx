@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { cn, inkHandler, spring } from "../core";
+import { cn, spring } from "../core";
 import { useIsClient } from "../internal/client";
 import { LAYER_ATTR } from "../internal/modal";
 import { useAnchoredPosition, useDismiss } from "../internal/popover";
@@ -133,10 +133,9 @@ export function Menu({ trigger, items, align = "start", label, className, matchW
 											tabIndex={-1}
 											disabled={item.disabled}
 											data-text={item.textValue}
-											className={cn("si-menu-item si-ink-host", item.danger && "is-danger")}
+											className={cn("si-menu-item", item.danger && "is-danger")}
 											initial={{ opacity: 0, y: -4 }}
 											animate={{ opacity: 1, y: 0, transition: { delay: 0.03 + order.get(k)! * 0.028, duration: 0.2 } }}
-											onPointerDown={inkHandler()}
 											onClick={() => {
 												setOpen(false);
 												triggerEl()?.focus();

@@ -76,9 +76,7 @@ export function spawnInk(host: HTMLElement, clientX: number, clientY: number, po
 
 /** Adds one ink drop; returns its release (fade out once fully bloomed). */
 function drop(host: HTMLElement, clientX: number, clientY: number): () => void {
-	// a host whose overflow must stay visible (sliding indicators) clips its ink in a .si-ink-layer
-	const layer = host.querySelector<HTMLElement>(":scope > .si-ink-layer") ?? host;
-	const r = layer.getBoundingClientRect();
+	const r = host.getBoundingClientRect();
 	const size = Math.hypot(r.width, r.height) * 2.2;
 	const ink = document.createElement("span");
 	ink.className = "si-ink";
@@ -88,7 +86,7 @@ function drop(host: HTMLElement, clientX: number, clientY: number): () => void {
 		left: `${clientX - r.left - size / 2}px`,
 		top: `${clientY - r.top - size / 2}px`,
 	});
-	layer.appendChild(ink);
+	host.appendChild(ink);
 	const grow = ink.animate(
 		[
 			{ transform: "scale(0)", opacity: 0.3 },
@@ -110,7 +108,7 @@ function drop(host: HTMLElement, clientX: number, clientY: number): () => void {
 export function inkHandler<T extends HTMLElement>(own?: React.PointerEventHandler<T>): React.PointerEventHandler<T> {
 	return (e) => {
 		const el = e.currentTarget;
-		const off = ("disabled" in el && el.disabled === true) || el.getAttribute("aria-disabled") === "true" || el.classList.contains("is-disabled");
+		const off = ("disabled" in el && el.disabled === true) || el.getAttribute("aria-disabled") === "true";
 		if (e.button === 0 && !off) spawnInk(el, e.clientX, e.clientY, e.pointerType);
 		own?.(e);
 	};

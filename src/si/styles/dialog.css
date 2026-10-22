@@ -13,7 +13,8 @@
 .si-scrim-blur,
 .si-scrim-tint {
 	position: absolute;
-	inset: 0;
+	/* past the viewport: covers the page under Safari's status bar and toolbar too */
+	inset: calc(-1 * var(--si-overscan)) 0;
 	pointer-events: none;
 }
 .si-scrim-tint {
@@ -75,7 +76,10 @@
 	padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
 }
 .si-dialog.is-sheet {
-	max-height: 92dvh;
+	/* the paper runs on below the viewport (under Safari's toolbar); the content stays above it */
+	margin-bottom: calc(-1 * var(--si-overscan));
+	padding-bottom: calc(max(24px, env(safe-area-inset-bottom, 0px)) + var(--si-overscan));
+	max-height: calc(92dvh + var(--si-overscan));
 	border-radius: var(--si-r-xl) var(--si-r-xl) 0 0;
 }
 /* grab handle */
@@ -91,12 +95,16 @@
 	background: var(--si-line);
 }
 .si-dialog.is-full {
-	/* exactly the visible area (the scrim is fixed to it); never scrolls itself */
-	height: 100%;
+	/* the visible area (the scrim is fixed to it), with the paper running on past
+	   its top and bottom (under Safari's bars); never scrolls itself */
+	position: absolute;
+	inset: calc(-1 * var(--si-overscan)) 0;
+	height: auto;
 	max-height: none;
 	overflow: hidden;
 	border-radius: 0;
-	padding-top: max(20px, env(safe-area-inset-top, 0px));
+	padding-top: calc(max(20px, env(safe-area-inset-top, 0px)) + var(--si-overscan));
+	padding-bottom: calc(max(24px, env(safe-area-inset-bottom, 0px)) + var(--si-overscan));
 	display: flex;
 	flex-direction: column;
 }

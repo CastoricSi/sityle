@@ -17,6 +17,18 @@
 	backdrop-filter: blur(14px) saturate(1.2);
 	-webkit-backdrop-filter: blur(14px) saturate(1.2);
 }
+/* the bar's paper runs on above it, under Safari's status bar, so the page doesn't show there */
+.sc-bar::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 100%;
+	height: var(--si-overscan);
+	background: inherit;
+	-webkit-backdrop-filter: inherit;
+	backdrop-filter: inherit;
+}
 .sc-bar .sc-wrap {
 	height: 60px;
 	display: flex;
@@ -64,6 +76,21 @@
 	}
 	.sc-theme-label {
 		display: none;
+	}
+	.sc-lang {
+		margin-left: auto;
+	}
+}
+/* phones: brand, 中 / EN and the theme switch fit one row */
+@media (max-width: 480px) {
+	.sc-bar .sc-wrap {
+		gap: 8px;
+	}
+	.sc-bar .sc-version {
+		display: none;
+	}
+	.sc-bar .si-seg button {
+		padding: 8px 10px;
 	}
 }
 

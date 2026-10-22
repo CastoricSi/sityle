@@ -23,7 +23,9 @@
 	font: 500 0.8125rem/1 var(--si-font-sans);
 	white-space: nowrap;
 	cursor: pointer;
-	transition: color var(--si-t-base) var(--si-ease-out);
+	transition:
+		color var(--si-t-base) var(--si-ease-out),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-seg button[aria-checked="true"],
 .si-seg button[aria-selected="true"] {
@@ -34,7 +36,7 @@
 	opacity: 0.45;
 	cursor: not-allowed;
 }
-.si-seg button > :not(.si-seg-pill, .si-ink-layer) {
+.si-seg button > :not(.si-seg-pill) {
 	position: relative;
 	z-index: 1;
 }
@@ -69,7 +71,9 @@
 	font: 500 0.875rem/1 var(--si-font-sans);
 	white-space: nowrap;
 	cursor: pointer;
-	transition: color var(--si-t-base);
+	transition:
+		color var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-tabs button[aria-selected="true"] {
 	color: var(--si-ink);

@@ -75,6 +75,13 @@
 	--si-r-full: 999px;
 	/* the soft focus halo around fields; a scroll container leaves this much room at its edges (or it clips it) */
 	--si-ring: 4px;
+	/*
+	 * How far fixed layers (dialog backdrop, sheets) reach past the top and bottom
+	 * of the viewport. Safari on iPhone shows the page under its status bar and
+	 * floating toolbar, outside the area position: fixed fills; reaching past it
+	 * keeps a backdrop or sheet from ending in mid-air there.
+	 */
+	--si-overscan: 160px;
 
 	/* control heights (density): buttons, plain inputs, floating-label fields */
 	--si-h-sm: 32px;

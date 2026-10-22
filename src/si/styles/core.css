@@ -57,21 +57,26 @@
 	touch-action: manipulation;
 }
 
+/*
+ * Rows and other large pressables press like a button: they give a little and
+ * darken while held (no ink, which reads as a smear across a whole row). The
+ * scale is smaller than a button's, so the edge moves about as far.
+ */
+:where(.si-listitem:not(.is-static), .si-nav, .si-option, .si-menu-item, .si-radiocard):active:not(:disabled, [aria-disabled="true"], .is-disabled) {
+	transform: scale(0.985);
+}
+:where(.si-listitem:not(.is-static), .si-nav:not([aria-current]), .si-option, .si-menu-item):active:not(:disabled, [aria-disabled="true"]) {
+	background: var(--si-paper-sunk);
+}
+:where(.si-seg button, .si-tabs button):active:not(:disabled) {
+	transform: scale(0.95);
+}
+
 .si-ink-host {
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
 	-webkit-tap-highlight-color: transparent;
-}
-/* clips the ink inside a host that can't clip (its overflow stays visible) */
-.si-ink-layer {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	overflow: hidden;
-	isolation: isolate;
-	border-radius: inherit;
-	pointer-events: none;
 }
 .si-ink {
 	position: absolute;

@@ -29,7 +29,9 @@
 	font: 400 0.875rem/1.2 var(--si-font-sans);
 	text-align: left;
 	cursor: pointer;
-	transition: background-color var(--si-t-quick);
+	transition:
+		background-color var(--si-t-quick),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-menu-item:hover,
 .si-menu-item:focus-visible {

@@ -16,7 +16,8 @@
 	cursor: pointer;
 	transition:
 		background-color var(--si-t-base) var(--si-ease-out),
-		color var(--si-t-base);
+		color var(--si-t-base),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 a.si-nav,
 a.si-listitem {
@@ -310,13 +311,7 @@ a.si-listitem {
 }
 
 @media (hover: none) {
-	.si-nav:not([aria-current]):hover {
+	.si-nav:not([aria-current]):hover:not(:active) {
 		background: transparent;
-	}
-	.si-nav:not([aria-current]):active {
-		background: var(--si-paper-sunk);
-	}
-	.si-radiocard:active {
-		transform: scale(0.98);
 	}
 }

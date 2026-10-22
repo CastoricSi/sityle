@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
-import { Button, Segmented } from "../src/si";
+import { Button, ListItem, NavItem, Segmented } from "../src/si";
 
 beforeEach(() => vi.useFakeTimers());
 afterEach(() => vi.useRealTimers());
@@ -34,18 +34,20 @@ test("touch: a quick tap still inks when it lifts, a resting finger inks after a
 	expect(document.querySelectorAll(".si-ink")).toHaveLength(2);
 });
 
-test("Segmented inks inside its own layer (the sliding pill stays unclipped)", () => {
+test("rows and segmented controls press like buttons, without ink", () => {
 	render(
-		<Segmented
-			label="视图"
-			options={[
-				{ value: "a", label: "甲" },
-				{ value: "b", label: "乙" },
-			]}
-		/>,
+		<>
+			<ListItem title="静夜思" onClick={() => {}} />
+			<NavItem label="收件箱" onClick={() => {}} />
+			<Segmented
+				label="视图"
+				options={[
+					{ value: "a", label: "甲" },
+					{ value: "b", label: "乙" },
+				]}
+			/>
+		</>,
 	);
-	const btn = screen.getByRole("radio", { name: "乙" });
-	press(btn, "mouse");
-	expect(btn.querySelector(":scope > .si-ink-layer > .si-ink")).toBeTruthy();
-	expect(btn.classList.contains("si-ink-host")).toBe(false);
+	for (const el of [screen.getByRole("button", { name: /静夜思/ }), screen.getByRole("button", { name: "收件箱" }), screen.getByRole("radio", { name: "乙" })]) press(el, "mouse");
+	expect(document.querySelectorAll(".si-ink")).toHaveLength(0);
 });

@@ -119,14 +119,9 @@ export function ListItem(allProps: ListItemProps | ListItemLinkProps) {
 			</div>
 		);
 	}
-	const { onPointerDown, ...props } = rest;
+	const props = rest;
 	return (
-		<PressableElement
-			{...props}
-			className={cn("si-listitem si-ink-host", className)}
-			aria-current={current ? (props.href !== undefined ? "page" : "true") : undefined}
-			onPointerDown={inkHandler(onPointerDown as React.PointerEventHandler<HTMLElement> | undefined)}
-		>
+		<PressableElement {...props} className={cn("si-listitem", className)} aria-current={current ? (props.href !== undefined ? "page" : "true") : undefined}>
 			{inner}
 			<span className="si-listitem-go">
 				<ChevronRight />

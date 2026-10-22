@@ -164,7 +164,9 @@
 	font: inherit;
 	text-align: left;
 	cursor: pointer;
-	transition: background-color var(--si-t-base) var(--si-ease-out);
+	transition:
+		background-color var(--si-t-base) var(--si-ease-out),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-listitem:hover {
 	background: var(--si-paper-sunk);
@@ -215,11 +217,7 @@
 }
 
 @media (hover: none) {
-	.si-listitem:not([aria-current]):hover {
+	.si-listitem:not([aria-current]):hover:not(:active) {
 		background: transparent;
-	}
-	/* touch has no hover: the row darkens while pressed instead */
-	.si-listitem:not(.is-static):active {
-		background: var(--si-paper-sunk);
 	}
 }

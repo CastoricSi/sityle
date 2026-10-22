@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useId } from "react";
 
-import { cn, inkHandler, spring } from "../core";
+import { cn, spring } from "../core";
 import { useControllable } from "../internal/controllable";
 
 export type Option<T extends string> = { value: T; label?: React.ReactNode; icon?: React.ReactNode; title?: string; disabled?: boolean };
@@ -63,7 +63,6 @@ export function Segmented<T extends string>({ value: valueIn, defaultValue, onCh
 					<button
 						key={o.value}
 						type="button"
-						onPointerDown={inkHandler()}
 						role={itemRole}
 						data-value={o.value}
 						tabIndex={o.value === focusable ? 0 : -1}
@@ -75,8 +74,6 @@ export function Segmented<T extends string>({ value: valueIn, defaultValue, onCh
 						onClick={() => onChange(o.value)}
 					>
 						{on && <motion.span layoutId={`${id}-pill`} className="si-seg-pill" transition={spring.bouncy} />}
-						{/* the ink is clipped here, not by the button: the pill slides between buttons */}
-						<span className="si-ink-layer" aria-hidden="true" />
 						{o.icon}
 						{o.label && <span>{o.label}</span>}
 					</button>
@@ -124,7 +121,6 @@ export function Tabs<T extends string>({ value: valueIn, defaultValue, onChange:
 						key={o.value}
 						id={id ? tabId(id, o.value) : undefined}
 						type="button"
-						onPointerDown={inkHandler()}
 						role="tab"
 						data-value={o.value}
 						tabIndex={o.value === focusable ? 0 : -1}
@@ -140,7 +136,6 @@ export function Tabs<T extends string>({ value: valueIn, defaultValue, onChange:
 								</svg>
 							</motion.span>
 						)}
-						<span className="si-ink-layer" aria-hidden="true" />
 						<span className="si-tabs-label">
 							{o.icon}
 							{o.label}

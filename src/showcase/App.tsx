@@ -160,6 +160,7 @@ function AppBar({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
 					))}
 				</nav>
 				<Segmented<Lang>
+					className="sc-lang"
 					label="组件文字"
 					value={lang}
 					onChange={onLang}

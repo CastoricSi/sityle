@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.2
+
+From trying it on an iPhone again.
+
+- **Rows press like buttons, without ink.** ListItem, NavItem, RadioCard, SelectField
+  options and Menu items give a little (scale 0.985) and darken while held; Tabs and
+  Segmented options give a little too. Ink across a whole row read as a smear. Buttons,
+  icon buttons, chips and the Fab keep their ink.
+- **Safari's edges:** on iPhone the page shows under the status bar and the floating
+  toolbar, outside what `position: fixed` fills. The dialog backdrop, the bottom sheet's
+  paper and the full-screen dialog's paper now reach `--si-overscan` (160px) past the top
+  and bottom, so nothing shows through there; their content stays where it was.
+- Style page: the top bar fits a phone again (it ran 50px wider than the screen).
+
 ## 0.9.1
 
 Touch screens, from trying password-manager on an iPhone.
