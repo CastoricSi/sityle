@@ -59,7 +59,9 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
   ```
 
 - Colours are CSS variables `--si-*`, each written once as `light-dark(light, dark)`.
-  There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
+  Fields draw a `--si-ring` focus halo outside their box: a scroll container
+  (`overflow` not visible) right at a field's edge clips it, so leave that much
+  padding there. There are also tokens for radii (`--si-r-*`), control heights (`--si-h-*`),
   spacing (`--si-space-*`) and stacking (`--si-z-*`).
 
 ### Server rendering (Next.js, Remix…)

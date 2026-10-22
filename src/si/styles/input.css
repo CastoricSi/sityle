@@ -23,7 +23,7 @@
 .si-input:focus {
 	border-color: var(--si-jade);
 	background: var(--si-paper-raised);
-	box-shadow: 0 0 0 4px var(--si-jade-soft);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-jade-soft);
 }
 .si-input[aria-invalid="true"] {
 	border-color: var(--si-cinnabar);
@@ -47,4 +47,11 @@ select.si-input {
 .si-input.is-mono {
 	font-family: var(--si-font-mono);
 	letter-spacing: 0.06em;
+}
+
+/* Touch screens: at least 16px, or iOS Safari zooms the page in on focus. */
+@media (pointer: coarse) {
+	.si-input {
+		font-size: max(16px, 1rem);
+	}
 }

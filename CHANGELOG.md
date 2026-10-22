@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.9.1
+
+Touch screens, from trying password-manager on an iPhone.
+
+- **Fields no longer zoom the page on iOS.** Safari zooms into any field under 16px and
+  doesn't zoom back out; on touch screens (`pointer: coarse`) fields are at least 16px.
+- **Ink on touch:** a finger rests ~70 ms before the drop appears, so starting to scroll
+  a list leaves no mark; a quick tap still gets its drop, and a released drop finishes
+  blooming faster.
+- **Press feedback where desktops have hover:** NavItem, SelectField options, Tabs,
+  Segmented and RadioCard drop ink too; nav rows and list rows darken while pressed on
+  touch; RadioCard gives a little. `:active` works on iOS (a passive touchstart listener).
+  No grey tap flash and no double-tap-zoom wait on anything pressable.
+- `--si-ring` token: the width of the focus halo around fields. A scroll container
+  clips it unless it leaves that much room at its edges.
+
 ## 0.9.0
 
 A review pass: bugs, accessibility, server rendering, and the API a library

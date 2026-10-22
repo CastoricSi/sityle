@@ -29,13 +29,56 @@ const prefersReducedMotion = () => typeof matchMedia !== "undefined" && matchMed
 
 /**
  * Drops ink at the pointer: grows with a ragged, bleeding edge, then fades
- * once the pointer is released. The host needs `si-ink-host` (any component
- * here that takes `ink` already has it).
+ * once the pointer is released (a quick tap finishes the bloom faster). The
+ * host needs `si-ink-host` (any component here that takes `ink` already has it).
+ *
+ * Touch waits a moment before inking, like a finger resting on wet paper: a
+ * finger that starts scrolling (pointercancel, or moves) never leaves a mark,
+ * and a quick tap still gets its drop when it lifts.
  */
-export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
+export function spawnInk(host: HTMLElement, clientX: number, clientY: number, pointerType = "mouse") {
 	if (prefersReducedMotion()) return;
 	ensureDefs();
-	const r = host.getBoundingClientRect();
+	if (pointerType !== "touch") {
+		const release = drop(host, clientX, clientY);
+		const done = () => {
+			removeEventListener("pointerup", done);
+			removeEventListener("pointercancel", done);
+			release();
+		};
+		addEventListener("pointerup", done);
+		addEventListener("pointercancel", done);
+		return;
+	}
+	let release: (() => void) | null = null;
+	const timer = setTimeout(() => (release = drop(host, clientX, clientY)), 70);
+	const stop = () => {
+		clearTimeout(timer);
+		removeEventListener("pointerup", up);
+		removeEventListener("pointercancel", cancel);
+		removeEventListener("pointermove", move);
+	};
+	const up = () => {
+		stop();
+		(release ?? drop(host, clientX, clientY))();
+	};
+	const cancel = () => {
+		stop();
+		release?.();
+	};
+	const move = (e: PointerEvent) => {
+		if (Math.hypot(e.clientX - clientX, e.clientY - clientY) > 10) cancel();
+	};
+	addEventListener("pointerup", up);
+	addEventListener("pointercancel", cancel);
+	addEventListener("pointermove", move, { passive: true });
+}
+
+/** Adds one ink drop; returns its release (fade out once fully bloomed). */
+function drop(host: HTMLElement, clientX: number, clientY: number): () => void {
+	// a host whose overflow must stay visible (sliding indicators) clips its ink in a .si-ink-layer
+	const layer = host.querySelector<HTMLElement>(":scope > .si-ink-layer") ?? host;
+	const r = layer.getBoundingClientRect();
 	const size = Math.hypot(r.width, r.height) * 2.2;
 	const ink = document.createElement("span");
 	ink.className = "si-ink";
@@ -45,7 +88,7 @@ export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
 		left: `${clientX - r.left - size / 2}px`,
 		top: `${clientY - r.top - size / 2}px`,
 	});
-	host.appendChild(ink);
+	layer.appendChild(ink);
 	const grow = ink.animate(
 		[
 			{ transform: "scale(0)", opacity: 0.3 },
@@ -53,21 +96,22 @@ export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
 		],
 		{ duration: 620, easing: "cubic-bezier(.22,1,.36,1)", fill: "forwards" },
 	);
-	const release = () => {
-		removeEventListener("pointerup", release);
-		removeEventListener("pointercancel", release);
+	let released = false;
+	return () => {
+		if (released) return;
+		released = true;
+		// let go early: the bloom hurries to finish, then fades
+		if (grow.playState === "running") grow.playbackRate = 2.2;
 		void grow.finished.then(() => ink.animate([{ opacity: 0.18 }, { opacity: 0 }], { duration: 420, easing: "ease-out", fill: "forwards" }).finished.then(() => ink.remove()));
 	};
-	addEventListener("pointerup", release);
-	addEventListener("pointercancel", release);
 }
 
 /** onPointerDown that drops ink, then calls the caller's own handler. */
 export function inkHandler<T extends HTMLElement>(own?: React.PointerEventHandler<T>): React.PointerEventHandler<T> {
 	return (e) => {
 		const el = e.currentTarget;
-		const off = ("disabled" in el && el.disabled === true) || el.getAttribute("aria-disabled") === "true";
-		if (e.button === 0 && !off) spawnInk(el, e.clientX, e.clientY);
+		const off = ("disabled" in el && el.disabled === true) || el.getAttribute("aria-disabled") === "true" || el.classList.contains("is-disabled");
+		if (e.button === 0 && !off) spawnInk(el, e.clientX, e.clientY, e.pointerType);
 		own?.(e);
 	};
 }
@@ -190,6 +234,8 @@ export function ensureDefs() {
 	const holder = document.createElement("div");
 	holder.innerHTML = `<svg id="${DEFS_ID}" width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="si-bleed" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14"/><feGaussianBlur stdDeviation="1.2"/></filter><symbol id="si-stroke" viewBox="0 0 120 10" preserveAspectRatio="none"><path d="M2 6.5C20 3.8 42 3.2 62 4.1c18 .8 36 1.6 56-1.2-15 3.7-36 4.6-56 4.3C40 7 20 7.8 2 6.5Z" fill="currentColor"/></symbol></svg>`;
 	document.body.appendChild(holder.firstChild!);
+	// iOS Safari applies :active (pressed styles) only when a touchstart listener exists
+	document.addEventListener("touchstart", () => {}, { passive: true });
 }
 
 /** A brush stroke (underlines, tab indicator). Colour = currentColor. */

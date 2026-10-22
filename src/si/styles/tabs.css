@@ -34,7 +34,7 @@
 	opacity: 0.45;
 	cursor: not-allowed;
 }
-.si-seg button > :not(.si-seg-pill) {
+.si-seg button > :not(.si-seg-pill, .si-ink-layer) {
 	position: relative;
 	z-index: 1;
 }

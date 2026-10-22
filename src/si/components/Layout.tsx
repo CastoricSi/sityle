@@ -26,10 +26,15 @@ export type NavItemLinkProps = AsLink<NavItemOwn>;
 
 /** A <button>, or a real link with `href` (middle-click, copy link; `as` renders a router link). */
 export function NavItem(allProps: NavItemProps | NavItemLinkProps) {
-	const { icon, label, count, current, tone, className, ...props } = allProps;
+	const { icon, label, count, current, tone, className, onPointerDown, ...props } = allProps;
 	const currentValue = props.href !== undefined ? "page" : "true";
 	return (
-		<PressableElement {...props} className={cn("si-nav", tone && `t-${tone}`, className)} aria-current={current ? currentValue : undefined}>
+		<PressableElement
+			{...props}
+			className={cn("si-nav si-ink-host", tone && `t-${tone}`, className)}
+			aria-current={current ? currentValue : undefined}
+			onPointerDown={inkHandler(onPointerDown as React.PointerEventHandler<HTMLElement> | undefined)}
+		>
 			{icon}
 			<span className="si-nav-label">{label}</span>
 			{count !== undefined && <span className="si-nav-count">{count}</span>}
@@ -106,7 +111,7 @@ export type RadioCardProps = Omit<React.ComponentPropsWithRef<"input">, "type" |
 /** Native props go to the radio <input>; `className` / `style` to the card. */
 export function RadioCard({ name, checked, onChange, icon, title, description, className, style, disabled, ...props }: RadioCardProps) {
 	return (
-		<label className={cn("si-radiocard", disabled && "is-disabled", className)} style={style}>
+		<label className={cn("si-radiocard si-ink-host", disabled && "is-disabled", className)} style={style} onPointerDown={inkHandler()}>
 			<input type="radio" name={name} checked={checked} onChange={onChange} disabled={disabled} {...props} />
 			{icon}
 			<span>

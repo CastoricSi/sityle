@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useAnimate } from "motion/react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { cn, spring } from "../core";
+import { cn, inkHandler, spring } from "../core";
 import { useIsClient } from "../internal/client";
 import { useControllable } from "../internal/controllable";
 import { useMessages } from "../messages";
@@ -363,7 +363,8 @@ export function SelectField<T extends string = string>({
 										role="option"
 										aria-selected={o.value === value}
 										data-active={i === active}
-										className="si-option"
+										className="si-option si-ink-host"
+										onPointerDown={inkHandler()}
 										onMouseEnter={() => setActive(i)}
 										onMouseDown={(e) => e.preventDefault()}
 										onClick={() => pick(i)}

@@ -73,6 +73,8 @@
 	--si-r-lg: 18px;
 	--si-r-xl: 26px;
 	--si-r-full: 999px;
+	/* the soft focus halo around fields; a scroll container leaves this much room at its edges (or it clips it) */
+	--si-ring: 4px;
 
 	/* control heights (density): buttons, plain inputs, floating-label fields */
 	--si-h-sm: 32px;

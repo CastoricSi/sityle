@@ -135,7 +135,8 @@ a.si-listitem {
 	cursor: pointer;
 	transition:
 		border-color var(--si-t-base) var(--si-ease-out),
-		background-color var(--si-t-base) var(--si-ease-out);
+		background-color var(--si-t-base) var(--si-ease-out),
+		transform var(--si-t-quick) var(--si-ease-out);
 }
 .si-radiocard.is-disabled {
 	opacity: 0.5;
@@ -311,5 +312,11 @@ a.si-listitem {
 @media (hover: none) {
 	.si-nav:not([aria-current]):hover {
 		background: transparent;
+	}
+	.si-nav:not([aria-current]):active {
+		background: var(--si-paper-sunk);
+	}
+	.si-radiocard:active {
+		transform: scale(0.98);
 	}
 }

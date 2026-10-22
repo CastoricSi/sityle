@@ -35,11 +35,43 @@
 }
 
 /* ── Ink ripple: a drop of ink bleeding into wet paper ── */
+/* Touch: no grey tap flash and no double-tap-zoom wait on anything pressable. */
+:where(
+	.si-btn,
+	.si-iconbtn,
+	.si-chip,
+	.si-nav,
+	.si-listitem,
+	.si-option,
+	.si-menu-item,
+	.si-seg button,
+	.si-tabs button,
+	.si-switch,
+	.si-check,
+	.si-radio,
+	.si-radiocard,
+	.si-select-trigger,
+	.si-fab
+) {
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+}
+
 .si-ink-host {
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
 	-webkit-tap-highlight-color: transparent;
+}
+/* clips the ink inside a host that can't clip (its overflow stays visible) */
+.si-ink-layer {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	overflow: hidden;
+	isolation: isolate;
+	border-radius: inherit;
+	pointer-events: none;
 }
 .si-ink {
 	position: absolute;

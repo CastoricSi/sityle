@@ -37,7 +37,7 @@
 .si-field textarea:focus {
 	border-color: var(--si-jade);
 	background: var(--si-paper-raised);
-	box-shadow: 0 0 0 4px var(--si-jade-soft);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-jade-soft);
 }
 /* The label box is as tall as the input and centres its text, so an empty
    field shows the label in the middle; it floats up when there is text. */
@@ -89,7 +89,7 @@
 	background: var(--si-cinnabar-soft);
 }
 .si-field.is-invalid :is(input, textarea):focus {
-	box-shadow: 0 0 0 4px var(--si-cinnabar-soft);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-cinnabar-soft);
 }
 .si-field.is-invalid label,
 .si-field.is-invalid .si-field-hint {
@@ -156,7 +156,7 @@
 	outline: none;
 	border-color: var(--si-jade);
 	background: var(--si-paper-raised);
-	box-shadow: 0 0 0 4px var(--si-jade-soft);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-jade-soft);
 }
 .si-field.is-select .si-select-trigger + label {
 	transform: translateY(-11px) scale(0.78);
@@ -228,4 +228,12 @@
 	height: 18px;
 	color: var(--si-ink-3);
 	pointer-events: none;
+}
+
+/* Touch screens: iOS Safari zooms the page into any field under 16px (and doesn't
+   zoom back out), so fields are at least 16px there. */
+@media (pointer: coarse) {
+	.si-field :is(input, textarea) {
+		font-size: max(16px, 1rem);
+	}
 }
