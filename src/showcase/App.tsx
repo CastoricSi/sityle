@@ -76,6 +76,7 @@ import {
 	type Color,
 	type ThemeChoice,
 } from "@si";
+import sigil from "./sigil.webp";
 
 const NAV = [
 	["color", "色彩"],
@@ -150,8 +151,9 @@ function Hero() {
 						<circle cx="118" cy="118" r="112" fill="none" stroke="var(--si-jade)" strokeWidth="2.5" strokeDasharray="180 40 90 30 260 60" strokeLinecap="round" opacity=".55" />
 						<circle cx="118" cy="118" r="106" fill="none" stroke="var(--si-gold)" strokeWidth="1.2" strokeDasharray="2 9" opacity=".7" />
 					</svg>
-					<Seal size={150} className="sc-hero-seal">
-						丹青
+					<img src={sigil} alt="祀" width={208} height={208} />
+					<Seal size={50} className="sc-portrait-seal">
+						祀
 					</Seal>
 				</div>
 				<div>

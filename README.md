@@ -95,6 +95,7 @@ vite.lib.config.ts Package build; react / motion / lucide-react stay external.
 
 ## License
 
-MIT — see `LICENSE`. Exception: the browser icon (`public/favicon.png`,
-`public/apple-touch-icon.png`) is fan art of the character 祀 used for this
-site only; it is not covered by the MIT license and is not part of the package.
+MIT — see `LICENSE`. Exception: the portrait of the character 祀 (fan art) —
+`src/showcase/sigil.webp` and the browser icons `public/favicon.png`,
+`public/apple-touch-icon.png` — is used for this site only; it is not covered
+by the MIT license and is not part of the package.
