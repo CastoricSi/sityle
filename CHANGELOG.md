@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- **Performance:** every Button carried its loading spinner with its animation running
+  (hidden, but restyled and laid out on every frame) — dozens of idle loops behind any
+  page with buttons. The spinner now only animates while loading. Loaders loop on
+  transform / opacity only (the compositor runs those): InkDrop no longer animates its
+  border width, Skeleton's sheen slides instead of moving the background, BrushSpinner
+  is a fixed stroke going round. In a throttled phone profile, a page at rest went from
+  ~59 ms to ~17–30 ms a frame and opening a dialog from ~92 ms to ~40 ms a frame.
+
 - Menus and select lists open smoothly: a short ease-out (no spring overshoot), rising
   from the trigger when they open above it; menu items fade in place. `popover()` preset.
 - TextAreaField: the box is the field and the text scrolls below the label, so lines no

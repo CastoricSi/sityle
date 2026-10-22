@@ -156,6 +156,11 @@
 	opacity: 1;
 	transform: none;
 }
+/* Every button carries its loader; it only animates while loading (dozens of idle
+   loops would otherwise run behind every page). */
+.si-btn:not(.is-loading) .si-btn-spin * {
+	animation: none;
+}
 
 /* ── Icon button ── */
 .si-iconbtn {

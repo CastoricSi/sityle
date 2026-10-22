@@ -1,4 +1,7 @@
-/* ── Loaders ── */
+/* ── Loaders ──
+   Looping animations only move transform and opacity, which the compositor runs
+   off the main thread; a loop on anything else (sizes, borders, backgrounds)
+   costs a style + layout or paint pass on every frame for as long as it shows. */
 .si-inkdrop {
 	position: relative;
 	display: inline-block;
@@ -24,54 +27,47 @@
 	0% {
 		transform: scale(0.15);
 		opacity: 0.9;
-		border-width: 5px;
 	}
 	100% {
 		transform: scale(1);
 		opacity: 0;
-		border-width: 1px;
 	}
 }
 .si-brushspin {
 	width: 26px;
 	height: 26px;
 	color: var(--si-jade);
-	animation: si-spin 1s linear infinite;
+	animation: si-spin 0.9s cubic-bezier(0.45, 0.1, 0.55, 0.9) infinite;
 }
+/* a fixed stroke going round (rotating is free; growing the stroke repaints every frame) */
 .si-brushspin circle {
 	stroke-linecap: round;
-	animation: si-dash 1.4s var(--si-ease-out) infinite;
+	stroke-dasharray: 38 100;
 }
 @keyframes si-spin {
 	to {
 		transform: rotate(360deg);
 	}
 }
-@keyframes si-dash {
-	0% {
-		stroke-dasharray: 2 100;
-	}
-	50% {
-		stroke-dasharray: 48 100;
-	}
-	100% {
-		stroke-dasharray: 2 100;
-		stroke-dashoffset: -62;
-	}
-}
 .si-skeleton {
+	position: relative;
+	overflow: hidden;
 	height: 12px;
 	border-radius: var(--si-r-full);
-	background: linear-gradient(90deg, var(--si-paper-sunk) 0 40%, color-mix(in srgb, var(--si-paper-sunk) 40%, var(--si-paper-raised)) 50%, var(--si-paper-sunk) 60% 100%);
-	background-size: 300% 100%;
+	background: var(--si-paper-sunk);
+}
+/* the sheen slides across (transform), the bar itself stays still */
+.si-skeleton::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, transparent 30%, color-mix(in srgb, var(--si-paper-raised) 60%, transparent) 50%, transparent 70%);
+	transform: translateX(-100%);
 	animation: si-shimmer 1.8s ease-in-out infinite;
 }
 @keyframes si-shimmer {
-	from {
-		background-position: 100% 0;
-	}
 	to {
-		background-position: 0 0;
+		transform: translateX(100%);
 	}
 }
 
