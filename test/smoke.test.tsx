@@ -29,11 +29,11 @@ test("the shared SVG is added once, however many providers", () => {
 	expect(document.querySelectorAll("#si-stroke")).toHaveLength(1);
 });
 
-import { readFileSync } from "node:fs";
+import fieldCss from "../src/si/styles/field.css?raw";
+import inputCss from "../src/si/styles/input.css?raw";
 
 test("touch screens get 16px fields (iOS Safari zooms into anything smaller)", () => {
-	for (const f of ["field", "input"]) {
-		const css = readFileSync(`${process.cwd()}/src/si/styles/${f}.css`, "utf8");
+	for (const css of [fieldCss, inputCss]) {
 		expect(css).toMatch(/@media \(pointer: coarse\)[^}]*\{[^}]*font-size: max\(16px, 1rem\)/);
 	}
 });

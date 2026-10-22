@@ -7,6 +7,7 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		setupFiles: ["./test/setup.ts"],
-		css: false,
+		// component CSS stays out of jsdom; tests that read a stylesheet import it with ?raw
+		css: { include: [/\?raw$/] },
 	},
 });
