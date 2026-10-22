@@ -3,7 +3,7 @@
 import "./tokens.css";
 import "./components.css";
 
-export { BrushStroke, cn, ease, inkHandler, SiProvider, spawnInk, spring, themeScript, useTheme, type ThemeChoice } from "./core";
+export { BrushStroke, ease, inkHandler, SiProvider, spawnInk, spring, themeScript, useTheme, type ThemeChoice } from "./core";
 export { Button, CopyButton, IconButton, type ButtonProps, type Tone, type CopyButtonProps, type IconButtonProps } from "./components/Button";
 export { Avatar, AvatarStack, Card, Chip, ListItem, Seal, Tag, type AvatarProps, type CardProps, type ChipProps, type ListItemProps, type SealProps, type TagProps } from "./components/Display";
 export { BrushSpinner, InkBars, InkDrop, Skeleton } from "./components/Feedback";

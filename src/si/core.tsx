@@ -34,6 +34,7 @@ const prefersReducedMotion = () => typeof matchMedia !== "undefined" && matchMed
  */
 export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
 	if (prefersReducedMotion()) return;
+	ensureDefs();
 	const r = host.getBoundingClientRect();
 	const size = Math.hypot(r.width, r.height) * 2.2;
 	const ink = document.createElement("span");
@@ -55,11 +56,7 @@ export function spawnInk(host: HTMLElement, clientX: number, clientY: number) {
 	const release = () => {
 		removeEventListener("pointerup", release);
 		removeEventListener("pointercancel", release);
-		void grow.finished.then(() =>
-			ink
-				.animate([{ opacity: 0.18 }, { opacity: 0 }], { duration: 420, easing: "ease-out", fill: "forwards" })
-				.finished.then(() => ink.remove()),
-		);
+		void grow.finished.then(() => ink.animate([{ opacity: 0.18 }, { opacity: 0 }], { duration: 420, easing: "ease-out", fill: "forwards" }).finished.then(() => ink.remove()));
 	};
 	addEventListener("pointerup", release);
 	addEventListener("pointercancel", release);
@@ -149,6 +146,7 @@ export function SiProvider({
 	const systemDark = useMediaQuery("(prefers-color-scheme: dark)");
 	const resolved = choice === "system" ? (systemDark ? "dark" : "light") : choice;
 
+	useLayoutEffect(ensureDefs, []);
 	// a layout effect: children's effects (InkWash reads tokens) already see the new theme
 	useLayoutEffect(() => {
 		const root = document.documentElement;
@@ -169,10 +167,7 @@ export function SiProvider({
 	return (
 		<ThemeCtx.Provider value={value}>
 			<MessagesContext.Provider value={texts}>
-				<MotionConfig reducedMotion="user">
-					<SiDefs />
-					{children}
-				</MotionConfig>
+				<MotionConfig reducedMotion="user">{children}</MotionConfig>
 			</MessagesContext.Provider>
 		</ThemeCtx.Provider>
 	);
@@ -184,24 +179,22 @@ export function useTheme(): ThemeContext {
 	return ctx;
 }
 
-/** Shared SVG: the ink-bleed filter and the brush-stroke shape. */
-function SiDefs() {
-	return (
-		<svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-			<filter id="si-bleed" x="-20%" y="-20%" width="140%" height="140%">
-				<feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves={2} seed={7} result="n" />
-				<feDisplacementMap in="SourceGraphic" in2="n" scale={14} />
-				<feGaussianBlur stdDeviation={1.2} />
-			</filter>
-			<symbol id="si-stroke" viewBox="0 0 120 10" preserveAspectRatio="none">
-				<path d="M2 6.5C20 3.8 42 3.2 62 4.1c18 .8 36 1.6 56-1.2-15 3.7-36 4.6-56 4.3C40 7 20 7.8 2 6.5Z" fill="currentColor" />
-			</symbol>
-		</svg>
-	);
+/**
+ * The shared SVG (the ink-bleed filter, the brush-stroke shape), added to the page
+ * once however many providers or roots there are, and also by the ink ripple and
+ * BrushStroke themselves, so they work without a provider.
+ */
+const DEFS_ID = "si-defs";
+export function ensureDefs() {
+	if (typeof document === "undefined" || document.getElementById(DEFS_ID)) return;
+	const holder = document.createElement("div");
+	holder.innerHTML = `<svg id="${DEFS_ID}" width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="si-bleed" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14"/><feGaussianBlur stdDeviation="1.2"/></filter><symbol id="si-stroke" viewBox="0 0 120 10" preserveAspectRatio="none"><path d="M2 6.5C20 3.8 42 3.2 62 4.1c18 .8 36 1.6 56-1.2-15 3.7-36 4.6-56 4.3C40 7 20 7.8 2 6.5Z" fill="currentColor"/></symbol></svg>`;
+	document.body.appendChild(holder.firstChild!);
 }
 
 /** A brush stroke (underlines, tab indicator). Colour = currentColor. */
 export function BrushStroke({ className, style }: { className?: string; style?: React.CSSProperties }) {
+	useLayoutEffect(ensureDefs, []);
 	return (
 		<svg className={className} style={style} aria-hidden="true">
 			<use href="#si-stroke" />
