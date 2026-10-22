@@ -1,13 +1,17 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { spring } from "../core";
+import { useIsClient } from "../internal/client";
 
 // Focus that follows a key press (Tab) shows the tooltip; focus moved by
 // code (e.g. returned after a drawer closes) or by touch does not.
 let lastKey = 0;
-if (typeof window !== "undefined") {
+let listening = false;
+function listenForKeys() {
+	if (listening) return;
+	listening = true;
 	addEventListener("keydown", () => (lastKey = Date.now()), true);
 	addEventListener("pointerdown", () => (lastKey = 0), true);
 }
@@ -23,6 +27,8 @@ export function Tooltip({ content, open, children }: { content: React.ReactNode;
 	const [hover, setHover] = useState(false);
 	const [pos, setPos] = useState({ left: -999, top: -999 });
 	const shown = open ?? hover;
+	const client = useIsClient();
+	useEffect(listenForKeys, []);
 
 	useLayoutEffect(() => {
 		if (!shown || !anchor.current) return;
@@ -52,7 +58,8 @@ export function Tooltip({ content, open, children }: { content: React.ReactNode;
 			onBlur={() => setHover(false)}
 		>
 			{children}
-			{createPortal(
+			{client &&
+				createPortal(
 				<AnimatePresence>
 					{shown && (
 						<motion.div

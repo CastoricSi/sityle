@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useId, useLayoutEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useId, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import { cn, spring } from "../core";
+import { useIsClient, useMediaQuery } from "../internal/client";
 import { LAYER_ATTR, lockScroll, tabbables } from "../internal/modal";
 import { Seal } from "./Display";
 
@@ -36,7 +37,8 @@ export function Dialog({
 	phone?: "sheet" | "full";
 }) {
 	const titleId = useId();
-	const small = useSmallScreen();
+	const small = useMediaQuery("(max-width: 600px)");
+	const client = useIsClient();
 	const mode = small ? phone : "center";
 	const motionProps =
 		mode === "center"
@@ -111,6 +113,7 @@ export function Dialog({
 		};
 	}, [open]);
 
+	if (!client) return null;
 	return createPortal(
 		<AnimatePresence>
 			{open && (
@@ -178,16 +181,5 @@ export function Dialog({
 			)}
 		</AnimatePresence>,
 		document.body,
-	);
-}
-
-function useSmallScreen() {
-	return useSyncExternalStore(
-		(cb) => {
-			const m = matchMedia("(max-width: 600px)");
-			m.addEventListener("change", cb);
-			return () => m.removeEventListener("change", cb);
-		},
-		() => matchMedia("(max-width: 600px)").matches,
 	);
 }

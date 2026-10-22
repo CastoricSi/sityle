@@ -21,6 +21,8 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			external: (id) => external.some((e) => id === e || id.startsWith(`${e}/`)),
+			// Every component uses hooks: React Server Components frameworks (Next.js app router) need this.
+			output: { banner: '"use client";' },
 		},
 	},
 });

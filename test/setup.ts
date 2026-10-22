@@ -4,6 +4,10 @@ import { afterEach } from "vitest";
 
 afterEach(cleanup);
 
+if (typeof window !== "undefined") polyfill();
+
+function polyfill() {
+
 if (!window.matchMedia) {
 	window.matchMedia = (query: string) =>
 		({
@@ -33,3 +37,4 @@ if (!Element.prototype.animate) {
 }
 
 if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = function () {};
+}

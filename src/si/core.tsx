@@ -1,5 +1,7 @@
 import { MotionConfig, type Transition } from "motion/react";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
+
+import { useMediaQuery } from "./internal/client";
 
 /* ── class names ── */
 export function cn(...classes: Array<string | false | null | undefined>): string {
@@ -87,16 +89,38 @@ function readChoice(): ThemeChoice {
 	return "system";
 }
 
-function useSystemDark() {
-	return useSyncExternalStore(
-		(cb) => {
-			const mql = matchMedia("(prefers-color-scheme: dark)");
-			mql.addEventListener("change", cb);
-			return () => mql.removeEventListener("change", cb);
-		},
-		() => matchMedia("(prefers-color-scheme: dark)").matches,
-	);
-}
+// The remembered choice as an external store: the server (and hydration) render
+// "system", the client then switches to what was stored, without a mismatch.
+const choiceListeners = new Set<() => void>();
+const storedChoice = {
+	subscribe(cb: () => void) {
+		choiceListeners.add(cb);
+		const onStorage = (e: StorageEvent) => e.key === STORAGE_KEY && cb();
+		addEventListener("storage", onStorage);
+		return () => {
+			choiceListeners.delete(cb);
+			removeEventListener("storage", onStorage);
+		};
+	},
+	set(c: ThemeChoice) {
+		try {
+			localStorage.setItem(STORAGE_KEY, c);
+		} catch {
+			// not remembered; still applied
+		}
+		memory = c;
+		choiceListeners.forEach((l) => l());
+	},
+	get: (): ThemeChoice => memory ?? readChoice(),
+};
+let memory: ThemeChoice | null = null;
+
+/**
+ * Put this in <head> (before the stylesheet paints) so a remembered theme
+ * applies on the first frame, with no flash of the light theme:
+ * `<script dangerouslySetInnerHTML={{ __html: themeScript }} />`.
+ */
+export const themeScript = `try{var t=localStorage.getItem(${JSON.stringify(STORAGE_KEY)});if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
 
 /**
  * Wrap the app once: theme (宣纸 / 浓墨 / system), the SVG filters the ink
@@ -113,10 +137,10 @@ export function SiProvider({
 	theme?: ThemeChoice;
 	onThemeChange?: (choice: ThemeChoice) => void;
 }) {
-	const [own, setOwn] = useState<ThemeChoice>(readChoice);
+	const own = useSyncExternalStore(storedChoice.subscribe, storedChoice.get, () => "system" as const);
 	const controlled = theme !== undefined;
 	const choice = controlled ? theme : own;
-	const systemDark = useSystemDark();
+	const systemDark = useMediaQuery("(prefers-color-scheme: dark)");
 	const resolved = choice === "system" ? (systemDark ? "dark" : "light") : choice;
 
 	useEffect(() => {
@@ -127,14 +151,7 @@ export function SiProvider({
 
 	const setChoice = useCallback(
 		(c: ThemeChoice) => {
-			if (!controlled) {
-				setOwn(c);
-				try {
-					localStorage.setItem(STORAGE_KEY, c);
-				} catch {
-					// not remembered; still applied
-				}
-			}
+			if (!controlled) storedChoice.set(c);
 			onThemeChange?.(c);
 		},
 		[controlled, onThemeChange],
