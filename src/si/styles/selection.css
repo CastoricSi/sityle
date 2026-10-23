@@ -5,10 +5,22 @@
 	gap: 12px;
 	cursor: pointer;
 }
+/* The real input is hidden inside its own control: with the control as its containing
+   block it stays in the scroll box the control is in (placed against some outer
+   positioned box, e.g. a dialog, it stretched that box's scroll area). */
+.si-switch,
+.si-check,
+.si-radio {
+	position: relative;
+}
 .si-switch input,
 .si-check input,
 .si-radio input {
 	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
 	opacity: 0;
 	pointer-events: none;
 }
