@@ -717,18 +717,27 @@
 	.sc-docs.is-toc {
 		grid-template-columns: minmax(0, 1fr);
 	}
+	/* absolute layers at the screen's place in the page (see useDrawerPlace), so on
+	   iPhone they also cover the page under Safari's toolbar */
 	.sc-toc {
-		position: fixed;
+		position: absolute;
 		left: 0;
-		top: calc(60px + env(safe-area-inset-top, 0px));
+		top: calc(var(--y, 0px) + 60px + env(safe-area-inset-top, 0px));
 		z-index: 40;
 		width: min(300px, 85vw);
-		box-shadow: var(--si-e3);
+		height: calc(var(--vh, 100dvh) - 60px - env(safe-area-inset-top, 0px));
+		/* the paper runs on below the screen's edge */
+		box-shadow:
+			0 var(--si-overscan) 0 var(--si-paper-raised),
+			var(--si-e3);
 	}
 	.sc-docs.is-toc .sc-toc-shade {
 		display: block;
-		position: fixed;
-		inset: 0;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: calc(var(--y, 0px) - var(--si-overscan));
+		height: calc(var(--vh, 100dvh) + 2 * var(--si-overscan));
 		z-index: 39;
 		background: var(--si-scrim);
 	}

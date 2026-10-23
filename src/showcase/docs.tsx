@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { NavItem, Typography } from "@si";
 import { CATALOGUE } from "./catalogue";
@@ -31,6 +31,8 @@ const TOC = [
 export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 	const L = useL();
 	const at = useReading();
+	const box = useRef<HTMLDivElement>(null);
+	useDrawerPlace(box, toc);
 	useEffect(() => {
 		if (!toc) return;
 		const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -38,7 +40,7 @@ export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 		return () => removeEventListener("keydown", onKey);
 	}, [toc, onClose]);
 	return (
-		<div className={toc ? "sc-docs is-toc" : "sc-docs"}>
+		<div ref={box} className={toc ? "sc-docs is-toc" : "sc-docs"}>
 			<div className="sc-toc-shade" aria-hidden="true" onClick={onClose} />
 			<nav className="sc-toc" id="sc-toc" aria-label={L("文档目录", "Contents")}>
 				<Typography variant="label" as="div" tone="faint" className="sc-toc-title">
@@ -73,6 +75,37 @@ export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 			</article>
 		</div>
 	);
+}
+
+/**
+ * Narrow screens: while the drawer is open the page stays put, and the drawer and its
+ * shade are absolute layers at the screen's place in the page (--y, --vh). Safari on
+ * iPhone clips position: fixed layers to the viewport, so fixed ones left the page
+ * showing under its toolbar; layers in the page reach on past the edges.
+ */
+function useDrawerPlace(box: React.RefObject<HTMLDivElement | null>, open: boolean) {
+	useLayoutEffect(() => {
+		const el = box.current;
+		if (!open || !el || !matchMedia("(max-width: 960px)").matches) return;
+		const html = document.documentElement;
+		const place = () => {
+			el.style.setProperty("--y", `${scrollY}px`);
+			el.style.setProperty("--vh", `${innerHeight}px`);
+		};
+		place();
+		const before = html.getBoundingClientRect().width;
+		const saved = { overflow: html.style.overflow, padding: html.style.paddingRight };
+		html.style.overflow = "hidden";
+		// a desktop scrollbar went away: keep the page where it was
+		const bar = html.getBoundingClientRect().width - before;
+		if (bar > 0) html.style.paddingRight = `${bar}px`;
+		addEventListener("resize", place);
+		return () => {
+			removeEventListener("resize", place);
+			html.style.overflow = saved.overflow;
+			html.style.paddingRight = saved.padding;
+		};
+	}, [box, open]);
 }
 
 /** The section being read: the last one whose heading has passed the top quarter of the screen. */
