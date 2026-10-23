@@ -1,4 +1,7 @@
-import { Typography } from "@si";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { NavItem, Typography } from "@si";
 import { CATALOGUE } from "./catalogue";
 import { useL } from "./lang";
 import { cmpId, Code, VERSION } from "./ui";
@@ -20,20 +23,33 @@ const TOC = [
 ] as const;
 
 /* ── 文档：如何使用 sityle ── */
-export function Docs() {
+/**
+ * The contents are a sidebar beside the text on wide screens (☰ folds it away) and
+ * a drawer over it on narrow ones (☰ opens it; a link, the shade or Esc closes it).
+ * The section being read is highlighted.
+ */
+export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 	const L = useL();
+	const at = useReading();
+	useEffect(() => {
+		if (!toc) return;
+		const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+		addEventListener("keydown", onKey);
+		return () => removeEventListener("keydown", onKey);
+	}, [toc, onClose]);
 	return (
-		<div className="sc-wrap sc-docs">
-			<nav className="sc-toc" aria-label={L("文档目录", "Contents")}>
-				<b>{L("文档", "Documentation")}</b>
+		<div className={toc ? "sc-docs is-toc" : "sc-docs"}>
+			<div className="sc-toc-shade" aria-hidden="true" onClick={onClose} />
+			<nav className="sc-toc" id="sc-toc" aria-label={L("文档目录", "Contents")}>
+				<Typography variant="label" as="div" tone="faint" className="sc-toc-title">
+					{L("文档", "Documentation")}
+				</Typography>
 				{TOC.map(([id, zh, en]) => (
-					<a key={id} href={`#${id}`}>
-						{L(zh, en)}
-					</a>
+					<NavItem key={id} href={`#${id}`} label={L(zh, en)} current={at === id} onClick={onClose} />
 				))}
-				<a href="/#components" className="sc-toc-out">
-					{L("← 组件演示", "← Live components")}
-				</a>
+				<div className="sc-toc-out">
+					<NavItem href="/#components" icon={<ArrowLeft />} label={L("组件演示", "Live components")} tone="jade" />
+				</div>
 			</nav>
 			<article className="sc-article">
 				<header>
@@ -57,6 +73,32 @@ export function Docs() {
 			</article>
 		</div>
 	);
+}
+
+/** The section being read: the last one whose heading has passed the top quarter of the screen. */
+function useReading(): string {
+	const [at, setAt] = useState<string>(TOC[0][0]);
+	useEffect(() => {
+		let raf = 0;
+		const check = () => {
+			cancelAnimationFrame(raf);
+			raf = requestAnimationFrame(() => {
+				let current: string = TOC[0][0];
+				for (const [id] of TOC) {
+					const el = document.getElementById(id);
+					if (el && el.getBoundingClientRect().top < innerHeight / 4) current = id;
+				}
+				setAt(current);
+			});
+		};
+		check();
+		addEventListener("scroll", check, { passive: true });
+		return () => {
+			cancelAnimationFrame(raf);
+			removeEventListener("scroll", check);
+		};
+	}, []);
+	return at;
 }
 
 function Section({ id, children }: { id: (typeof TOC)[number][0]; children: React.ReactNode }) {

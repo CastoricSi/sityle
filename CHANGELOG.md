@@ -12,6 +12,9 @@
   component saying what it does, a live demo and the code to write it; the index at the
   top jumps to each card. The design sections (pigments, type, shape, motion, icons) come
   first; the type scale is shown with Typography.
+- Style page header: just the seal, the title and the language / theme switches. In the
+  docs, ☰ before the seal folds the contents sidebar (a drawer on narrow screens, where
+  the title gives way to the seal); the section being read is highlighted.
 - **Slim scrollbars:** inside sityle components (text areas, select lists, menus,
   dialogs) a scrollbar is one thin rounded stroke with no arrows and no track, a
   little darker on hover (`--si-scroll-thumb`, `--si-scroll-thumb-hover`); a text

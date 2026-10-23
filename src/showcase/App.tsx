@@ -1,7 +1,7 @@
-import { BookOpen, Monitor, Moon, Sun } from "lucide-react";
+import { Menu as MenuIcon, Monitor, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { en, Seal, Segmented, SiProvider, useTheme, zh, type MotionChoice, type ThemeChoice } from "@si";
+import { en, IconButton, Seal, Segmented, SiProvider, useTheme, zh, type MotionChoice, type ThemeChoice } from "@si";
 import { Components } from "./components";
 import { Colors, Hero, Icons, MotionSection, Shape, Type } from "./design";
 import { Docs } from "./docs";
@@ -19,6 +19,9 @@ function readLang(): Lang {
 }
 
 /** Two pages: the style page (/) and the documentation (/docs). */
+/** Wide enough for the docs' contents to sit beside the text (matches showcase.css). */
+const WIDE = "(min-width: 961px)";
+
 const onDocs = () => location.pathname.replace(/\/+$/, "") === "/docs";
 
 export function App() {
@@ -35,6 +38,14 @@ export function App() {
 	};
 	const [motionChoice, setMotionChoice] = useState<MotionChoice>("on");
 	const docs = onDocs();
+	// the docs' contents: a sidebar on wide screens (open), a drawer on narrow ones (closed)
+	const [toc, setToc] = useState(() => matchMedia(WIDE).matches);
+	useEffect(() => {
+		const mq = matchMedia(WIDE);
+		const on = () => setToc(mq.matches);
+		mq.addEventListener("change", on);
+		return () => mq.removeEventListener("change", on);
+	}, []);
 	useEffect(() => {
 		document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
 	}, [lang]);
@@ -50,10 +61,10 @@ export function App() {
 	return (
 		<LangContext.Provider value={lang}>
 			<SiProvider messages={lang === "en" ? en : zh} motion={motionChoice}>
-				<AppBar lang={lang} onLang={setLang} docs={docs} />
+				<AppBar lang={lang} onLang={setLang} toc={docs ? { open: toc, toggle: () => setToc((o) => !o) } : undefined} />
 				{docs ? (
 					<main>
-						<Docs />
+						<Docs toc={toc} onClose={() => !matchMedia(WIDE).matches && setToc(false)} />
 					</main>
 				) : (
 					<>
@@ -76,27 +87,21 @@ export function App() {
 	);
 }
 
-function AppBar({ lang, onLang, docs }: { lang: Lang; onLang: (l: Lang) => void; docs: boolean }) {
+function AppBar({ lang, onLang, toc }: { lang: Lang; onLang: (l: Lang) => void; toc?: { open: boolean; toggle: () => void } }) {
 	const { choice, setChoice } = useTheme();
 	const L = useL();
-	// on the docs page the style page's sections are one page away
-	const at = (hash: string) => (docs ? `/${hash}` : hash);
 	return (
-		<header className="sc-bar">
+		<header className={toc ? "sc-bar has-menu" : "sc-bar"}>
 			<div className="sc-wrap">
-				<a className="sc-brand" href="/">
-					<Seal>祀</Seal>水祀丹青
-					<span className="sc-version">{VERSION}</span>
+				{toc && (
+					<IconButton label={toc.open ? L("收起目录", "Hide contents") : L("目录", "Contents")} aria-expanded={toc.open} aria-controls="sc-toc" onClick={toc.toggle}>
+						<MenuIcon />
+					</IconButton>
+				)}
+				<a className="sc-brand" href="/" aria-label="水祀丹青">
+					<Seal>祀</Seal>
+					<span className="sc-brand-name">水祀丹青</span>
 				</a>
-				<nav className="sc-nav" aria-label={L("页面", "Pages")}>
-					<a href={at("#color")}>{L("设计", "Design")}</a>
-					<a href={at("#components")}>{L("组件", "Components")}</a>
-					<a href={at("#sample")}>{L("实例", "Example")}</a>
-					<a href="/docs" aria-current={docs ? "page" : undefined} className="sc-nav-docs">
-						<BookOpen />
-						{L("文档", "Docs")}
-					</a>
-				</nav>
 				<Segmented<Lang>
 					className="sc-lang"
 					label={L("语言", "Language")}
