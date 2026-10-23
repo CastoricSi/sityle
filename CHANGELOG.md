@@ -1,7 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.0.1
 
+- Dialog on a page without a scrollbar: closing no longer slides it a few pixels. The
+  page stays locked until the closing animation is over (its backdrop reaches past the
+  screen, and unlocking while it faded made the page scroll for a moment), and it is
+  locked before the backdrop is in the page.
+- ListItem and NavItem texts end in "…" instead of widening their row: a long
+  description no longer pushes a list in a grid or a card past its edge.
 - Style page docs: one page per section (`/docs/start`, `/docs/styles`…) with previous /
   next links, instead of one long page; old `/docs#section` links still land on theirs.
 
