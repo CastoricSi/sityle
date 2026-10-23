@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Style page docs: one page per section (`/docs/start`, `/docs/styles`…) with previous /
+  next links, instead of one long page; old `/docs#section` links still land on theirs.
+
 ## 1.0.0
 
 The first stable release: the API is settled, and from here on a breaking change

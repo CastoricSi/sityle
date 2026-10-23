@@ -22,7 +22,7 @@ function readLang(): Lang {
 /** Wide enough for the docs' contents to sit beside the text (matches showcase.css). */
 const WIDE = "(min-width: 961px)";
 
-const onDocs = () => location.pathname.replace(/\/+$/, "") === "/docs";
+const onDocs = () => /^\/docs(\/|$)/.test(location.pathname);
 
 export function App() {
 	// The page's sample text and the texts sityle writes itself (copy, show / hide,

@@ -23,22 +23,66 @@ const TOC = [
 ] as const;
 
 /* ── 文档：如何使用 sityle ── */
+type PageId = (typeof TOC)[number][0];
+const PAGES: Record<PageId, () => React.ReactNode> = {
+	start: Start,
+	provider: Provider,
+	styles: Styles,
+	typography: Typo,
+	conventions: Conventions,
+	reference: Reference,
+	motion: MotionDoc,
+	more: More,
+	rules: Rules,
+};
+const isPage = (id: string): id is PageId => TOC.some(([t]) => t === id);
+const pageHref = (id: PageId) => `/docs/${id}`;
+
+/** The page in the address: /docs/<page>; /docs (or an old /docs#page link) opens the first / that one. */
+function readPage(): PageId {
+	const [, , id = "", ...rest] = location.pathname.replace(/\/+$/, "").split("/");
+	if (!rest.length && isPage(id)) return id;
+	const old = location.hash.slice(1);
+	const page = isPage(old) ? old : TOC[0][0];
+	history.replaceState(null, "", pageHref(page));
+	return page;
+}
+
 /**
- * The contents are a sidebar beside the text on wide screens (☰ folds it away) and
- * a drawer over it on narrow ones (☰ opens it; a link, the shade or Esc closes it).
- * The section being read is highlighted.
+ * One page per section. The contents are a sidebar beside the page on wide screens
+ * (☰ folds it away) and a drawer over it on narrow ones (☰ opens it; a link, the
+ * shade or Esc closes it). Moving between pages stays in the app (the address
+ * changes, Back / Forward work); a middle-click still opens a new tab.
  */
 export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 	const L = useL();
-	const at = useReading();
+	const [page, setPage] = useState<PageId>(readPage);
 	const box = useRef<HTMLDivElement>(null);
 	useDrawerPlace(box, toc);
+	useEffect(() => {
+		const onPop = () => setPage(readPage());
+		addEventListener("popstate", onPop);
+		return () => removeEventListener("popstate", onPop);
+	}, []);
 	useEffect(() => {
 		if (!toc) return;
 		const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
 		addEventListener("keydown", onKey);
 		return () => removeEventListener("keydown", onKey);
 	}, [toc, onClose]);
+	const go = (id: PageId) => (e: React.MouseEvent) => {
+		onClose();
+		// a new tab, a new window: the browser's
+		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
+		if (id !== page) history.pushState(null, "", pageHref(id));
+		setPage(id);
+		scrollTo(0, 0);
+	};
+	const i = TOC.findIndex(([t]) => t === page);
+	const prev = TOC[i - 1];
+	const next = TOC[i + 1];
+	const Page = PAGES[page];
 	return (
 		<div ref={box} className={toc ? "sc-docs is-toc" : "sc-docs"}>
 			<div className="sc-toc-shade" aria-hidden="true" onClick={onClose} />
@@ -47,31 +91,28 @@ export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 					{L("文档", "Documentation")}
 				</Typography>
 				{TOC.map(([id, zh, en]) => (
-					<NavItem key={id} href={`#${id}`} label={L(zh, en)} current={at === id} onClick={onClose} />
+					<NavItem key={id} href={pageHref(id)} label={L(zh, en)} current={page === id} onClick={go(id)} />
 				))}
 				<div className="sc-toc-out">
 					<NavItem href="/#components" icon={<ArrowLeft />} label={L("组件演示", "Live components")} tone="jade" />
 				</div>
 			</nav>
-			<article className="sc-article">
-				<header>
-					<Typography variant="h1">{L("使用 sityle", "Using sityle")}</Typography>
-					<Typography tone="muted">
-						{L(
-							`sityle ${VERSION} 是一套水墨风的 React 组件和设计令牌。这里写的是怎么装、怎么用、怎么改；每个组件的样子和交互见首页的组件演示。`,
-							`sityle ${VERSION} is a set of ink-wash React components and design tokens. This page covers installing, using and adapting it; for how each component looks and behaves, see the live components on the front page.`,
-						)}
-					</Typography>
-				</header>
-				<Start />
-				<Provider />
-				<Styles />
-				<Typo />
-				<Conventions />
-				<Reference />
-				<MotionDoc />
-				<More />
-				<Rules />
+			<article className="sc-article" key={page}>
+				<Page />
+				<nav className="sc-pager" aria-label={L("翻页", "Pages")}>
+					{prev && (
+						<a href={pageHref(prev[0])} onClick={go(prev[0])} className="is-prev">
+							<span>{L("上一页", "Previous")}</span>
+							{L(prev[1], prev[2])}
+						</a>
+					)}
+					{next && (
+						<a href={pageHref(next[0])} onClick={go(next[0])} className="is-next">
+							<span>{L("下一页", "Next")}</span>
+							{L(next[1], next[2])}
+						</a>
+					)}
+				</nav>
 			</article>
 		</div>
 	);
@@ -108,38 +149,12 @@ function useDrawerPlace(box: React.RefObject<HTMLDivElement | null>, open: boole
 	}, [box, open]);
 }
 
-/** The section being read: the last one whose heading has passed the top quarter of the screen. */
-function useReading(): string {
-	const [at, setAt] = useState<string>(TOC[0][0]);
-	useEffect(() => {
-		let raf = 0;
-		const check = () => {
-			cancelAnimationFrame(raf);
-			raf = requestAnimationFrame(() => {
-				let current: string = TOC[0][0];
-				for (const [id] of TOC) {
-					const el = document.getElementById(id);
-					if (el && el.getBoundingClientRect().top < innerHeight / 4) current = id;
-				}
-				setAt(current);
-			});
-		};
-		check();
-		addEventListener("scroll", check, { passive: true });
-		return () => {
-			cancelAnimationFrame(raf);
-			removeEventListener("scroll", check);
-		};
-	}, []);
-	return at;
-}
-
 function Section({ id, children }: { id: (typeof TOC)[number][0]; children: React.ReactNode }) {
 	const L = useL();
 	const [, zh, en] = TOC.find(([t]) => t === id)!;
 	return (
 		<section id={id} className="sc-doc-section" aria-labelledby={`d-${id}`}>
-			<Typography variant="h2" id={`d-${id}`}>
+			<Typography variant="h1" as="h1" id={`d-${id}`}>
 				{L(zh, en)}
 			</Typography>
 			{children}
@@ -194,6 +209,12 @@ function Start() {
 	const L = useL();
 	return (
 		<Section id="start">
+			<Typography tone="muted">
+				{L(
+					`sityle ${VERSION} 是一套水墨风的 React 组件和设计令牌。这几页写的是怎么装、怎么用、怎么改；每个组件的样子和交互见首页的组件演示。`,
+					`sityle ${VERSION} is a set of ink-wash React components and design tokens. These pages cover installing, using and adapting it; for how each component looks and behaves, see the live components on the front page.`,
+				)}
+			</Typography>
 			<H>{L("1. 安装", "1. Install")}</H>
 			<P>
 				{L(
