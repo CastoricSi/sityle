@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+- Switch, Checkbox, Radio and RadioCard keep their hidden input inside themselves. It
+  used to be placed against the nearest positioned box outside (a dialog), where a
+  toggle further down a scrolling panel stretched the dialog's scroll area: in a short
+  window the dialog scrolled as a whole, tabs out of sight and empty space below.
+
 ## 1.0.1
 
 - Dialog on a page without a scrollbar: closing no longer slides it a few pixels. The
