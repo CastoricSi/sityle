@@ -61,15 +61,45 @@ export function Dialog({
 	// Callers pass inline arrows; keep the latest without re-running the open/close effect
 	// (re-running it would hand focus back to the trigger on every parent render).
 	const closeRef = useRef(onClose);
+	const openRef = useRef(open);
 	useLayoutEffect(() => {
 		closeRef.current = onClose;
+		openRef.current = open;
 	});
+
+	// The page stays locked until the closing animation is over: the backdrop's layers
+	// reach past the screen, and on a page without a scrollbar, unlocking while they
+	// fade made the page scroll for a moment (a scrollbar came and the dialog slid).
+	const unlock = useRef<(() => void) | null>(null);
+	const release = () => {
+		unlock.current?.();
+		unlock.current = null;
+	};
+	// and should the closing animation never finish (a hidden tab), a little later anyway
+	const late = useRef<ReturnType<typeof setTimeout>>(undefined);
+	useEffect(
+		() => () => {
+			clearTimeout(late.current);
+			release();
+		},
+		[],
+	);
+
+	// Locked before anything paints, and before the backdrop's layers (which reach past
+	// the screen) are in the page: measured after them, their own scrollbar would count.
+	useLayoutEffect(() => {
+		if (!open) return;
+		clearTimeout(late.current);
+		unlock.current ??= lockScroll();
+		return () => {
+			late.current = setTimeout(() => !openRef.current && release(), 600);
+		};
+	}, [open]);
 
 	useEffect(() => {
 		if (!open) return;
 		const panel = box.current;
 		lastFocus.current = document.activeElement as HTMLElement | null;
-		const unlock = lockScroll();
 		// Focus the first action (the safe choice); without actions, the first control.
 		const t = setTimeout(() => {
 			const root = box.current;
@@ -115,7 +145,6 @@ export function Dialog({
 		document.addEventListener("focusin", onFocusIn);
 		return () => {
 			clearTimeout(t);
-			unlock();
 			removeEventListener("keydown", onKey);
 			document.removeEventListener("focusin", onFocusIn);
 			const back = lastFocus.current;
@@ -164,7 +193,7 @@ export function Dialog({
 		/>
 	);
 	return createPortal(
-		<AnimatePresence>
+		<AnimatePresence onExitComplete={() => !openRef.current && release()}>
 			{open && edge && under("tint", "si-scrim-under", `calc(${edge.top}px - var(--si-overscan))`, `calc(${edge.bottom - edge.top}px + 2 * var(--si-overscan))`)}
 			{open && edge && mode !== "center" && under("paper-bottom", "si-scrim-paper", `${edge.bottom}px`, "var(--si-overscan)", 0.12)}
 			{open && edge && mode === "full" && under("paper-top", "si-scrim-paper", `calc(${edge.top}px - var(--si-overscan))`, "var(--si-overscan)", 0.12)}

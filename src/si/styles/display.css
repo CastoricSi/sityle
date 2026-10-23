@@ -183,6 +183,9 @@
 .si-listitem-text {
 	flex: 1;
 	min-width: 0;
+	/* its one-line texts end in "…" rather than widen the row: a long description no
+	   longer pushes a list in a grid or a card past its edge */
+	contain: inline-size;
 }
 .si-listitem-text b,
 .si-listitem-text span {

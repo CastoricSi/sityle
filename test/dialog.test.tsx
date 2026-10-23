@@ -69,6 +69,9 @@ test("Tab stays inside the dialog and the page behind does not scroll", async ()
 			<Dialog open={false} onClose={() => {}} title="t" />
 		</SiProvider>,
 	);
+	// held while it plays its closing animation (its backdrop reaches past the screen), then let go
+	expect(document.documentElement.style.overflow).toBe("hidden");
+	await act(() => vi.advanceTimersByTimeAsync(700));
 	expect(document.documentElement.style.overflow).toBe("");
 	vi.useRealTimers();
 });
