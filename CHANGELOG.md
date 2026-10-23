@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- **Typography:** text on the type scale — `display`, `h1`–`h4`, `body`, `body-sm`, `label`,
+  `caption`, `code`, `quote`; `as` changes the element, `tone` the colour (`muted`, `faint`
+  or a pigment), `lines` cuts it short with an ellipsis. Each step is also a token
+  (`font: var(--si-type-h2)`) for your own CSS.
+- **Documentation** at `/docs` on the style page: install, SiProvider, stylesheets and
+  tokens, typography, conventions, a reference of every component, motion, SSR.
+- **Style page reorganised:** components grouped by what they are for, one card per
+  component saying what it does, a live demo and the code to write it; the index at the
+  top jumps to each card. The design sections (pigments, type, shape, motion, icons) come
+  first; the type scale is shown with Typography.
 - **Slim scrollbars:** inside sityle components (text areas, select lists, menus,
   dialogs) a scrollbar is one thin rounded stroke with no arrows and no track, a
   little darker on hover (`--si-scroll-thumb`, `--si-scroll-thumb-hover`); a text

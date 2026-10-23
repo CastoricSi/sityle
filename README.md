@@ -4,10 +4,14 @@ An ink-wash (水墨丹青) design language: rice-paper ground, ink text, the
 mineral pigments 石绿 / 石青 / 泥金 / 朱砂, and Material-style motion
 (ink-drop ripples, springy switches and tabs, dialogs set down like paper).
 
+**Documentation:** [style.si16.app/docs](https://style.si16.app/docs) (install, SiProvider,
+tokens, typography, conventions, every component). **Live components:**
+[style.si16.app](https://style.si16.app).
+
 This repo is two things:
 
 - **The package** `sityle` — tokens, styles and React components (`src/si/`).
-- **The style page** — a live tour of every component (`src/showcase/`),
+- **The style page and docs** — a live tour of every component and the documentation (`src/showcase/`),
   deployed as the Cloudflare Worker `sityle` (static assets in `dist/client`).
 
 ## Use it in a project
@@ -178,11 +182,13 @@ src/si/            The package.
                      Checkbox, RadioGroup, Radio, Segmented, Tabs, TabPanel, Chip, Tag, Avatar(Stack),
                      Seal, Card, ListItem, Tooltip, Menu, Dialog, ConfirmDialog, Slider, NavItem,
                      Group, GroupRow, Steps, RadioCard, Note, IconBadge, SearchField, Fab,
-                     AutoHeight, InkDrop, InkBars, BrushSpinner, Skeleton, InkWash.
+                     AutoHeight, InkDrop, InkBars, BrushSpinner, Skeleton, InkWash, Typography.
   internal/          Not exported: popover placement, modal focus / scroll lock, controllable state,
                      link-or-button, inline icons, SSR helpers.
   index.ts           Public exports.
-src/showcase/      The style page (not part of the package).
+src/showcase/      The style page and docs (not part of the package): design.tsx (pigments, type, shape,
+                   motion, icons), components.tsx (a card per component), sample.tsx, docs.tsx (/docs),
+                   catalogue.ts (what each component is for: read by the cards and the docs).
 src/worker/        The Worker (assets only; 404 for anything else).
 test/              Vitest tests.
 vite.config.ts     Style page + Worker build (@cloudflare/vite-plugin).
