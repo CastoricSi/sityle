@@ -30,18 +30,18 @@ export type TextFieldProps = Common &
  * Box with the label inside; the label floats up once there is focus or text.
  * Errors tint the box cinnabar and shake it once.
  */
-export function TextField({ label, hint, error, end, mono, className, id, style, ...props }: TextFieldProps) {
+/** Native props and `ref` go to the <input>; `className` / `style` to the field around it. */
+export function TextField({ label, hint, error, end, mono, className, id, style, "aria-describedby": describedBy, ...props }: TextFieldProps) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	return (
-		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className}>
+		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className} style={style}>
 			<input
 				id={fieldId}
 				placeholder=" "
 				aria-invalid={!!error || undefined}
-				aria-describedby={hint || error ? `${fieldId}-hint` : undefined}
+				aria-describedby={describe(hint || error ? `${fieldId}-hint` : undefined, describedBy)}
 				className={cn(mono && "is-mono")}
-				style={style}
 				{...props}
 			/>
 			<label htmlFor={fieldId}>{label}</label>
@@ -49,6 +49,9 @@ export function TextField({ label, hint, error, end, mono, className, id, style,
 		</FieldShell>
 	);
 }
+
+/** The field's hint (or error) and the caller's own aria-describedby, together. */
+const describe = (hintId: string | undefined, own: string | undefined) => cn(hintId, own) || undefined;
 
 /** The buttons at the right end; the box keeps its text clear of them, however many there are. */
 function FieldEnd({ children }: { children: React.ReactNode }) {
@@ -74,12 +77,13 @@ function FieldEnd({ children }: { children: React.ReactNode }) {
 
 export type TextAreaFieldProps = Common & Omit<React.ComponentPropsWithRef<"textarea">, "placeholder">;
 
-export function TextAreaField({ label, hint, error, end, className, id, ...props }: TextAreaFieldProps) {
+/** Native props and `ref` go to the <textarea>; `className` / `style` to the field around it. */
+export function TextAreaField({ label, hint, error, end, className, id, style, "aria-describedby": describedBy, ...props }: TextAreaFieldProps) {
 	const autoId = useId();
 	const fieldId = id ?? autoId;
 	return (
-		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className} multiline>
-			<textarea id={fieldId} placeholder=" " aria-invalid={!!error || undefined} aria-describedby={hint || error ? `${fieldId}-hint` : undefined} {...props} />
+		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={className} style={style} multiline>
+			<textarea id={fieldId} placeholder=" " aria-invalid={!!error || undefined} aria-describedby={describe(hint || error ? `${fieldId}-hint` : undefined, describedBy)} {...props} />
 			<label htmlFor={fieldId}>{label}</label>
 			{end && <FieldEnd>{end}</FieldEnd>}
 		</FieldShell>
@@ -91,6 +95,7 @@ function FieldShell({
 	hint,
 	hintId,
 	className,
+	style,
 	multiline,
 	children,
 }: {
@@ -98,6 +103,7 @@ function FieldShell({
 	hint?: React.ReactNode;
 	hintId: string;
 	className?: string;
+	style?: React.CSSProperties;
 	/** The box is the field and the textarea scrolls below the label (lines never slide under it). */
 	multiline?: boolean;
 	children: React.ReactNode;
@@ -109,7 +115,7 @@ function FieldShell({
 		if (invalid) void animate(box.current, { x: [0, -6, 5, -3, 2, 0] }, { duration: 0.4 });
 	}, [invalid, animate, box]);
 	return (
-		<div className={cn("si-field", invalid && "is-invalid", className)}>
+		<div className={cn("si-field", invalid && "is-invalid", className)} style={style}>
 			<div
 				ref={box}
 				className={cn("si-field-box", multiline && "is-multiline")}
@@ -258,6 +264,7 @@ export function SelectField<T extends string = string>({
 	ref,
 	onKeyDown,
 	onClick,
+	"aria-describedby": describedBy,
 	...props
 }: SelectFieldProps<T>) {
 	const [value, onChange] = useControllable(valueIn, defaultValue ?? options[0]?.value, onChangeIn);
@@ -347,7 +354,7 @@ export function SelectField<T extends string = string>({
 					aria-controls={listId}
 					aria-activedescendant={open ? `${listId}-${active}` : undefined}
 					aria-invalid={!!error || undefined}
-					aria-describedby={hint || error ? `${fieldId}-hint` : undefined}
+					aria-describedby={describe(hint || error ? `${fieldId}-hint` : undefined, describedBy)}
 					disabled={disabled}
 					onClick={(e) => {
 						onClick?.(e);
@@ -441,7 +448,8 @@ export function StrengthMeter({ value, labels: labelsIn }: { value: string; labe
 					<i key={n} className={cn(n < s && "is-on")} style={{ "--sc": STRENGTH_COLORS[s] } as React.CSSProperties} />
 				))}
 			</div>
-			<div className="si-strength-label">{labels[s]}</div>
+			{/* nothing typed yet: no verdict (the line keeps its height) */}
+			<div className="si-strength-label">{value ? labels[s] : "\u00a0"}</div>
 		</>
 	);
 }

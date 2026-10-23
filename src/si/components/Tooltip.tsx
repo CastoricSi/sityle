@@ -60,9 +60,11 @@ export function Tooltip({
 		place();
 		const raf = requestAnimationFrame(place);
 		addEventListener("scroll", place, true);
+		addEventListener("resize", place);
 		return () => {
 			cancelAnimationFrame(raf);
 			removeEventListener("scroll", place, true);
+			removeEventListener("resize", place);
 		};
 	}, [shown, content]);
 

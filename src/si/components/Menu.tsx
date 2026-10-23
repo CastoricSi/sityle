@@ -44,7 +44,7 @@ export function Menu({ trigger, items, align = "start", label, className, matchW
 	const list = useRef<HTMLDivElement>(null);
 	const id = useId();
 	const client = useIsClient();
-	const placement = useAnchoredPosition(anchor, !!open, { align, matchWidth });
+	const placement = useAnchoredPosition(anchor, !!open, { align, matchWidth, panel: list });
 	const triggerEl = () => anchor.current?.querySelector<HTMLButtonElement>("[aria-haspopup]");
 	const itemEls = () => [...(list.current?.querySelectorAll<HTMLButtonElement>("[role=menuitem]:not(:disabled)") ?? [])];
 

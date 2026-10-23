@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **TextField / TextAreaField:** `className` and `style` go to the field around the control,
+  as on every other form control (`style` used to land on the `<input>` / `<textarea>`).
+- Fields: your own `aria-describedby` joins the hint / error instead of replacing it
+  (TextField, TextAreaField, SelectField).
+- StrengthMeter gives no verdict before anything is typed.
+- Menus stay on screen: one that opens from a trigger near the screen's edge opens
+  inward. Tooltips follow a resized window.
 - NavItem labels, ListItem lines and `Typography lines={1}` no longer cut off descenders
   (g, q, y): the ellipsis' clip box reaches past the line without making the row taller.
 - **Typography:** text on the type scale — `display`, `h1`–`h4`, `body`, `body-sm`, `label`,

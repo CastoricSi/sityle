@@ -15,7 +15,20 @@ export type Placement = {
 export function useAnchoredPosition(
 	anchor: RefObject<HTMLElement | null>,
 	open: boolean,
-	{ align = "start", matchWidth = false, gap = 6, need = 260 }: { align?: "start" | "end"; matchWidth?: boolean; gap?: number; need?: number } = {},
+	{
+		align = "start",
+		matchWidth = false,
+		gap = 6,
+		need = 260,
+		panel,
+	}: {
+		align?: "start" | "end";
+		matchWidth?: boolean;
+		gap?: number;
+		need?: number;
+		/** The popover itself: once it is there, its width keeps it on screen. */
+		panel?: RefObject<HTMLElement | null>;
+	} = {},
 ): Placement | null {
 	const [placement, setPlacement] = useState<Placement | null>(null);
 	useLayoutEffect(() => {
@@ -28,14 +41,18 @@ export function useAnchoredPosition(
 			const up = below < need && r.top > below;
 			const room = (up ? r.top : below) - gap - 8;
 			const vw = document.documentElement.clientWidth;
+			// as wide as the trigger, or (once it is there) the popover's own width
+			const w = matchWidth ? r.width : (panel?.current?.offsetWidth ?? 0);
+			// on screen: a menu by a trigger at the screen's edge opens inward
+			const inside = (x: number) => Math.max(8, Math.min(x, vw - w - 8));
 			setPlacement({
 				up,
 				style: {
 					position: "fixed",
 					top: up ? undefined : r.bottom + gap,
 					bottom: up ? innerHeight - r.top + gap : undefined,
-					left: align === "start" ? Math.max(8, r.left) : undefined,
-					right: align === "end" ? Math.max(8, vw - r.right) : undefined,
+					left: align === "start" ? inside(r.left) : undefined,
+					right: align === "end" ? inside(vw - r.right) : undefined,
 					width: matchWidth ? r.width : undefined,
 					maxWidth: `calc(100vw - 16px)`,
 					// the room left on screen; CSS caps max-height with it, so a class can still lower it
@@ -44,13 +61,16 @@ export function useAnchoredPosition(
 			});
 		};
 		place();
+		// again once the popover has rendered and has a width
+		const raf = requestAnimationFrame(place);
 		addEventListener("scroll", place, true);
 		addEventListener("resize", place);
 		return () => {
+			cancelAnimationFrame(raf);
 			removeEventListener("scroll", place, true);
 			removeEventListener("resize", place);
 		};
-	}, [anchor, open, align, matchWidth, gap, need]);
+	}, [anchor, open, align, matchWidth, gap, need, panel]);
 	return open ? placement : null;
 }
 
