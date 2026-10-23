@@ -1,0 +1,91 @@
+/* ── Typography: the type scale (tokens --si-type-*) ── */
+.si-text {
+	margin: 0;
+	text-wrap: pretty;
+}
+.si-text.v-display {
+	font: var(--si-type-display);
+	letter-spacing: 0.02em;
+}
+.si-text.v-h1 {
+	font: var(--si-type-h1);
+	letter-spacing: 0.02em;
+	text-wrap: balance;
+}
+.si-text.v-h2 {
+	font: var(--si-type-h2);
+	letter-spacing: 0.01em;
+	text-wrap: balance;
+}
+.si-text.v-h3 {
+	font: var(--si-type-h3);
+	text-wrap: balance;
+}
+.si-text.v-h4 {
+	font: var(--si-type-h4);
+}
+.si-text.v-body {
+	font: var(--si-type-body);
+}
+.si-text.v-body-sm {
+	font: var(--si-type-body-sm);
+}
+.si-text.v-label {
+	font: var(--si-type-label);
+	color: var(--si-ink-2);
+}
+.si-text.v-caption {
+	font: var(--si-type-caption);
+	color: var(--si-ink-3);
+}
+.si-text.v-code {
+	padding: 0.1em 0.4em;
+	border-radius: var(--si-r-sm);
+	background: var(--si-paper-sunk);
+	font: var(--si-type-code);
+}
+.si-text.v-quote {
+	padding: 2px 0 2px 16px;
+	border-left: 3px solid var(--si-jade-soft);
+	font: 400 1rem/1.8 var(--si-font-serif);
+	color: var(--si-ink-2);
+}
+
+.si-text.t-muted {
+	color: var(--si-ink-2);
+}
+.si-text.t-faint {
+	color: var(--si-ink-3);
+}
+.si-text.t-jade {
+	color: var(--si-jade-text);
+}
+.si-text.t-azure {
+	color: var(--si-azure-text);
+}
+.si-text.t-gold {
+	color: var(--si-gold-text);
+}
+.si-text.t-danger {
+	color: var(--si-cinnabar-text);
+}
+
+.si-text.a-start {
+	text-align: start;
+}
+.si-text.a-center {
+	text-align: center;
+}
+.si-text.a-end {
+	text-align: end;
+}
+.si-text.is-truncate {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.si-text.is-clamp {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}

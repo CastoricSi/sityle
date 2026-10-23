@@ -68,6 +68,19 @@
 	--si-font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
 	/* titles of cards and dialogs; set to var(--si-font-sans) for an all-sans app */
 	--si-font-heading: var(--si-font-serif);
+	/* The type scale, as font shorthands: `font: var(--si-type-h2)` in your own CSS, or
+	   <Typography variant="h2">. Override --si-font-heading / --si-font-sans on :root
+	   (these resolve there). */
+	--si-type-display: 400 3.5rem/1.1 var(--si-font-brush); /* brand, rare display titles (Chinese only) */
+	--si-type-h1: 700 1.875rem/1.3 var(--si-font-heading); /* page title */
+	--si-type-h2: 700 1.5rem/1.35 var(--si-font-heading); /* section */
+	--si-type-h3: 700 1.1875rem/1.4 var(--si-font-heading); /* dialog title, panel */
+	--si-type-h4: 700 0.9375rem/1.4 var(--si-font-heading); /* card title */
+	--si-type-body: 400 0.9375rem/1.65 var(--si-font-sans);
+	--si-type-body-sm: 400 0.8125rem/1.6 var(--si-font-sans);
+	--si-type-label: 500 0.8125rem/1.4 var(--si-font-sans);
+	--si-type-caption: 400 0.75rem/1.5 var(--si-font-sans);
+	--si-type-code: 500 0.875em/1.5 var(--si-font-mono); /* em: follows the text around it */
 
 	/* shape */
 	--si-r-sm: 8px;
