@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- NavItem labels, ListItem lines and `Typography lines={1}` no longer cut off descenders
+  (g, q, y): the ellipsis' clip box reaches past the line without making the row taller.
 - **Typography:** text on the type scale — `display`, `h1`–`h4`, `body`, `body-sm`, `label`,
   `caption`, `code`, `quote`; `as` changes the element, `tone` the colour (`muted`, `faint`
   or a pigment), `lines` cuts it short with an ellipsis. Each step is also a token
@@ -15,6 +17,8 @@
 - Style page header: just the seal, the title and the language / theme switches. In the
   docs, ☰ before the seal folds the contents sidebar (a drawer on narrow screens, where
   the title gives way to the seal); the section being read is highlighted.
+  On iPhone the drawer and its shade reach under Safari's toolbar (absolute layers in
+  the page while it is open, as the dialog backdrop does).
 - **Slim scrollbars:** inside sityle components (text areas, select lists, menus,
   dialogs) a scrollbar is one thin rounded stroke with no arrows and no track, a
   little darker on hover (`--si-scroll-thumb`, `--si-scroll-thumb-hover`); a text
