@@ -61,6 +61,14 @@
 .si-dialog.has-seal h2 {
 	padding-right: 60px;
 }
+/* a text body's first line runs past the seal's lower edge: it flows around it. Only
+   for plain text (a form or a list inside would be pushed aside by the float). */
+.si-dialog.has-seal .si-dialog-body:not(:has(> *))::before {
+	content: "";
+	float: right;
+	width: 48px;
+	height: 1.6em;
+}
 .si-dialog-body {
 	margin-top: 8px;
 	color: var(--si-ink-2);

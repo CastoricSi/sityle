@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- Dialog with a `seal`: a text body flows around the seal instead of running under it
+  (a long first line reached its lower edge).
+
 ## 1.0.2
 
 - Switch, Checkbox, Radio and RadioCard keep their hidden input inside themselves. It
