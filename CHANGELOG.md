@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 1.0.0
+
+The first stable release: the API is settled, and from here on a breaking change
+means a new major version. New: Typography and documentation; slim scrollbars; a
+review round of fixes.
+
+**Upgrading from 0.9:** `style` on TextField / TextAreaField now styles the field
+(as `className` already did); to style the `<input>` itself, use a class on the field
+and `.your-class input`. Nothing else changes.
 
 - **TextField / TextAreaField:** `className` and `style` go to the field around the control,
   as on every other form control (`style` used to land on the `<input>` / `<textarea>`).
