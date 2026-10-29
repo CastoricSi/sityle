@@ -32,6 +32,7 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && node scripts/finish-lib.mjs",
+		"build:obsidian": "node scripts/build-obsidian.mjs",
 		"typecheck": "tsc -b",
 		"preview": "npm run build && vite preview",
 		"deploy": "npm run build && wrangler deploy",

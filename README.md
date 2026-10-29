@@ -139,6 +139,20 @@ the release (don't commit this): `npm i ../sityle` in the project, and run
 `resolve: { dedupe: ["react", "react-dom", "motion"] }` to the project's Vite
 config, or two copies of React load ("Invalid hook call").
 
+## Obsidian theme
+
+`obsidian/` is sityle as an [Obsidian](https://obsidian.md) theme (not in the npm
+package): rice paper, ink, 石绿 accent, 石青 links, 泥金 highlights, 朱砂 errors,
+serif headings, the paper fibre, follows Obsidian's light / dark setting.
+
+Copy `obsidian/manifest.json` and `obsidian/theme.css` into
+`<vault>/.obsidian/themes/Sityle/`, then pick **Sityle** in Settings → Appearance →
+Themes. The fonts load from Google Fonts (offline, the system fallbacks are used).
+
+`theme.css` is generated: edit `obsidian/sityle.css` (Obsidian's variables mapped
+onto `--si-*`) or `src/si/tokens.css`, then `npm run build:obsidian`. A test fails
+when it is out of date.
+
 ## Develop
 
 ```sh
@@ -189,6 +203,8 @@ src/si/            The package.
 src/showcase/      The style page and docs (not part of the package): design.tsx (pigments, type, shape,
                    motion, icons), components.tsx (a card per component), sample.tsx, docs.tsx (/docs),
                    catalogue.ts (what each component is for: read by the cards and the docs).
+obsidian/          The Obsidian theme: sityle.css (hand-written), theme.css (built), manifest.json.
+scripts/           finish-lib.mjs (after the package build), build-obsidian.mjs (obsidian/theme.css).
 src/worker/        The Worker (assets only; 404 for anything else).
 test/              Vitest tests.
 vite.config.ts     Style page + Worker build (@cloudflare/vite-plugin).
