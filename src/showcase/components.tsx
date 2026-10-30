@@ -3,6 +3,8 @@ import {
 	BookOpen,
 	Check,
 	ChevronDown,
+	ClipboardPaste,
+	Copy,
 	ExternalLink,
 	Feather,
 	Folder,
@@ -14,6 +16,7 @@ import {
 	Pencil,
 	Plus,
 	Save,
+	Scissors,
 	Settings,
 	Share2,
 	SlidersHorizontal,
@@ -37,6 +40,7 @@ import {
 	Checkbox,
 	Chip,
 	ConfirmDialog,
+	ContextMenu,
 	CopyButton,
 	Dialog,
 	Fab,
@@ -710,6 +714,7 @@ function Overlays() {
 	// the kind stays while the dialog plays its closing animation
 	const [phone, setPhone] = useState<"sheet" | "full">("sheet");
 	const [phoneOpen, setPhoneOpen] = useState(false);
+	const [picked, setPicked] = useState("");
 	return (
 		<Cat id="overlays">
 			<Spec
@@ -741,6 +746,39 @@ function Overlays() {
 						]}
 					/>
 				</div>
+			</Spec>
+			<Spec
+				names={["ContextMenu"]}
+				code={`<ContextMenu
+  items={[
+    { label: "${L("剪切", "Cut")}", icon: <Scissors />, kbd: "Ctrl X", onSelect: cut },
+    "divider",
+    { heading: "${L("转换为", "Turn into")}" },
+    { label: "${L("叙述", "Narration")}", onSelect: toNarration },
+  ]}
+>
+  <div>…</div>
+</ContextMenu>`}
+			>
+				<ContextMenu
+					label={L("段落操作", "Paragraph actions")}
+					items={[
+						{ label: L("剪切", "Cut"), icon: <Scissors />, kbd: "Ctrl X", onSelect: () => setPicked(L("剪切", "Cut")) },
+						{ label: L("复制", "Copy"), icon: <Copy />, kbd: "Ctrl C", onSelect: () => setPicked(L("复制", "Copy")) },
+						{ label: L("粘贴到后面", "Paste after"), icon: <ClipboardPaste />, disabled: true, onSelect: () => {} },
+						"divider",
+						{ heading: L("转换为", "Turn into") },
+						{ label: L("叙述", "Narration"), onSelect: () => setPicked(L("转换为叙述", "Turn into narration")) },
+						{ label: L("对话", "Dialogue"), onSelect: () => setPicked(L("转换为对话", "Turn into dialogue")) },
+						"divider",
+						{ label: L("删除", "Delete"), icon: <Trash2 />, danger: true, onSelect: () => setPicked(L("删除", "Delete")) },
+					]}
+				>
+					<div className="sc-context-area" tabIndex={0}>
+						<span>{L("在这里点右键（或聚焦后按菜单键 / Shift+F10）", "Right-click here (or focus it and press the menu key / Shift+F10)")}</span>
+						{picked && <small>{L(`选了：${picked}`, `Picked: ${picked}`)}</small>}
+					</div>
+				</ContextMenu>
 			</Spec>
 			<Spec names={["Tooltip"]} code={`<Tooltip content="${L("复制到剪贴板", "Copy to the clipboard")}">\n  <Button>…</Button>\n</Tooltip>`}>
 				<div className="sc-row">

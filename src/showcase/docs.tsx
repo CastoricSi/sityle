@@ -528,8 +528,8 @@ const RouterLink = ({ href, ...p }: { href: string }) => <Link to={href} {...p} 
 			<H>{L("键盘", "Keyboard")}</H>
 			<P>
 				{L(
-					"Tabs 和 Segmented 只占一个 Tab 位置，用方向键 / Home / End 移动。菜单：↑↓、Home、End、打字跳转、Esc、Tab。对话框：Tab 只在框内循环，打开时锁住页面滚动，关闭后焦点回到触发按钮。",
-					"Tabs and Segmented are one Tab stop; arrows / Home / End move. Menu: ↑ ↓, Home, End, typeahead, Escape, Tab. Dialog: Tab stays inside, the page doesn't scroll while it is open, focus returns to the trigger when it closes.",
+					"Tabs 和 Segmented 只占一个 Tab 位置，用方向键 / Home / End 移动。菜单和右键菜单：↑↓、Home、End、打字跳转、Esc、Tab（关闭后焦点回到原处）。对话框：Tab 只在框内循环，打开时锁住页面滚动，关闭后焦点回到触发按钮。",
+					"Tabs and Segmented are one Tab stop; arrows / Home / End move. Menu and ContextMenu: ↑ ↓, Home, End, typeahead, Escape, Tab (focus goes back where it was). Dialog: Tab stays inside, the page doesn't scroll while it is open, focus returns to the trigger when it closes.",
 				)}
 			</P>
 		</Section>

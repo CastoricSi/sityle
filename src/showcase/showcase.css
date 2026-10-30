@@ -863,3 +863,21 @@
 		grid-column: 1;
 	}
 }
+.sc-context-area {
+	display: grid;
+	place-items: center;
+	align-content: center;
+	gap: 4px;
+	min-height: 120px;
+	padding: 16px;
+	border: 1.5px dashed var(--si-line);
+	border-radius: var(--si-r-md);
+	color: var(--si-ink-2);
+	font: var(--si-type-body-sm);
+	text-align: center;
+	user-select: none;
+}
+.sc-context-area small {
+	color: var(--si-jade-text);
+	font: var(--si-type-caption);
+}

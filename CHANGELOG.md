@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0
+
+- New: **ContextMenu**, the menu a right-click opens, at the pointer. The same panel,
+  items and keys as Menu (↑ ↓ Home End, typeahead, Enter, Escape / Tab close and hand
+  focus back), plus `{ heading }` rows to title a group of items. Near the screen's
+  edge it opens leftwards / upwards; a press outside, scrolling, resizing or leaving
+  the window closes it. Wrap one element, or control it with `at` + `onClose` when the
+  items depend on what was clicked; `contextMenuPoint(e)` gives the point for a
+  `contextmenu` event (the element's corner when the keyboard opened it).
+- Menu: a disabled item looks disabled again (its fade-in left it at full opacity).
+
 ## 1.0.3
 
 - Dialog with a `seal`: a text body flows around the seal instead of running under it

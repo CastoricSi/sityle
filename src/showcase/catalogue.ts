@@ -201,6 +201,12 @@ export const CATALOGUE: Group[] = [
 				props: "trigger items align matchWidth label",
 			},
 			{
+				name: "ContextMenu",
+				zh: "右键点出的菜单，开在指针处，靠屏幕边缘时向左 / 向上展开。按键同 Menu，{ heading } 给一组操作起个小标题。包住一个元素，或用 at + onClose 自己控制。",
+				en: "The menu a right-click opens, at the pointer; near the screen's edge it opens leftwards / upwards. Same keys as Menu; { heading } titles a group of items. Wrap one element, or control it with at + onClose.",
+				props: "items label at onClose children",
+			},
+			{
 				name: "Tooltip",
 				zh: "悬停或键盘聚焦时出现的一句提示。",
 				en: "A line of help on hover or keyboard focus.",

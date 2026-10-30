@@ -65,3 +65,13 @@
 	border: 0;
 	border-top: 1px solid var(--si-line);
 }
+/* a small title over a group of items (ContextMenu) */
+.si-menu-heading {
+	padding: 8px 10px 4px;
+	color: var(--si-ink-3);
+	font: var(--si-type-caption);
+	letter-spacing: 0.04em;
+}
+.si-menu hr + .si-menu-heading {
+	padding-top: 2px;
+}

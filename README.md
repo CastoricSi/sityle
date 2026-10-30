@@ -112,6 +112,11 @@ Per-component label props (`CopyButton label`, `PasswordField labels`, …) stil
   `to`-style links pass a small wrapper). A `ListItem` with neither `onClick` nor
   `href` is a plain row. `ButtonProps` is the button form (extend or `Omit<>` it in
   a wrapper); `ButtonLinkProps` the link form.
+- **Context menus.** `ContextMenu` opens at the pointer on right-click. Wrap one
+  element, or pass `at` + `onClose` when the items depend on what was clicked (select
+  it in your own `onContextMenu`, then set `at` — `contextMenuPoint(e)` reads the
+  pointer, or the element's corner when the keyboard opened it). `{ heading }` rows
+  title a group.
 - **Popovers.** Menus and select lists float on `<body>`, so a dialog or card never
   clips them; place a menu with `align`, `matchWidth` and `className`, not with
   descendant selectors. Their height is capped by `--si-room` (room left on screen).
@@ -119,8 +124,8 @@ Per-component label props (`CopyButton label`, `PasswordField labels`, …) stil
   Secondary text of an item is `description`; `hint` is the helper text under a
   form field. Toggles take `label` + `description`.
 - **Keyboard.** Tabs and Segmented have one Tab stop and move with arrow keys /
-  Home / End (`<Tabs id>` + `<TabPanel tabs value>` link tabs to panels). Menu:
-  ↑ ↓ Home End, typeahead, Escape, Tab. Dialog keeps Tab inside, locks page
+  Home / End (`<Tabs id>` + `<TabPanel tabs value>` link tabs to panels). Menu and
+  ContextMenu: ↑ ↓ Home End, typeahead, Escape, Tab. Dialog keeps Tab inside, locks page
   scroll and returns focus when it closes.
 
 ### Browser support
@@ -194,7 +199,7 @@ src/si/            The package.
   components/        Button, IconButton, CopyButton, TextField, TextAreaField, SelectField,
                      Input / TextArea / Select (label outside), PasswordField, StrengthMeter, Switch,
                      Checkbox, RadioGroup, Radio, Segmented, Tabs, TabPanel, Chip, Tag, Avatar(Stack),
-                     Seal, Card, ListItem, Tooltip, Menu, Dialog, ConfirmDialog, Slider, NavItem,
+                     Seal, Card, ListItem, Tooltip, Menu, ContextMenu, Dialog, ConfirmDialog, Slider, NavItem,
                      Group, GroupRow, Steps, RadioCard, Note, IconBadge, SearchField, Fab,
                      AutoHeight, InkDrop, InkBars, BrushSpinner, Skeleton, InkWash, Typography.
   internal/          Not exported: popover placement, modal focus / scroll lock, controllable state,
