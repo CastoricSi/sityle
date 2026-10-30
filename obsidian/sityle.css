@@ -3,10 +3,6 @@
  * 泥金 highlights, 朱砂 for errors. The --si-* tokens come before this in theme.css.
  */
 body {
-	/* the system's own generic fonts, nothing loaded from the web */
-	--si-font-serif: serif;
-	--si-font-sans: sans-serif;
-	--si-font-mono: monospace;
 	--font-text-theme: var(--si-font-sans);
 	--font-interface-theme: var(--si-font-sans);
 	--font-monospace-theme: var(--si-font-mono);
