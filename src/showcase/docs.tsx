@@ -54,7 +54,7 @@ function readPage(): PageId {
  * shade or Esc closes it). Moving between pages stays in the app (the address
  * changes, Back / Forward work); a middle-click still opens a new tab.
  */
-export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
+export function Docs({ toc, onClose, footer }: { toc: boolean; onClose: () => void; footer: React.ReactNode }) {
 	const L = useL();
 	const [page, setPage] = useState<PageId>(readPage);
 	const box = useRef<HTMLDivElement>(null);
@@ -97,23 +97,27 @@ export function Docs({ toc, onClose }: { toc: boolean; onClose: () => void }) {
 					<NavItem href="/#components" icon={<ArrowLeft />} label={L("组件演示", "Live components")} tone="jade" />
 				</div>
 			</nav>
-			<article className="sc-article" key={page}>
-				<Page />
-				<nav className="sc-pager" aria-label={L("翻页", "Pages")}>
-					{prev && (
-						<a href={pageHref(prev[0])} onClick={go(prev[0])} className="is-prev">
-							<span>{L("上一页", "Previous")}</span>
-							{L(prev[1], prev[2])}
-						</a>
-					)}
-					{next && (
-						<a href={pageHref(next[0])} onClick={go(next[0])} className="is-next">
-							<span>{L("下一页", "Next")}</span>
-							{L(next[1], next[2])}
-						</a>
-					)}
-				</nav>
-			</article>
+			{/* the footer sits in the page's column, beside the contents, under the text */}
+			<div className="sc-doc-main">
+				<article className="sc-article" key={page}>
+					<Page />
+					<nav className="sc-pager" aria-label={L("翻页", "Pages")}>
+						{prev && (
+							<a href={pageHref(prev[0])} onClick={go(prev[0])} className="is-prev">
+								<span>{L("上一页", "Previous")}</span>
+								{L(prev[1], prev[2])}
+							</a>
+						)}
+						{next && (
+							<a href={pageHref(next[0])} onClick={go(next[0])} className="is-next">
+								<span>{L("下一页", "Next")}</span>
+								{L(next[1], next[2])}
+							</a>
+						)}
+					</nav>
+				</article>
+				{footer}
+			</div>
 		</div>
 	);
 }
