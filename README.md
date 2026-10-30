@@ -143,11 +143,11 @@ config, or two copies of React load ("Invalid hook call").
 
 `obsidian/` is sityle as an [Obsidian](https://obsidian.md) theme (not in the npm
 package): rice paper, ink, 石绿 accent, 石青 links, 泥金 highlights, 朱砂 errors,
-serif headings, the paper fibre, follows Obsidian's light / dark setting.
+serif headings in the system's own fonts (nothing loaded from the web), the paper fibre, follows Obsidian's light / dark setting.
 
 Copy `obsidian/manifest.json` and `obsidian/theme.css` into
 `<vault>/.obsidian/themes/Sityle/`, then pick **Sityle** in Settings → Appearance →
-Themes. The fonts load from Google Fonts (offline, the system fallbacks are used).
+Themes.
 
 `theme.css` is generated: edit `obsidian/sityle.css` (Obsidian's variables mapped
 onto `--si-*`) or `src/si/tokens.css`, then `npm run build:obsidian`. A test fails
