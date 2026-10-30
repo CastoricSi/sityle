@@ -1,0 +1,258 @@
+/*
+ * Obsidian's variables in 丹青: rice paper, ink, 石绿 for the accent, 石青 links,
+ * 泥金 highlights, 朱砂 for errors. The --si-* tokens come before this in theme.css.
+ */
+body {
+	--font-text-theme: var(--si-font-sans);
+	--font-interface-theme: var(--si-font-sans);
+	--font-monospace-theme: var(--si-font-mono);
+	--line-height-normal: 1.65;
+
+	--h1-font: var(--si-font-heading);
+	--h2-font: var(--si-font-heading);
+	--h3-font: var(--si-font-heading);
+	--h4-font: var(--si-font-heading);
+	--h5-font: var(--si-font-heading);
+	--h6-font: var(--si-font-heading);
+	--h1-weight: 700;
+	--h2-weight: 700;
+	--h3-weight: 700;
+	--h4-weight: 700;
+	--inline-title-font: var(--si-font-heading);
+	--inline-title-weight: 700;
+
+	--radius-s: var(--si-r-sm);
+	--radius-m: var(--si-r-md);
+	--radius-l: var(--si-r-lg);
+	--radius-xl: var(--si-r-xl);
+	--input-radius: var(--si-r-sm);
+	--button-radius: var(--si-r-md);
+	--modal-radius: var(--si-r-lg);
+	--menu-radius: var(--si-r-md);
+	--tag-radius: var(--si-r-full);
+	--callout-radius: var(--si-r-md);
+	--code-radius: var(--si-r-sm);
+	--checkbox-radius: 5px;
+
+	--shadow-s: var(--si-e2);
+	--shadow-l: var(--si-e3);
+	--input-shadow: var(--si-e1);
+	--input-shadow-hover: var(--si-e2);
+}
+
+.theme-light,
+.theme-dark {
+	--background-primary: var(--si-paper);
+	--background-primary-alt: var(--si-paper-sunk);
+	--background-secondary: var(--si-paper-sunk);
+	--background-secondary-alt: var(--si-paper-raised);
+	--background-modifier-border: var(--si-line);
+	--background-modifier-border-hover: var(--si-scroll-thumb);
+	--background-modifier-border-focus: var(--si-jade);
+	--background-modifier-hover: rgba(var(--si-ink-rgb), 0.06);
+	--background-modifier-active-hover: var(--si-jade-soft);
+	--background-modifier-form-field: var(--si-paper-raised);
+	--background-modifier-cover: var(--si-scrim);
+	--background-modifier-error: var(--si-cinnabar-fill);
+	--background-modifier-error-hover: var(--si-cinnabar-hover);
+	--background-modifier-success: var(--si-jade);
+	--divider-color: var(--si-line);
+	--divider-color-hover: var(--si-jade);
+
+	--text-normal: var(--si-ink);
+	--text-muted: var(--si-ink-2);
+	--text-faint: var(--si-ink-3);
+	--text-on-accent: var(--si-on-jade);
+	--text-accent: var(--si-jade-text);
+	--text-accent-hover: var(--si-jade);
+	--text-error: var(--si-cinnabar-text);
+	--text-warning: var(--si-gold-text);
+	--text-success: var(--si-jade-text);
+	--text-selection: rgba(var(--si-azure-rgb), 0.24);
+	--text-highlight-bg: rgba(var(--si-gold-rgb), 0.3);
+	--text-highlight-bg-active: rgba(var(--si-gold-rgb), 0.5);
+	--caret-color: var(--si-jade);
+
+	--color-accent: var(--si-jade);
+	--color-accent-1: var(--si-jade-hover);
+	--color-accent-2: var(--si-jade-hover);
+	--color-accent-hsl: var(--si-jade-hsl);
+	--interactive-normal: var(--si-paper-raised);
+	--interactive-hover: color-mix(in srgb, var(--si-ink) 6%, var(--si-paper-raised));
+	--interactive-accent: var(--si-jade);
+	--interactive-accent-hover: var(--si-jade-hover);
+	--interactive-accent-hsl: var(--si-jade-hsl);
+
+	/* the named colours (callouts, canvas, graph): the four pigments */
+	--color-red: var(--si-cinnabar);
+	--color-red-rgb: var(--si-cinnabar-rgb);
+	--color-yellow: var(--si-gold);
+	--color-yellow-rgb: var(--si-gold-rgb);
+	--color-green: var(--si-jade);
+	--color-green-rgb: var(--si-jade-rgb);
+	--color-cyan: var(--si-azure);
+	--color-cyan-rgb: var(--si-azure-rgb);
+	--color-blue: var(--si-azure-fill);
+	--color-blue-rgb: var(--si-azure-fill-rgb);
+
+	--icon-color: var(--si-ink-3);
+	--icon-color-hover: var(--si-ink-2);
+	--icon-color-active: var(--si-jade);
+	--icon-color-focused: var(--si-ink);
+
+	--titlebar-background: var(--si-paper-sunk);
+	--titlebar-background-focused: var(--si-paper-sunk);
+	--ribbon-background: var(--si-paper-sunk);
+	--ribbon-background-collapsed: var(--si-paper);
+	--tab-container-background: var(--si-paper-sunk);
+	--tab-background-active: var(--si-paper);
+	--status-bar-background: var(--si-paper-sunk);
+	--nav-item-background-hover: rgba(var(--si-ink-rgb), 0.06);
+	--nav-item-background-active: var(--si-jade-soft);
+	--nav-item-color-active: var(--si-jade-text);
+	--modal-background: var(--si-paper-raised);
+	--modal-border-color: var(--si-line);
+	--menu-background: var(--si-paper-raised);
+	--menu-border-color: var(--si-line);
+	--menu-shadow: var(--si-e3);
+	--scrollbar-bg: transparent;
+	--scrollbar-thumb-bg: var(--si-scroll-thumb);
+	--scrollbar-active-thumb-bg: var(--si-scroll-thumb-hover);
+
+	--h1-color: var(--si-ink);
+	--h2-color: var(--si-ink);
+	--h3-color: var(--si-ink);
+	--h4-color: var(--si-ink);
+	--h5-color: var(--si-ink-2);
+	--h6-color: var(--si-ink-2);
+	--inline-title-color: var(--si-ink);
+	--link-color: var(--si-azure-text);
+	--link-color-hover: var(--si-azure);
+	--link-external-color: var(--si-azure-text);
+	--link-external-color-hover: var(--si-azure);
+	--link-unresolved-color: var(--si-ink-3);
+	--link-unresolved-decoration-color: var(--si-scroll-thumb-hover);
+	--tag-color: var(--si-jade-text);
+	--tag-color-hover: var(--si-jade-text);
+	--tag-background: var(--si-jade-soft);
+	--tag-background-hover: var(--si-jade-soft);
+	--blockquote-border-color: var(--si-jade-soft);
+	--blockquote-border-thickness: 3px;
+	--blockquote-color: var(--si-ink-2);
+	--blockquote-font-style: normal;
+	--hr-color: var(--si-line);
+	--list-marker-color: var(--si-ink-3);
+	--list-marker-color-collapsed: var(--si-jade);
+	--checkbox-color: var(--si-jade);
+	--checkbox-color-hover: var(--si-jade-hover);
+	--checkbox-border-color: var(--si-ink-3);
+	--checkbox-marker-color: var(--si-on-jade);
+	--checklist-done-color: var(--si-ink-3);
+	--table-border-color: var(--si-line);
+	--table-header-background: var(--si-paper-sunk);
+
+	--code-background: var(--si-paper-sunk);
+	--code-normal: var(--si-ink);
+	--code-comment: var(--si-ink-3);
+	--code-punctuation: var(--si-ink-2);
+	--code-keyword: var(--si-cinnabar-text);
+	--code-operator: var(--si-cinnabar-text);
+	--code-tag: var(--si-cinnabar-text);
+	--code-function: var(--si-gold-text);
+	--code-value: var(--si-gold-text);
+	--code-property: var(--si-azure-text);
+	--code-string: var(--si-jade-text);
+	--code-important: var(--si-gold-text);
+
+	--graph-line: var(--si-line);
+	--graph-node: var(--si-ink-3);
+	--graph-node-focused: var(--si-gold);
+	--graph-node-tag: var(--si-jade);
+	--graph-node-attachment: var(--si-azure);
+	--graph-node-unresolved: var(--si-scroll-thumb-hover);
+}
+
+/* rice-paper fibre over everything (pointer-transparent), as in base.css */
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: var(--si-z-grain);
+	opacity: var(--si-grain-opacity);
+	mix-blend-mode: multiply;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .32 0 0 0 0 .28 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* blockquotes in the serif, like <Typography variant="quote"> */
+.markdown-rendered blockquote,
+.HyperMD-quote {
+	font-family: var(--si-font-serif);
+}
+
+/* buttons: pressed in like ink, as .si-btn */
+button {
+	letter-spacing: 0.02em;
+	transition:
+		transform var(--si-t-quick) var(--si-ease-out),
+		background-color var(--si-t-base) var(--si-ease-out),
+		box-shadow var(--si-t-base) var(--si-ease-out);
+}
+button:active:not(:disabled) {
+	transform: scale(0.96);
+}
+button.mod-cta {
+	background: var(--si-jade);
+	color: var(--si-on-jade);
+}
+button.mod-cta:hover {
+	background: var(--si-jade-hover);
+}
+button.mod-warning {
+	background: var(--si-cinnabar-fill);
+	color: var(--si-on-color);
+}
+button.mod-warning:hover {
+	background: var(--si-cinnabar-hover);
+}
+
+/* fields: the soft jade halo of TextField */
+input[type="text"]:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+	border-color: var(--si-jade);
+	box-shadow: 0 0 0 var(--si-ring) var(--si-jade-soft);
+	transition: box-shadow var(--si-t-base) var(--si-ease-out);
+}
+
+/* dialogs, menus and the command palette set down like paper */
+.modal,
+.prompt,
+.menu,
+.suggestion-container {
+	border: 1px solid var(--si-line);
+	box-shadow: var(--si-e3);
+}
+.modal,
+.prompt {
+	animation: si-set-down var(--si-t-slow) var(--si-ease-out);
+}
+@keyframes si-set-down {
+	from {
+		opacity: 0;
+		transform: translateY(10px) scale(0.98);
+	}
+}
+
+/* notes and the selected file: soft jade, like a Nav item */
+.nav-file-title.is-active,
+.tree-item-self.is-active {
+	font-weight: 500;
+}
