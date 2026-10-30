@@ -64,7 +64,7 @@ export function App() {
 				<AppBar lang={lang} onLang={setLang} toc={docs ? { open: toc, toggle: () => setToc((o) => !o) } : undefined} />
 				{docs ? (
 					<main>
-						<Docs toc={toc} onClose={() => !matchMedia(WIDE).matches && setToc(false)} />
+						<Docs toc={toc} onClose={() => !matchMedia(WIDE).matches && setToc(false)} footer={<Footer />} />
 					</main>
 				) : (
 					<>
@@ -79,9 +79,9 @@ export function App() {
 							<Components key={`c-${lang}`} />
 							<Sample key={`s-${lang}`} />
 						</main>
+						<Footer />
 					</>
 				)}
-				<Footer />
 			</SiProvider>
 		</LangContext.Provider>
 	);
