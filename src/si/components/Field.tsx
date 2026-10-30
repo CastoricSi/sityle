@@ -239,6 +239,11 @@ export type SelectFieldProps<T extends string = string> = Omit<Common, "end"> &
 		options: SelectOption<T>[];
 		/** Submitted with the form (a hidden input carries the value). */
 		name?: string;
+		/**
+		 * The plain box (as tall as Input and SearchField) without the floating label,
+		 * for toolbars and filter rows; `label` is then only its accessible name.
+		 */
+		plain?: boolean;
 	};
 
 /**
@@ -259,6 +264,7 @@ export function SelectField<T extends string = string>({
 	onChange: onChangeIn,
 	options,
 	name,
+	plain,
 	disabled,
 	style,
 	ref,
@@ -340,7 +346,7 @@ export function SelectField<T extends string = string>({
 	};
 
 	return (
-		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", className)}>
+		<FieldShell error={error} hint={hint} hintId={`${fieldId}-hint`} className={cn("is-select", plain && "is-plain", className)}>
 			<div ref={wrap} style={style}>
 				<button
 					{...props}
@@ -349,6 +355,7 @@ export function SelectField<T extends string = string>({
 					type="button"
 					className="si-select-trigger"
 					role="combobox"
+					aria-label={plain ? label : props["aria-label"]}
 					aria-haspopup="listbox"
 					aria-expanded={open}
 					aria-controls={listId}
@@ -369,7 +376,7 @@ export function SelectField<T extends string = string>({
 				>
 					{current?.label ?? "\u00a0"}
 				</button>
-				<label htmlFor={fieldId}>{label}</label>
+				{!plain && <label htmlFor={fieldId}>{label}</label>}
 				<ChevronDown className="si-field-chevron" aria-hidden="true" />
 				{name !== undefined && <input type="hidden" name={name} value={value ?? ""} disabled={disabled} />}
 			</div>

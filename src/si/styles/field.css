@@ -292,3 +292,14 @@
 		font-size: max(16px, 1rem);
 	}
 }
+
+/* SelectField plain: the box of Input / SearchField, no floating label */
+.si-field.is-plain .si-select-trigger {
+	height: var(--si-h-input);
+	padding: 0 40px 0 12px;
+}
+.si-field.is-plain .si-field-chevron {
+	top: 50%;
+	right: 12px;
+	margin-top: -9px;
+}

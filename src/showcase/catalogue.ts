@@ -67,7 +67,7 @@ export const CATALOGUE: Group[] = [
 				name: "SelectField",
 				zh: "从几项里选一项。用 sityle 自己的下拉列表（不是浏览器的），键盘可操作，不会被对话框裁掉。",
 				en: "Pick one of a few. sityle's own list (not the browser's), keyboard friendly, never clipped by a dialog.",
-				props: "label options value defaultValue onChange name",
+				props: "label options value defaultValue onChange name plain",
 			},
 			{
 				name: "SearchField",
@@ -169,7 +169,7 @@ export const CATALOGUE: Group[] = [
 				name: "NavItem",
 				zh: "侧边栏的一行：图标、名称、计数；当前项高亮。有 href 时是链接。",
 				en: "A sidebar row: icon, name, count; the current one is highlighted. A link with href.",
-				props: "icon label count current tone href",
+				props: "icon label count current tone wrap href",
 			},
 			{
 				name: "Group",

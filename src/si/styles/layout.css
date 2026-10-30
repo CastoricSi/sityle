@@ -56,6 +56,22 @@ a.si-listitem {
 	padding-block: 0.2em;
 	margin-block: -0.2em;
 }
+/* wrap: the label runs onto more lines, set tighter than body text so one item reads as one */
+.si-nav.is-wrap {
+	height: auto;
+	min-height: 38px;
+	padding-block: 8px;
+}
+.si-nav.is-wrap > svg {
+	align-self: flex-start;
+	margin-top: 1px;
+}
+.si-nav.is-wrap .si-nav-label {
+	contain: none;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	line-height: 1.4;
+}
 .si-nav-count {
 	font-size: 0.75rem;
 	color: var(--si-ink-3);

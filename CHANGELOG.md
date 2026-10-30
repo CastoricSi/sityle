@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+- SelectField `plain`: the plain box, as tall as Input and SearchField, without the
+  floating label (`label` is then only its accessible name), for filter rows and
+  toolbars.
+- NavItem `wrap`: a long label runs onto more lines, set a little tighter than body
+  text, and the row grows to fit, instead of ending in "…" (tables of contents).
+
 ## 1.1.0
 
 - New: **ContextMenu**, the menu a right-click opens, at the pointer. The same panel,

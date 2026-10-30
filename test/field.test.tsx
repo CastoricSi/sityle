@@ -97,3 +97,15 @@ test("TextAreaField scrolls below its label; a press on the box's padding focuse
 	fireEvent.mouseDown(box);
 	expect(document.activeElement).toBe(ta);
 });
+
+test("SelectField plain: no floating label, the label names the box, picking still works", async () => {
+	const onChange = vi.fn();
+	const user = userEvent.setup();
+	render(<SelectField plain label="地点" value="a" onChange={onChange} options={OPTIONS} />);
+	const box = screen.getByRole("combobox", { name: "地点" });
+	expect(box.closest(".si-field")?.classList.contains("is-plain")).toBe(true);
+	expect(document.querySelector(".si-field label")).toBeNull();
+	await user.click(box);
+	await user.click(screen.getByRole("option", { name: "乙" }));
+	expect(onChange).toHaveBeenCalledWith("b");
+});

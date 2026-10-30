@@ -20,16 +20,18 @@ type NavItemOwn = {
 	current?: boolean;
 	/** Colour the row (e.g. a sync status). */
 	tone?: Tone;
+	/** A long label wraps onto more lines (the row grows to fit) instead of ending in "…": tables of contents. */
+	wrap?: boolean;
 };
 export type NavItemProps = AsButton<NavItemOwn>;
 export type NavItemLinkProps = AsLink<NavItemOwn>;
 
 /** A <button>, or a real link with `href` (middle-click, copy link; `as` renders a router link). */
 export function NavItem(allProps: NavItemProps | NavItemLinkProps) {
-	const { icon, label, count, current, tone, className, ...props } = allProps;
+	const { icon, label, count, current, tone, wrap, className, ...props } = allProps;
 	const currentValue = props.href !== undefined ? "page" : "true";
 	return (
-		<PressableElement {...props} className={cn("si-nav", tone && `t-${tone}`, className)} aria-current={current ? currentValue : undefined}>
+		<PressableElement {...props} className={cn("si-nav", tone && `t-${tone}`, wrap && "is-wrap", className)} aria-current={current ? currentValue : undefined}>
 			{icon}
 			<span className="si-nav-label">{label}</span>
 			{count !== undefined && <span className="si-nav-count">{count}</span>}

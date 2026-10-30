@@ -259,6 +259,12 @@ function Inputs() {
 		L("张若虚，扬州人，与贺知章、张旭、包融并称「吴中四士」。", 'Zhang Ruoxu of Yangzhou, one of the "Four Scholars of Wuzhong" with He Zhizhang, Zhang Xu and Bao Rong.'),
 	);
 	const [form, setForm] = useState("shi");
+	const formOptions = [
+		{ value: "", label: L("不限", "Any") },
+		{ value: "shi", label: L("诗", "Shi (regulated verse)") },
+		{ value: "ci", label: L("词", "Ci (lyrics)") },
+		{ value: "qu", label: L("曲", "Qu (songs)") },
+	];
 	const [search, setSearch] = useState("");
 	const [plain, setPlain] = useState("tang");
 	const [trial, setTrial] = useState("chunxiao");
@@ -302,19 +308,17 @@ function Inputs() {
     { value: "shi", label: "${L("诗", "Shi")}" },
     { value: "ci", label: "${L("词", "Ci")}" },
   ]}
-/>`}
+/>
+// ${L("筛选栏里：和搜索框一样高，没有浮动标签", "In a filter row: as tall as a search box, no floating label")}
+<SelectField plain label="${L("体裁", "Form")}" … />`}
 			>
-				<SelectField
-					label={L("体裁", "Form")}
-					value={form}
-					onChange={setForm}
-					options={[
-						{ value: "", label: L("不限", "Any") },
-						{ value: "shi", label: L("诗", "Shi (regulated verse)") },
-						{ value: "ci", label: L("词", "Ci (lyrics)") },
-						{ value: "qu", label: L("曲", "Qu (songs)") },
-					]}
-				/>
+				<div style={{ display: "grid", gap: 12 }}>
+					<SelectField label={L("体裁", "Form")} value={form} onChange={setForm} options={formOptions} />
+					<div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 8 }}>
+						<SearchField value={search} onChange={setSearch} label={L("搜索", "Search")} />
+						<SelectField plain label={L("体裁", "Form")} value={form} onChange={setForm} options={formOptions} />
+					</div>
+				</div>
 			</Spec>
 			<Spec names={["SearchField"]} code={`<SearchField label="${L("搜索", "Search")}" value={q} onChange={setQ} />`}>
 				<SearchField value={search} onChange={setSearch} label={L("搜索诗名或作者", "Search titles or poets")} />
@@ -637,6 +641,14 @@ function LayoutGroup() {
 					<NavItem icon={<Folder />} label={L("唐诗", "Tang poems")} count={214} current={nav === "tang"} onClick={() => setNav("tang")} />
 					<NavItem icon={<Folder />} label={L("宋词", "Song lyrics")} count={86} current={nav === "song"} onClick={() => setNav("song")} />
 					<NavItem icon={<Bookmark />} label={L("已收藏（一个链接）", "Bookmarked (a link)")} tone="jade" href="#sample" />
+					<NavItem
+						wrap
+						label={L(
+							"目录里的长标题（wrap）：折成几行，这一行跟着变高，而不是用「…」截断",
+							"A long title in a table of contents (wrap): it runs onto more lines and the row grows, instead of ending in “…”",
+						)}
+						onClick={() => {}}
+					/>
 				</div>
 			</Spec>
 			<Spec
