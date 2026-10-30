@@ -3,10 +3,10 @@
  * 泥金 highlights, 朱砂 for errors. The --si-* tokens come before this in theme.css.
  */
 body {
-	/* the system's own serif and sans (no web fonts): the token stacks without Noto / JetBrains Mono */
-	--si-font-serif: "Songti SC", "SimSun", serif;
-	--si-font-sans: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-	--si-font-mono: ui-monospace, "SF Mono", Menlo, "Cascadia Mono", Consolas, monospace;
+	/* the system's own generic fonts, nothing loaded from the web */
+	--si-font-serif: serif;
+	--si-font-sans: sans-serif;
+	--si-font-mono: monospace;
 	--font-text-theme: var(--si-font-sans);
 	--font-interface-theme: var(--si-font-sans);
 	--font-monospace-theme: var(--si-font-mono);
