@@ -35,13 +35,16 @@ import {
 import { motion, type Transition } from "motion/react";
 import { useEffect, useState } from "react";
 
-import { BrushStroke, Button, Card, InkWash, Seal, Segmented, spring, Typography, useTheme, type MotionChoice, type TypographyVariant } from "@si";
+import { BrushStroke, Button, Card, InkWash, palettes, Seal, Segmented, spring, Typography, useTheme, type MotionChoice, type TypographyVariant } from "@si";
+import cyrene from "./cyrene.webp";
 import { useL } from "./lang";
 import sigil from "./sigil.webp";
 import { Head, VERSION } from "./ui";
 
 export function Hero() {
 	const L = useL();
+	const { palette } = useTheme();
+	const si = palette === "si";
 	return (
 		<section className="sc-hero" aria-labelledby="hero-title">
 			<InkWash />
@@ -51,23 +54,28 @@ export function Hero() {
 						<circle cx="118" cy="118" r="112" fill="none" stroke="var(--si-jade)" strokeWidth="2.5" strokeDasharray="180 40 90 30 260 60" strokeLinecap="round" opacity=".55" />
 						<circle cx="118" cy="118" r="106" fill="none" stroke="var(--si-gold)" strokeWidth="1.2" strokeDasharray="2 9" opacity=".7" />
 					</svg>
-					<img src={sigil} alt="祀" width={208} height={208} />
+					<img src={si ? sigil : cyrene} alt={si ? "祀" : L("昔涟", "Cyrene")} width={208} height={208} />
 					<Seal size={50} className="sc-portrait-seal">
-						祀
+						{si ? "祀" : "昔"}
 					</Seal>
 				</div>
 				<div>
 					<h1 id="hero-title">
-						水祀丹青
+						{palettes[palette]}
 						<small>
 							SITYLE · {L("设计语言", "a design language")} · {VERSION}
 						</small>
 					</h1>
 					<p className="sc-lede">
-						{L(
-							"石绿为发，石青为手，泥金为饰，浓墨为衣——取「祀」的颜色，铺在一张宣纸上。",
-							"Mineral green for the hair, azurite for the hands, gold for the trim, ink for the robe — the colours of 祀, laid on a sheet of rice paper.",
-						)}
+						{si
+							? L(
+									"石绿为发，石青为手，泥金为饰，浓墨为衣——取「祀」的颜色，铺在一张宣纸上。",
+									"Mineral green for the hair, azurite for the hands, gold for the trim, ink for the robe — the colours of 祀, laid on a sheet of rice paper.",
+								)
+							: L(
+									"桃红为发，淡青为梢，蜜金为珠，黛紫为结——取「昔涟」的颜色，落在一张粉笺上。",
+									"Peach pink for the hair, pale teal for its tips, honey gold for the beads, violet ink for the ribbon — the colours of Cyrene, fallen on a sheet of blush paper.",
+								)}
 					</p>
 					<p className="sc-sub">
 						{L(
@@ -91,7 +99,7 @@ export function Hero() {
 
 /* ── 色彩 ── */
 /** [name, role, name in English, role in English, token] */
-const PIGMENTS = [
+const SI_PIGMENTS = [
 	["宣纸", "页面底色", "Rice paper", "the page", "--si-paper"],
 	["浓墨", "正文", "Ink", "body text", "--si-ink"],
 	["石绿", "主色 · 发色", "Mineral green", "primary · the hair", "--si-jade"],
@@ -101,9 +109,21 @@ const PIGMENTS = [
 	["石绿浅", "选中、浅底按钮", "Pale green", "selected, flat buttons", "--si-jade-soft"],
 	["淡墨", "次要文字", "Light ink", "secondary text", "--si-ink-2"],
 ] as const;
+/** 落英: the same tokens, in 昔涟's colours. */
+const CYRENE_PIGMENTS = [
+	["粉笺", "页面底色", "Blush paper", "the page", "--si-paper"],
+	["黛墨", "正文", "Violet ink", "body text", "--si-ink"],
+	["桃红", "主色 · 发色", "Peach pink", "primary · the hair", "--si-jade"],
+	["淡青", "辅色 · 发梢", "Pale teal", "accent · the hair's tips", "--si-azure"],
+	["蜜金", "点缀 · 珠饰", "Honey gold", "highlight · the beads", "--si-gold"],
+	["胭脂", "危险 · 印章", "Rouge", "danger · seals", "--si-cinnabar"],
+	["桃红浅", "选中、浅底按钮", "Pale pink", "selected, flat buttons", "--si-jade-soft"],
+	["淡黛", "次要文字", "Light ink", "secondary text", "--si-ink-2"],
+] as const;
 
 export function Colors() {
-	const { resolved } = useTheme();
+	const { resolved, palette } = useTheme();
+	const PIGMENTS = palette === "si" ? SI_PIGMENTS : CYRENE_PIGMENTS;
 	const L = useL();
 	const [values, setValues] = useState<Record<string, string>>({});
 	const [copied, setCopied] = useState<string | null>(null);
@@ -123,7 +143,7 @@ export function Colors() {
 			),
 		);
 		probe.remove();
-	}, [resolved]);
+	}, [resolved, PIGMENTS]);
 	useEffect(() => {
 		if (!copied) return;
 		const t = setTimeout(() => setCopied(null), 1500);
@@ -133,10 +153,15 @@ export function Colors() {
 	return (
 		<section className="sc-section" id="color" aria-labelledby="h-color">
 			<Head id="color" title="色彩" en="Pigments">
-				{L(
-					"六种矿物颜料，各司其职。主色只有石绿；石青和泥金只做点缀；朱砂只在危险操作和印章上出现。点一下色块复制色值。",
-					"Six mineral pigments, each with one job. Mineral green is the only primary; azurite and gold are accents; cinnabar appears only on dangerous actions and seals. Tap a swatch to copy its value.",
-				)}
+				{palette === "si"
+					? L(
+							"六种矿物颜料，各司其职。主色只有石绿；石青和泥金只做点缀；朱砂只在危险操作和印章上出现。点一下色块复制色值。",
+							"Six mineral pigments, each with one job. Mineral green is the only primary; azurite and gold are accents; cinnabar appears only on dangerous actions and seals. Tap a swatch to copy its value.",
+						)
+					: L(
+							"落英是丹青的另一套颜色：同样的令牌、同样的分工，只换了颜色。主色只有桃红；淡青和蜜金只做点缀；胭脂只在危险操作和印章上出现。点一下色块复制色值。",
+							"落英 is 丹青's other set of colours: the same tokens and the same jobs, only the colours change. Peach pink is the only primary; pale teal and honey gold are accents; rouge appears only on dangerous actions and seals. Tap a swatch to copy its value.",
+						)}
 			</Head>
 			<div className="sc-swatches">
 				{PIGMENTS.map(([zhName, zhRole, enName, enRole, v]) => {

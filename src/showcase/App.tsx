@@ -1,7 +1,7 @@
 import { Menu as MenuIcon, Monitor, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { en, IconButton, Seal, Segmented, SiProvider, useTheme, zh, type MotionChoice, type ThemeChoice } from "@si";
+import { en, IconButton, palettes, Seal, Segmented, SiProvider, useTheme, zh, type MotionChoice, type Palette, type ThemeChoice } from "@si";
 import { Components } from "./components";
 import { Colors, Hero, Icons, MotionSection, Shape, Type } from "./design";
 import { Docs } from "./docs";
@@ -10,6 +10,16 @@ import { Sample } from "./sample";
 import { VERSION } from "./ui";
 
 const LANG_KEY = "sc-lang";
+const PALETTE_KEY = "sc-palette";
+function readPalette(): Palette {
+	try {
+		return localStorage.getItem(PALETTE_KEY) === "cyrene" ? "cyrene" : "si";
+	} catch {
+		return "si";
+	}
+}
+/** The brand seal of each palette: 祀 for 丹青, 昔 for 落英. */
+const SEAL: Record<Palette, string> = { si: "祀", cyrene: "昔" };
 function readLang(): Lang {
 	try {
 		return localStorage.getItem(LANG_KEY) === "en" ? "en" : "zh";
@@ -36,6 +46,15 @@ export function App() {
 			// not remembered
 		}
 	};
+	const [palette, setPaletteState] = useState<Palette>(readPalette);
+	const setPalette = (p: Palette) => {
+		setPaletteState(p);
+		try {
+			localStorage.setItem(PALETTE_KEY, p);
+		} catch {
+			// not remembered
+		}
+	};
 	const [motionChoice, setMotionChoice] = useState<MotionChoice>("on");
 	const docs = onDocs();
 	// the docs' contents: a sidebar on wide screens (open), a drawer on narrow ones (closed)
@@ -56,12 +75,13 @@ export function App() {
 		if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
 	}, []);
 	useEffect(() => {
-		document.title = docs ? (lang === "en" ? "Documentation · sityle" : "文档 · 水祀丹青") : "水祀丹青 · sityle";
-	}, [docs, lang]);
+		const name = palettes[palette];
+		document.title = docs ? (lang === "en" ? "Documentation · sityle" : `文档 · ${name}`) : `${name} · sityle`;
+	}, [docs, lang, palette]);
 	return (
 		<LangContext.Provider value={lang}>
-			<SiProvider messages={lang === "en" ? en : zh} motion={motionChoice}>
-				<AppBar lang={lang} onLang={setLang} toc={docs ? { open: toc, toggle: () => setToc((o) => !o) } : undefined} />
+			<SiProvider messages={lang === "en" ? en : zh} motion={motionChoice} palette={palette}>
+				<AppBar lang={lang} onLang={setLang} onPalette={setPalette} toc={docs ? { open: toc, toggle: () => setToc((o) => !o) } : undefined} />
 				{docs ? (
 					<main>
 						<Docs toc={toc} onClose={() => !matchMedia(WIDE).matches && setToc(false)} footer={<Footer />} />
@@ -87,8 +107,8 @@ export function App() {
 	);
 }
 
-function AppBar({ lang, onLang, toc }: { lang: Lang; onLang: (l: Lang) => void; toc?: { open: boolean; toggle: () => void } }) {
-	const { choice, setChoice } = useTheme();
+function AppBar({ lang, onLang, onPalette, toc }: { lang: Lang; onLang: (l: Lang) => void; onPalette: (p: Palette) => void; toc?: { open: boolean; toggle: () => void } }) {
+	const { choice, setChoice, palette } = useTheme();
 	const L = useL();
 	return (
 		<header className={toc ? "sc-bar has-menu" : "sc-bar"}>
@@ -98,10 +118,20 @@ function AppBar({ lang, onLang, toc }: { lang: Lang; onLang: (l: Lang) => void; 
 						<MenuIcon />
 					</IconButton>
 				)}
-				<a className="sc-brand" href="/" aria-label="水祀丹青">
-					<Seal>祀</Seal>
-					<span className="sc-brand-name">水祀丹青</span>
+				<a className="sc-brand" href="/" aria-label={palettes[palette]}>
+					<Seal>{SEAL[palette]}</Seal>
+					<span className="sc-brand-name">{palettes[palette]}</span>
 				</a>
+				<Segmented<Palette>
+					className="sc-palette"
+					label={L("色调", "Palette")}
+					value={palette}
+					onChange={onPalette}
+					options={[
+						{ value: "si", label: "丹青", title: L("丹青（石绿）", "丹青 (mineral green)") },
+						{ value: "cyrene", label: "落英", title: L("落英（桃红）", "落英 (peach pink)") },
+					]}
+				/>
 				<Segmented<Lang>
 					className="sc-lang"
 					label={L("语言", "Language")}
@@ -129,10 +159,12 @@ function AppBar({ lang, onLang, toc }: { lang: Lang; onLang: (l: Lang) => void; 
 
 function Footer() {
 	const L = useL();
+	const { palette } = useTheme();
 	return (
 		<footer className="sc-footer">
 			<div className="sc-wrap">
-				<Seal>青</Seal>水祀丹青 · sityle {VERSION} · <a href="/docs">{L("文档", "Docs")}</a> · <a href="https://github.com/CastoricSi/sityle">GitHub</a>
+				<Seal>{palette === "cyrene" ? "英" : "青"}</Seal>
+				{palettes[palette]} · sityle {VERSION} · <a href="/docs">{L("文档", "Docs")}</a> · <a href="https://github.com/CastoricSi/sityle">GitHub</a>
 			</div>
 		</footer>
 	);

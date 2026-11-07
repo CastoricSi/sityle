@@ -141,9 +141,20 @@ export function inkHandler<T extends HTMLElement>(own?: React.PointerEventHandle
 	};
 }
 
+/* ── palette ── */
+/**
+ * The colours: `si` 丹青 (default: 石绿, 石青, 泥金, 朱砂 on rice paper) or
+ * `cyrene` 落英 (桃红, 淡青, 蜜金, 胭脂 on blush paper). Same components, same
+ * token names (--si-jade is the primary in either); only the colours change.
+ */
+export type Palette = "si" | "cyrene";
+/** Each palette's name, for a switch: `{ si: "丹青", cyrene: "落英" }`. */
+export const palettes: Record<Palette, string> = { si: "丹青", cyrene: "落英" };
+const PALETTE_ATTR = "data-si-palette";
+
 /* ── theme ── */
 export type ThemeChoice = "light" | "dark" | "system";
-type ThemeContext = { choice: ThemeChoice; resolved: "light" | "dark"; setChoice: (c: ThemeChoice) => void };
+type ThemeContext = { choice: ThemeChoice; resolved: "light" | "dark"; setChoice: (c: ThemeChoice) => void; palette: Palette };
 
 const ThemeCtx = createContext<ThemeContext | null>(null);
 const STORAGE_KEY = "si-theme";
@@ -192,8 +203,8 @@ let memory: ThemeChoice | null = null;
 export const themeScript = `try{var t=localStorage.getItem(${JSON.stringify(STORAGE_KEY)});if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
 
 /**
- * Wrap the app once: theme (宣纸 / 浓墨 / system), the SVG filters the ink
- * effects use, and how much things move (`motion`).
+ * Wrap the app once: theme (宣纸 / 浓墨 / system), palette (丹青 / 落英), the SVG
+ * filters the ink effects use, and how much things move (`motion`).
  * Uncontrolled, the theme is remembered in localStorage. Pass `theme` (and
  * `onThemeChange`) when the app keeps the setting itself.
  */
@@ -203,6 +214,7 @@ export function SiProvider({
 	onThemeChange,
 	messages,
 	motion = "on",
+	palette = "si",
 }: {
 	children: React.ReactNode;
 	theme?: ThemeChoice;
@@ -211,6 +223,8 @@ export function SiProvider({
 	messages?: Partial<Messages>;
 	/** Motion: `on` (default) ignores the system's "reduce motion"; `reduce` or `system` to honour it. */
 	motion?: MotionChoice;
+	/** The colours: `si` 丹青 (default) or `cyrene` 落英. Set on <html data-si-palette>. */
+	palette?: Palette;
 }) {
 	const own = useSyncExternalStore(storedChoice.subscribe, storedChoice.get, () => "system" as const);
 	const controlled = theme !== undefined;
@@ -235,6 +249,15 @@ export function SiProvider({
 		return () => (before === null ? root.removeAttribute(MOTION_ATTR) : root.setAttribute(MOTION_ATTR, before));
 	}, [motion]);
 
+	// before children's effects, like the theme: InkWash reads the colours
+	useLayoutEffect(() => {
+		const root = document.documentElement;
+		const before = root.getAttribute(PALETTE_ATTR);
+		if (palette === "si") root.removeAttribute(PALETTE_ATTR);
+		else root.setAttribute(PALETTE_ATTR, palette);
+		return () => (before === null ? root.removeAttribute(PALETTE_ATTR) : root.setAttribute(PALETTE_ATTR, before));
+	}, [palette]);
+
 	const setChoice = useCallback(
 		(c: ThemeChoice) => {
 			if (!controlled) storedChoice.set(c);
@@ -243,7 +266,7 @@ export function SiProvider({
 		[controlled, onThemeChange],
 	);
 
-	const value = useMemo(() => ({ choice, resolved, setChoice }), [choice, resolved, setChoice]);
+	const value = useMemo(() => ({ choice, resolved, setChoice, palette }), [choice, resolved, setChoice, palette]);
 	const texts = useMemo(() => ({ ...zh, ...messages }), [messages]);
 	return (
 		<ThemeCtx.Provider value={value}>
