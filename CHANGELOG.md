@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
 
 - New palette **落英** (`<SiProvider palette="cyrene">`): the same design in the
   colours of Cyrene (昔涟) — 桃红 peach pink primary, 淡青 pale teal accent (the tips of her hair), 蜜金 honey
