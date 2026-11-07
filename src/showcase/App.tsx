@@ -19,7 +19,7 @@ function readPalette(): Palette {
 	}
 }
 /** The brand seal of each palette: 祀 for 丹青, 昔 for 落英. */
-export const SEAL: Record<Palette, string> = { si: "祀", cyrene: "昔" };
+const SEAL: Record<Palette, string> = { si: "祀", cyrene: "昔" };
 function readLang(): Lang {
 	try {
 		return localStorage.getItem(LANG_KEY) === "en" ? "en" : "zh";
@@ -129,7 +129,7 @@ function AppBar({ lang, onLang, onPalette, toc }: { lang: Lang; onLang: (l: Lang
 					onChange={onPalette}
 					options={[
 						{ value: "si", label: "丹青", title: L("丹青（石绿）", "丹青 (mineral green)") },
-						{ value: "cyrene", label: "落英", title: L("落英（桃红）", "落英 (peach blossom)") },
+						{ value: "cyrene", label: "落英", title: L("落英（桃红）", "落英 (peach pink)") },
 					]}
 				/>
 				<Segmented<Lang>
