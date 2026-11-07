@@ -73,8 +73,8 @@ export function Hero() {
 									"Mineral green for the hair, azurite for the hands, gold for the trim, ink for the robe — the colours of 祀, laid on a sheet of rice paper.",
 								)
 							: L(
-									"桃红为发，天青为眸，蜜金为珠，黛紫为结——取「昔涟」的颜色，落在一张粉笺上。",
-									"Peach pink for the hair, sky blue for the eyes, honey gold for the beads, violet ink for the ribbon — the colours of Cyrene, fallen on a sheet of blush paper.",
+									"桃红为发，淡青为梢，蜜金为珠，黛紫为结——取「昔涟」的颜色，落在一张粉笺上。",
+									"Peach pink for the hair, pale teal for its tips, honey gold for the beads, violet ink for the ribbon — the colours of Cyrene, fallen on a sheet of blush paper.",
 								)}
 					</p>
 					<p className="sc-sub">
@@ -114,7 +114,7 @@ const CYRENE_PIGMENTS = [
 	["粉笺", "页面底色", "Blush paper", "the page", "--si-paper"],
 	["黛墨", "正文", "Violet ink", "body text", "--si-ink"],
 	["桃红", "主色 · 发色", "Peach pink", "primary · the hair", "--si-jade"],
-	["天青", "辅色 · 眼眸", "Sky blue", "accent · the eyes", "--si-azure"],
+	["淡青", "辅色 · 发梢", "Pale teal", "accent · the hair's tips", "--si-azure"],
 	["蜜金", "点缀 · 珠饰", "Honey gold", "highlight · the beads", "--si-gold"],
 	["胭脂", "危险 · 印章", "Rouge", "danger · seals", "--si-cinnabar"],
 	["桃红浅", "选中、浅底按钮", "Pale pink", "selected, flat buttons", "--si-jade-soft"],
@@ -159,8 +159,8 @@ export function Colors() {
 							"Six mineral pigments, each with one job. Mineral green is the only primary; azurite and gold are accents; cinnabar appears only on dangerous actions and seals. Tap a swatch to copy its value.",
 						)
 					: L(
-							"落英是丹青的另一套颜色：同样的令牌、同样的分工，只换了颜色。主色只有桃红；天青和蜜金只做点缀；胭脂只在危险操作和印章上出现。点一下色块复制色值。",
-							"落英 is 丹青's other set of colours: the same tokens and the same jobs, only the colours change. Peach pink is the only primary; sky blue and honey gold are accents; rouge appears only on dangerous actions and seals. Tap a swatch to copy its value.",
+							"落英是丹青的另一套颜色：同样的令牌、同样的分工，只换了颜色。主色只有桃红；淡青和蜜金只做点缀；胭脂只在危险操作和印章上出现。点一下色块复制色值。",
+							"落英 is 丹青's other set of colours: the same tokens and the same jobs, only the colours change. Peach pink is the only primary; pale teal and honey gold are accents; rouge appears only on dangerous actions and seals. Tap a swatch to copy its value.",
 						)}
 			</Head>
 			<div className="sc-swatches">

@@ -3,7 +3,7 @@
 ## Unreleased
 
 - New palette **落英** (`<SiProvider palette="cyrene">`): the same design in the
-  colours of Cyrene (昔涟) — 桃红 peach pink primary, 天青 sky blue accent, 蜜金 honey
+  colours of Cyrene (昔涟) — 桃红 peach pink primary, 淡青 pale teal accent (the tips of her hair), 蜜金 honey
   gold highlight, 胭脂 rouge for danger and seals, on blush paper with violet-black
   ink, light and dark, with the same contrast as 丹青. Only colours change; the token
   names stay (`--si-jade` is the primary in either). Set on `<html data-si-palette>`;

@@ -336,8 +336,8 @@ const { palette } = useTheme(); // "si" | "cyrene"
 palettes[palette]; // "丹青" | "落英"`}</Code>
 			<P>
 				{L(
-					'令牌名不跟着改：落英里 --si-jade 就是桃红，--si-azure 是天青，--si-gold 是蜜金，--si-cinnabar 是胭脂。服务端渲染时，直接在 <html> 上写 data-si-palette="cyrene"，第一帧就是粉色。',
-					'The token names stay: in 落英 --si-jade is the peach pink, --si-azure the sky blue, --si-gold the honey gold, --si-cinnabar the rouge. When rendering on the server, write data-si-palette="cyrene" on <html> so the first frame is already pink.',
+					'令牌名不跟着改：落英里 --si-jade 就是桃红，--si-azure 是淡青，--si-gold 是蜜金，--si-cinnabar 是胭脂。服务端渲染时，直接在 <html> 上写 data-si-palette="cyrene"，第一帧就是粉色。',
+					'The token names stay: in 落英 --si-jade is the peach pink, --si-azure the pale teal, --si-gold the honey gold, --si-cinnabar the rouge. When rendering on the server, write data-si-palette="cyrene" on <html> so the first frame is already pink.',
 				)}
 			</P>
 			<H>{L("不闪一下浅色", "No flash of the light theme")}</H>

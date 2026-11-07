@@ -134,8 +134,8 @@
 
 /*
  * 落英 (palette "cyrene", <html data-si-palette="cyrene">): the same slots in the
- * colours of 昔涟 — 桃红 hair for the primary (jade slot), 天青 eyes for the
- * accent (azure), 蜜金 beads for the highlight and warnings (gold), 胭脂 for
+ * colours of 昔涟 — 桃红 hair for the primary (jade slot), the 淡青 of its tips
+ * for the accent (azure), 蜜金 beads for the highlight and warnings (gold), 胭脂 for
  * danger and seals (cinnabar), on blush paper with violet-black ink (the hat's ribbon).
  * Only colours change; it comes before the dark blocks below, which still apply.
  */
@@ -156,11 +156,11 @@
 	--si-jade-text: light-dark(#962d5d, #f9bcd6);
 	--si-on-jade: light-dark(#ffffff, #2d0c1c);
 
-	--si-azure: light-dark(#2d84bf, #7cc3ec); /* 天青 secondary (eyes) */
-	--si-azure-fill: light-dark(#2a79ae, #7cc3ec);
-	--si-azure-hover: light-dark(#226793, #9bd2f2);
-	--si-azure-soft: light-dark(#d9e9f5, rgba(124, 195, 236, 0.15));
-	--si-azure-text: light-dark(#1d5d88, #aad8f4);
+	--si-azure: light-dark(#23879a, #7dd0da); /* 淡青 secondary (the hair's tips) */
+	--si-azure-fill: light-dark(#1f7c8e, #7dd0da);
+	--si-azure-hover: light-dark(#196878, #9adde5);
+	--si-azure-soft: light-dark(#d4ecef, rgba(125, 208, 218, 0.15));
+	--si-azure-text: light-dark(#165e6c, #a9e2e9);
 
 	--si-gold: light-dark(#a8781a, #e4be5e); /* 蜜金 highlight (beads) */
 	--si-gold-fill: light-dark(#976b14, #e4be5e);

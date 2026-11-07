@@ -3,7 +3,7 @@
 An ink-wash (水墨丹青) design language: rice-paper ground, ink text, the
 mineral pigments 石绿 / 石青 / 泥金 / 朱砂, and Material-style motion
 (ink-drop ripples, springy switches and tabs, dialogs set down like paper).
-A second palette, **落英**, sets the same design in peach pink, sky blue and
+A second palette, **落英**, sets the same design in peach pink, pale teal and
 honey gold (`<SiProvider palette="cyrene">`).
 
 **Documentation:** [style.si16.app/docs](https://style.si16.app/docs) (install, SiProvider,
@@ -58,7 +58,7 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
   `localStorage`; an app that keeps its own setting passes `<SiProvider theme onThemeChange>`.
 - **Palette:** `<SiProvider palette="si">` (default) is 丹青, mineral green;
   `palette="cyrene"` is 落英, the colours of Cyrene (昔涟): 桃红 peach pink for the
-  primary, 天青 sky blue for the accent, 蜜金 honey gold for highlights and warnings,
+  primary, 淡青 pale teal (the tips of her hair) for the accent, 蜜金 honey gold for highlights and warnings,
   胭脂 rouge for danger and seals, on blush paper with violet-black ink. Same
   components, same token names (`--si-jade` is the primary in either) — only the
   colours change. It is set on `<html data-si-palette>`; `useTheme().palette`

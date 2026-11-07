@@ -144,7 +144,7 @@ export function inkHandler<T extends HTMLElement>(own?: React.PointerEventHandle
 /* ── palette ── */
 /**
  * The colours: `si` 丹青 (default: 石绿, 石青, 泥金, 朱砂 on rice paper) or
- * `cyrene` 落英 (桃红, 天青, 蜜金, 胭脂 on blush paper). Same components, same
+ * `cyrene` 落英 (桃红, 淡青, 蜜金, 胭脂 on blush paper). Same components, same
  * token names (--si-jade is the primary in either); only the colours change.
  */
 export type Palette = "si" | "cyrene";
