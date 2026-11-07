@@ -9,12 +9,12 @@ export type InkBlot = [number, number, number, string, number];
 /**
  * Decorative ink-wash background (fills its positioned parent). Soft blots
  * of 石绿 / 石青 / 墨 / 泥金 bloom in once, then stay still. Repaints on
- * theme change and when its box changes size. Deterministic: the same seed
+ * theme or palette change and when its box changes size. Deterministic: the same seed
  * paints the same wash.
  */
 export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS, className, style }: { seed?: number; blots?: InkBlot[]; className?: string; style?: React.CSSProperties }) {
 	const canvas = useRef<HTMLCanvasElement>(null);
-	const { resolved } = useTheme();
+	const { resolved, palette } = useTheme();
 	const first = useRef(true);
 	// compare by content, so an inline array does not repaint on every render
 	const blotsKey = JSON.stringify(blots);
@@ -89,7 +89,7 @@ export function InkWash({ seed = 20261022, blots = DEFAULT_BLOTS, className, sty
 			clearTimeout(timer);
 			ro.disconnect();
 		};
-	}, [resolved, seed, blotsKey]);
+	}, [resolved, palette, seed, blotsKey]);
 
 	return <canvas ref={canvas} aria-hidden="true" className={className} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", ...style }} />;
 }

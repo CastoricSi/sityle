@@ -1,9 +1,9 @@
-// 丹青 (si-style) — import the styles once ("sityle/style.css", plus the optional
+// sityle (丹青 / 落英) — import the styles once ("sityle/style.css", plus the optional
 // page ground "sityle/base.css"), wrap the app in <SiProvider>.
 import "./tokens.css";
 import "./components.css";
 
-export { BrushStroke, ease, inkHandler, popover, SiProvider, motionReduced, spawnInk, spring, themeScript, useTheme, type MotionChoice, type ThemeChoice } from "./core";
+export { BrushStroke, ease, inkHandler, palettes, popover, SiProvider, motionReduced, spawnInk, spring, themeScript, useTheme, type MotionChoice, type Palette, type ThemeChoice } from "./core";
 export { Button, CopyButton, IconButton, type ButtonLinkProps, type ButtonProps, type Tone, type CopyButtonProps, type IconButtonProps } from "./components/Button";
 export {
 	Avatar,

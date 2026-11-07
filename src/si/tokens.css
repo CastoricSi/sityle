@@ -132,6 +132,54 @@
 	--si-t-ink: 620ms;
 }
 
+/*
+ * 落英 (palette "cyrene", <html data-si-palette="cyrene">): the same slots in the
+ * colours of 昔涟 — 桃红 hair for the primary (jade slot), 天青 eyes for the
+ * accent (azure), 蜜金 beads for the highlight and warnings (gold), 胭脂 for
+ * danger and seals (cinnabar), on blush paper with violet-black ink (the hat's ribbon).
+ * Only colours change; it comes before the dark blocks below, which still apply.
+ */
+:root[data-si-palette="cyrene"] {
+	--si-paper: light-dark(#f9f1f4, #18131a); /* 粉笺 page */
+	--si-paper-raised: light-dark(#fffafc, #211a24);
+	--si-paper-sunk: light-dark(#f0e3e9, #110d13);
+	--si-ink: light-dark(#2b2131, #efe6ee); /* 黛墨 text */
+	--si-ink-2: light-dark(#584a5e, #bcb0bf);
+	--si-ink-3: light-dark(#6c5f72, #958a99);
+	--si-scroll-thumb: light-dark(rgba(43, 33, 49, 0.22), rgba(239, 230, 238, 0.2));
+	--si-scroll-thumb-hover: light-dark(rgba(43, 33, 49, 0.38), rgba(239, 230, 238, 0.36));
+	--si-line: light-dark(rgba(43, 33, 49, 0.13), rgba(239, 230, 238, 0.12));
+
+	--si-jade: light-dark(#b93f76, #f394bd); /* 桃红 primary (hair) */
+	--si-jade-hover: light-dark(#a13668, #f7aecd);
+	--si-jade-soft: light-dark(#f8dce8, rgba(243, 148, 189, 0.15));
+	--si-jade-text: light-dark(#962d5d, #f9bcd6);
+	--si-on-jade: light-dark(#ffffff, #2d0c1c);
+
+	--si-azure: light-dark(#2d84bf, #7cc3ec); /* 天青 secondary (eyes) */
+	--si-azure-fill: light-dark(#2a79ae, #7cc3ec);
+	--si-azure-hover: light-dark(#226793, #9bd2f2);
+	--si-azure-soft: light-dark(#d9e9f5, rgba(124, 195, 236, 0.15));
+	--si-azure-text: light-dark(#1d5d88, #aad8f4);
+
+	--si-gold: light-dark(#a8781a, #e4be5e); /* 蜜金 highlight (beads) */
+	--si-gold-fill: light-dark(#976b14, #e4be5e);
+	--si-gold-hover: light-dark(#835d10, #ebcb7a);
+	--si-gold-soft: light-dark(#f5e8cb, rgba(228, 190, 94, 0.15));
+	--si-gold-text: light-dark(#76540a, #efd290);
+
+	--si-cinnabar: light-dark(#b73a33, #f08b7e); /* 胭脂 danger, seals */
+	--si-cinnabar-fill: light-dark(#b73a33, #f08b7e);
+	--si-cinnabar-hover: light-dark(#a0312b, #f4a397);
+	--si-cinnabar-soft: light-dark(#f6dcd9, rgba(240, 139, 126, 0.15));
+	--si-cinnabar-text: light-dark(#8f2b24, #f6b1a7);
+
+	--si-on-color: light-dark(#ffffff, #170f15);
+	--si-on-seal: light-dark(#fff7f9, #fff7f9);
+	--si-scrim: light-dark(rgba(30, 18, 28, 0.32), rgba(0, 0, 0, 0.5));
+	--si-shadow-rgb: 52, 30, 46; /* plum-black ink */
+}
+
 /* The two values that are not colours (light-dark() takes colours only). */
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {

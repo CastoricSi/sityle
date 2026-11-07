@@ -12,7 +12,7 @@ npm i react react-dom motion`;
 /** The sections, in order: [id, title, title in English]. */
 const TOC = [
 	["start", "开始使用", "Getting started"],
-	["provider", "SiProvider：主题、文字、动效", "SiProvider: theme, texts, motion"],
+	["provider", "SiProvider：主题、色调、文字、动效", "SiProvider: theme, palette, texts, motion"],
 	["styles", "样式表与令牌", "Stylesheets and tokens"],
 	["typography", "文字排版", "Typography"],
 	["conventions", "约定", "Conventions"],
@@ -277,8 +277,8 @@ function Provider() {
 		<Section id="provider">
 			<P>
 				{L(
-					"SiProvider 管三件事：主题（宣纸 / 浓墨 / 跟随系统）、sityle 自己写的那几句文字（复制、显示、取消……），以及动效。都可以不传，用默认值。",
-					"SiProvider looks after three things: the theme (paper / ink / follow the system), the few texts sityle writes itself (copy, show, cancel…), and motion. All are optional.",
+					"SiProvider 管四件事：主题（宣纸 / 浓墨 / 跟随系统）、色调（丹青 / 落英）、sityle 自己写的那几句文字（复制、显示、取消……），以及动效。都可以不传，用默认值。",
+					"SiProvider looks after four things: the theme (paper / ink / follow the system), the palette (丹青 / 落英), the few texts sityle writes itself (copy, show, cancel…), and motion. All are optional.",
 				)}
 			</P>
 			<Table
@@ -293,6 +293,14 @@ function Provider() {
 						),
 					],
 					[<C>onThemeChange</C>, <C>(choice) =&gt; void</C>, L("useTheme().setChoice 被调用时通知你。", "Called when useTheme().setChoice runs.")],
+					[
+						<C>palette</C>,
+						<C>"si" | "cyrene"</C>,
+						L(
+							"色调。默认 si：丹青（石绿）；cyrene：落英（昔涟的桃红）。组件和令牌名都不变，只换颜色；写在 <html data-si-palette> 上。",
+							"The palette. Default si: 丹青 (mineral green); cyrene: 落英 (Cyrene's peach pink). The components and token names stay the same, only the colours change; set on <html data-si-palette>.",
+						),
+					],
 					[
 						<C>messages</C>,
 						<C>zh | en | Partial&lt;Messages&gt;</C>,
@@ -321,6 +329,17 @@ function ThemeSwitch() {
     ]} />
   );
 }`}</Code>
+			<H>{L("色调", "Palette")}</H>
+			<Code>{`<SiProvider palette="cyrene">…</SiProvider> // ${L("落英", "落英, the pink palette")}
+
+const { palette } = useTheme(); // "si" | "cyrene"
+palettes[palette]; // "丹青" | "落英"`}</Code>
+			<P>
+				{L(
+					'令牌名不跟着改：落英里 --si-jade 就是桃红，--si-azure 是天青，--si-gold 是蜜金，--si-cinnabar 是胭脂。服务端渲染时，直接在 <html> 上写 data-si-palette="cyrene"，第一帧就是粉色。',
+					'The token names stay: in 落英 --si-jade is the peach pink, --si-azure the sky blue, --si-gold the honey gold, --si-cinnabar the rouge. When rendering on the server, write data-si-palette="cyrene" on <html> so the first frame is already pink.',
+				)}
+			</P>
 			<H>{L("不闪一下浅色", "No flash of the light theme")}</H>
 			<P>
 				{L(
@@ -566,7 +585,8 @@ function Reference() {
 			<Table
 				head={[L("导出", "Export"), L("做什么用", "What it is for")]}
 				rows={[
-					[<C>useTheme()</C>, L("当前主题和切换方法。", "The current theme and how to change it.")],
+					[<C>useTheme()</C>, L("当前主题、色调和切换主题的方法。", "The current theme and palette, and how to change the theme.")],
+					[<C>palettes</C>, L('各色调的名字：{ si: "丹青", cyrene: "落英" }。', 'Each palette\'s name: { si: "丹青", cyrene: "落英" }.')],
 					[<C>themeScript</C>, L("放进 <head> 防止主题闪烁。", "For <head>: no theme flash.")],
 					[<C>useMessages() · zh · en</C>, L("sityle 自己的文字。", "sityle's own texts.")],
 					[<C>passwordStrength(v)</C>, L("口令强度 0–4，StrengthMeter 用的就是它。", "Password strength 0–4, what StrengthMeter shows.")],

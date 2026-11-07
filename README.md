@@ -3,6 +3,8 @@
 An ink-wash (水墨丹青) design language: rice-paper ground, ink text, the
 mineral pigments 石绿 / 石青 / 泥金 / 朱砂, and Material-style motion
 (ink-drop ripples, springy switches and tabs, dialogs set down like paper).
+A second palette, **落英**, sets the same design in peach pink, sky blue and
+honey gold (`<SiProvider palette="cyrene">`).
 
 **Documentation:** [style.si16.app/docs](https://style.si16.app/docs) (install, SiProvider,
 tokens, typography, conventions, every component). **Live components:**
@@ -54,6 +56,15 @@ see `index.html`), or the fallbacks are used. Text sizes are in `rem`.
 - `useTheme()` → `{ choice, resolved, setChoice }` (`"light" | "dark" | "system"`);
   `<html data-theme>` is set for you. Uncontrolled, the choice is remembered in
   `localStorage`; an app that keeps its own setting passes `<SiProvider theme onThemeChange>`.
+- **Palette:** `<SiProvider palette="si">` (default) is 丹青, mineral green;
+  `palette="cyrene"` is 落英, the colours of Cyrene (昔涟): 桃红 peach pink for the
+  primary, 天青 sky blue for the accent, 蜜金 honey gold for highlights and warnings,
+  胭脂 rouge for danger and seals, on blush paper with violet-black ink. Same
+  components, same token names (`--si-jade` is the primary in either) — only the
+  colours change. It is set on `<html data-si-palette>`; `useTheme().palette`
+  reads it and `palettes` names each one (`{ si: "丹青", cyrene: "落英" }`). For
+  server rendering, write `data-si-palette="cyrene"` on `<html>` yourself so the
+  first frame is already pink.
 - No flash of the wrong theme: put `themeScript` in `<head>` so a remembered
   theme applies before the first paint.
 
@@ -191,10 +202,10 @@ The working tree must be clean before releasing.
 
 ```
 src/si/            The package.
-  tokens.css         Colours (light 宣纸 / dark 浓墨 via light-dark()), type, radius, heights, spacing, z-index, motion.
+  tokens.css         Colours (light 宣纸 / dark 浓墨 via light-dark(); the 落英 palette), type, radius, heights, spacing, z-index, motion.
   base.css           Optional page ground (reset, body, paper fibre, global focus ring / reduced motion).
   components.css     Imports styles/*.css (one file per component module).
-  core.tsx           SiProvider, useTheme, themeScript, spring presets, ink ripple, BrushStroke.
+  core.tsx           SiProvider, useTheme, palettes, themeScript, spring presets, ink ripple, BrushStroke.
   messages.ts        Built-in texts: zh (default), en, useMessages.
   components/        Button, IconButton, CopyButton, TextField, TextAreaField, SelectField,
                      Input / TextArea / Select (label outside), PasswordField, StrengthMeter, Switch,
@@ -237,5 +248,6 @@ vite.lib.config.ts Package build; react / motion stay external.
 MIT — see `LICENSE`. The few icons drawn inside the components are from
 [Lucide](https://lucide.dev) (ISC). Exception: the portrait of the character 祀
 (fan art) — `src/showcase/sigil.webp` and the browser icons `public/favicon.png`,
-`public/apple-touch-icon.png` — is used for this site only; it is not covered
-by the MIT license and is not part of the package.
+`public/apple-touch-icon.png` — and the portrait of 昔涟 (Cyrene, fan art of the
+_Honkai: Star Rail_ character) — `src/showcase/cyrene.webp` — are used for this
+site only; they are not covered by the MIT license and are not part of the package.

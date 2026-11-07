@@ -48,8 +48,8 @@
 .sc-bar .si-seg {
 	flex: none;
 }
-/* brand on the left, the two switches on the right */
-.sc-bar .sc-lang {
+/* brand on the left, the three switches on the right */
+.sc-bar .sc-palette {
 	margin-left: auto;
 }
 /* docs: the bar spans the page like the sidebar under it, ☰ first */
@@ -62,13 +62,13 @@
 		display: none;
 	}
 }
-/* too narrow for ☰, the title and both switches: the seal stands for the title */
-@media (max-width: 420px) {
-	.sc-bar.has-menu .sc-brand-name {
+/* too narrow for the title and all the switches: the seal stands for the title */
+@media (max-width: 560px) {
+	.sc-bar .sc-brand-name {
 		display: none;
 	}
 }
-/* phones: brand, 中 / EN and the theme switch fit one row */
+/* phones: the seal, 丹青 / 落英, 中 / EN and the theme switch fit one row */
 @media (max-width: 480px) {
 	.sc-bar .sc-wrap {
 		gap: 8px;

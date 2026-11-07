@@ -41,6 +41,7 @@ export function obsidianTheme(tokens, mapping) {
 	for (const [, selector, body] of tokens.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 		const isDark = selector.includes('[data-theme="dark"]');
 		if (selector.includes(":not(")) continue; // the same values again, for the system dark theme
+		if (selector.includes("data-si-palette")) continue; // the other palettes: Obsidian gets 丹青
 		for (const [, name, value] of body.matchAll(/(--si-[\w-]+)\s*:\s*([^;]+);/g)) {
 			if (isDark) darkOnly.set(name, value);
 			else if (value.startsWith("light-dark(")) {

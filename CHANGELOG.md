@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- New palette **落英** (`<SiProvider palette="cyrene">`): the same design in the
+  colours of Cyrene (昔涟) — 桃红 peach pink primary, 天青 sky blue accent, 蜜金 honey
+  gold highlight, 胭脂 rouge for danger and seals, on blush paper with violet-black
+  ink, light and dark, with the same contrast as 丹青. Only colours change; the token
+  names stay (`--si-jade` is the primary in either). Set on `<html data-si-palette>`;
+  `useTheme().palette` and `palettes` (`{ si: "丹青", cyrene: "落英" }`) are new.
+  The default, `palette="si"`, is 丹青 as before.
+- The style page has a 丹青 / 落英 switch; "水祀丹青" is now simply 丹青.
+
 ## 1.2.0
 
 - SelectField `plain`: the plain box, as tall as Input and SearchField, without the
